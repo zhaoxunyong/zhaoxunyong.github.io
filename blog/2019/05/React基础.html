@@ -116,7 +116,7 @@
 <meta property="og:description" content="记录一下React基础相关的知识点。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.gcalls.cn/images/react-lifecycle.jpeg">
-<meta property="og:updated_time" content="2019-10-12T02:34:07.793Z">
+<meta property="og:updated_time" content="2019-11-29T07:35:18.754Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React基础">
 <meta name="twitter:description" content="记录一下React基础相关的知识点。">
@@ -467,6 +467,15 @@
 <p>如何避免这些不必要的render：</p>
 <p>使用shouldComponentUpdate()以让React知道当前状态或属性的改变是否不影响组件的输出，默认返回ture，返回false时不会重写render，而且该方法并不会在初始化渲染或当使用forceUpdate()时被调用，我们要做的只是这样:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">shouldComponentUpdate(nextProps, nextState) &#123;</span><br><span class="line">  return nextState.someData !== this.state.someData</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="react路由"><a href="#react路由" class="headerlink" title="react路由"></a>react路由</h2><h3 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;Switch&gt;</span><br><span class="line">    &lt;Route path=&quot;/demo/list&quot; component=&#123;List&#125; exact /&gt;</span><br><span class="line">    &lt;Route path=&quot;/demo/detail/:id&quot; component=&#123;Detail&#125; /&gt;</span><br><span class="line">    &lt;Redirect to=&quot;/demo/list&quot; /&gt;</span><br><span class="line">&lt;/Switch&gt;</span><br></pre></td></tr></table></figure>
+<p>Switch表示有多少Route时，只加载找到的第一条Route。 exact表示精确匹配。没有加exact模糊匹配。</p>
+<h3 id="子组件配置路由"><a href="#子组件配置路由" class="headerlink" title="子组件配置路由"></a>子组件配置路由</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pages/home/index.js(第一次会加载这个页面):</span><br><span class="line">&lt;Switch&gt;</span><br><span class="line">    &lt;Route path=&quot;/&quot; component=&#123;MainPage&#125; exact /&gt;</span><br><span class="line">    &lt;Route path=&quot;/demo&quot; component=&#123;Demo&#125; /&gt;</span><br><span class="line">    &lt;Route path=&quot;*&quot; component=&#123;NotFoundPage&#125; /&gt;</span><br><span class="line">&lt;/Switch&gt;</span><br></pre></td></tr></table></figure>
+<p>注意：<route path="/demo" component="{Demo}">不能加exact，否则子组件中的路由无法加载。</route></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/demo/index.js:</span><br><span class="line">&lt;Switch&gt;</span><br><span class="line">    &lt;Route path=&quot;/demo/list&quot; component=&#123;List&#125; /&gt;</span><br><span class="line">    &lt;Route path=&quot;/demo/detail/:id&quot; component=&#123;Detail&#125; /&gt;</span><br><span class="line">    &lt;Redirect to=&quot;/demo/list&quot; /&gt;</span><br><span class="line">&lt;/Switch&gt;</span><br></pre></td></tr></table></figure>
+<p>react-route必须要在系统第一次加载路由。通过点击进来的页面如果配置的路由在第一次没有加载，就报错。/demo在第一次就载了，所以子组件配置/demo开头的路由可以。但如果子组的路由不是以/demo的就有问题。估计是react router的限制。</p>
+<p>/demo必须要先定义在router.js中，各个组件中可以定义自己的路由，不过前提必须要是/demo开头才行。</p>
+<p>所以home下的Index.js中的这行不能加exact，否则路由就加载不了。</p>
+<p>/demo/list模糊匹配到了/demo，然后/demo中配置了子组件的路由，就能够成功加载。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://dvajs.com/knowledgemap/#javascript-%E8%AF%AD%E8%A8%80" target="_blank" rel="noopener">https://dvajs.com/knowledgemap/#javascript-%E8%AF%AD%E8%A8%80</a></li>
 <li><a href="https://es6.ruanyifeng.com/" target="_blank" rel="noopener">https://es6.ruanyifeng.com/</a></li>
@@ -674,7 +683,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ES6"><span class="nav-number">1.</span> <span class="nav-text">ES6</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise"><span class="nav-number">1.1.</span> <span class="nav-text">Promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#async"><span class="nav-number">1.2.</span> <span class="nav-text">async</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React生命周期"><span class="nav-number">2.</span> <span class="nav-text">React生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ES6"><span class="nav-number">1.</span> <span class="nav-text">ES6</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise"><span class="nav-number">1.1.</span> <span class="nav-text">Promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#async"><span class="nav-number">1.2.</span> <span class="nav-text">async</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React生命周期"><span class="nav-number">2.</span> <span class="nav-text">React生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react路由"><span class="nav-number">3.</span> <span class="nav-text">react路由</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Switch"><span class="nav-number">3.1.</span> <span class="nav-text">Switch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子组件配置路由"><span class="nav-number">3.2.</span> <span class="nav-text">子组件配置路由</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
