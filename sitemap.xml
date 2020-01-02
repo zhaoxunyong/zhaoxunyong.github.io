@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.gcalls.cn/blog/2019/11/English%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95.html</loc>
+    
+    <lastmod>2020-01-02T10:38:33.585Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.gcalls.cn/blog/2019/08/A-Guide-to-English-Grammar.html</loc>
     
     <lastmod>2019-12-26T05:05:59.265Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>http://blog.gcalls.cn/blog/2019/05/React%E5%9F%BA%E7%A1%80.html</loc>
     
     <lastmod>2019-11-29T07:35:18.754Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2019/11/English%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95.html</loc>
-    
-    <lastmod>2019-11-22T09:52:23.581Z</lastmod>
     
   </url>
   
@@ -163,14 +163,14 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2017/01/etcd%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2017/01/%E4%BD%BF%E7%94%A8Flannel%E6%90%AD%E5%BB%BAdocker%E7%BD%91%E7%BB%9C.html</loc>
     
     <lastmod>2019-10-12T02:34:07.779Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2017/01/%E4%BD%BF%E7%94%A8Flannel%E6%90%AD%E5%BB%BAdocker%E7%BD%91%E7%BB%9C.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2017/01/etcd%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html</loc>
     
     <lastmod>2019-10-12T02:34:07.779Z</lastmod>
     
