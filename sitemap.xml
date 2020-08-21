@@ -2,16 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2020/01/EnglishPod%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2019/06/Jenkins%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA.html</loc>
     
-    <lastmod>2020-01-03T01:10:13.813Z</lastmod>
+    <lastmod>2020-08-21T03:09:16.965Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
+    
+    <lastmod>2020-08-14T09:55:49.924Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2017/01/etcd%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html</loc>
+    
+    <lastmod>2020-08-14T01:45:22.092Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu%E7%BE%8E%E5%8C%96.html</loc>
+    
+    <lastmod>2020-06-29T01:27:07.802Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.gcalls.cn/blog/2019/11/English%E4%BA%8C%E8%AF%AD%E4%B9%A0%E5%BE%97%E6%96%B9%E6%B3%95.html</loc>
     
-    <lastmod>2020-01-03T01:08:30.112Z</lastmod>
+    <lastmod>2020-06-06T11:23:35.275Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2019/04/%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html</loc>
+    
+    <lastmod>2020-06-06T11:23:35.273Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2018/12/elementary-os.html</loc>
+    
+    <lastmod>2020-06-06T11:23:35.271Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2020/01/EnglishPod%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F.html</loc>
+    
+    <lastmod>2020-01-03T01:25:57.012Z</lastmod>
     
   </url>
   
@@ -65,13 +107,6 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2019/06/Jenkins%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA.html</loc>
-    
-    <lastmod>2019-10-12T02:34:07.794Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.gcalls.cn/blog/2019/05/Git%E5%A6%82%E4%BD%95%E6%B0%B8%E4%B9%85%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E4%B8%8E%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.html</loc>
     
     <lastmod>2019-10-12T02:34:07.792Z</lastmod>
@@ -86,28 +121,14 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2019/04/%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html</loc>
-    
-    <lastmod>2019-10-12T02:34:07.790Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2018/12/elementary-os.html</loc>
-    
-    <lastmod>2019-10-12T02:34:07.789Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2017/11/Jenkins%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E6%89%AB%E6%8F%8F%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2018/03/sed%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.html</loc>
     
     <lastmod>2019-10-12T02:34:07.788Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2018/03/sed%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2017/11/Jenkins%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E6%89%AB%E6%8F%8F%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2.html</loc>
     
     <lastmod>2019-10-12T02:34:07.788Z</lastmod>
     
@@ -124,13 +145,6 @@
     <loc>http://blog.gcalls.cn/blog/2017/10/Kubernetes%E5%AE%89%E8%A3%85Docker-registry.html</loc>
     
     <lastmod>2019-10-12T02:34:07.786Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
-    
-    <lastmod>2019-10-12T02:34:07.785Z</lastmod>
     
   </url>
   
@@ -170,13 +184,6 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2017/01/etcd%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html</loc>
-    
-    <lastmod>2019-10-12T02:34:07.779Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.gcalls.cn/blog/2017/01/%E4%BD%BF%E7%94%A8Flannel%E6%90%AD%E5%BB%BAdocker%E7%BD%91%E7%BB%9C.html</loc>
     
     <lastmod>2019-10-12T02:34:07.779Z</lastmod>
@@ -198,14 +205,14 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2017/01/%E4%BD%BF%E7%94%A8packer%E5%88%B6%E4%BD%9Cvagrant-box.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2017/01/Kubeadm%20rpm%E5%AE%89%E8%A3%85%E5%8C%85%E5%88%B6%E4%BD%9C.html</loc>
     
     <lastmod>2019-10-12T02:34:07.776Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2017/01/Kubeadm%20rpm%E5%AE%89%E8%A3%85%E5%8C%85%E5%88%B6%E4%BD%9C.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2017/01/%E4%BD%BF%E7%94%A8packer%E5%88%B6%E4%BD%9Cvagrant-box.html</loc>
     
     <lastmod>2019-10-12T02:34:07.776Z</lastmod>
     
