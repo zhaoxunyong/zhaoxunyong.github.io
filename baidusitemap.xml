@@ -2,10 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://blog.gcalls.cn/blog/2017/09/kubernetes%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.html</loc>
-    <lastmod>2020-11-23</lastmod>
+    <lastmod>2020-12-01</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
-    <lastmod>2020-11-18</lastmod>
+    <lastmod>2020-12-01</lastmod>
+  </url>  <url>
+    <loc>http://blog.gcalls.cn/blog/2020/12/WSL.html</loc>
+    <lastmod>2020-12-01</lastmod>
+  </url>  <url>
+    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu%E7%BE%8E%E5%8C%96.html</loc>
+    <lastmod>2020-12-01</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2019/06/Jenkins%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA.html</loc>
     <lastmod>2020-10-29</lastmod>
@@ -18,9 +24,6 @@
   </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2017/01/etcd%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85.html</loc>
     <lastmod>2020-08-14</lastmod>
-  </url>  <url>
-    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu%E7%BE%8E%E5%8C%96.html</loc>
-    <lastmod>2020-06-29</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2019/11/English%E4%BA%8C%E8%AF%AD%E4%B9%A0%E5%BE%97%E6%96%B9%E6%B3%95.html</loc>
     <lastmod>2020-06-06</lastmod>
