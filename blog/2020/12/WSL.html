@@ -115,7 +115,7 @@
 <meta property="og:site_name" content="Just do it">
 <meta property="og:description" content="Windows Subsystem for Linux（简称WSL）是一个在Windows 10上能够运行原生Linux二进制可执行文件（ELF格式）的兼容层。它是由微软与Canonical公司合作开发，其目标是使纯正的Ubuntu 14.04 “Trusty Tahr”映像能下载和解压到用户的本地计算机，并且映像内的工具和实用工具能在此子系统上原生运行。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-12-01T03:23:10.064Z">
+<meta property="og:updated_time" content="2020-12-02T08:11:39.757Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WSL">
 <meta name="twitter:description" content="Windows Subsystem for Linux（简称WSL）是一个在Windows 10上能够运行原生Linux二进制可执行文件（ELF格式）的兼容层。它是由微软与Canonical公司合作开发，其目标是使纯正的Ubuntu 14.04 “Trusty Tahr”映像能下载和解压到用户的本地计算机，并且映像内的工具和实用工具能在此子系统上原生运行。">
@@ -430,8 +430,14 @@
 <p>安装docker时也会提示更新这个。另外注意：不需要开启Hyper-V。安装完后设置一下默认为v2:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --<span class="built_in">set</span>-default-version 2</span><br></pre></td></tr></table></figure>
 <h2 id="安装ubuntu"><a href="#安装ubuntu" class="headerlink" title="安装ubuntu"></a>安装ubuntu</h2><p>参考：<a href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10#step-6---install-your-linux-distribution-of-choice" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/windows/wsl/install-win10#step-6---install-your-linux-distribution-of-choice</a></p>
-<h2 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h2><p>Windows终端：</p>
-<p>参考：<a href="https://docs.microsoft.com/zh-cn/windows/terminal/get-started" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/windows/terminal/get-started</a></p>
+<h2 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h2><p>Windows终端(建议)：</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://docs.microsoft.com/zh-cn/windows/terminal/get-started" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/windows/terminal/get-started</a></li>
+<li><a href="https://blog.walterlv.com/post/add-a-new-profile-for-windows-terminal.html" target="_blank" rel="noopener">https://blog.walterlv.com/post/add-a-new-profile-for-windows-terminal.html</a></li>
+</ul>
+<p>添加git-bash支持：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"closeOnExit"</span> : <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"commandline"</span> : <span class="string">"D:\\Developer\\Git\\bin\\bash.exe --login -i"</span>,</span><br><span class="line">    <span class="string">"guid"</span> : <span class="string">"&#123;1d4e097e-fe87-4164-97d7-3ca794c316fd&#125;"</span>,</span><br><span class="line">    <span class="string">"icon"</span> : <span class="string">"D:\\Developer\\Git\\git-bash.png"</span>,</span><br><span class="line">    <span class="string">"name"</span> : <span class="string">"Bash"</span>,</span><br><span class="line">    <span class="string">"startingDirectory"</span> : <span class="string">"%USERPROFILE%"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>wsl-terminal：</p>
 <p>参考：<a href="https://link.jianshu.com/?t=https://github.com/goreliu/wsl-terminal" target="_blank" rel="noopener">https://link.jianshu.com/?t=https://github.com/goreliu/wsl-terminal</a></p>
 <h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><p>参考：<a href="https://docs.docker.com/docker-for-windows/wsl/" target="_blank" rel="noopener">https://docs.docker.com/docker-for-windows/wsl/</a></p>
