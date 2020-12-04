@@ -115,7 +115,7 @@
 <meta property="og:site_name" content="Just do it">
 <meta property="og:description" content="Windows Subsystem for Linux（简称WSL）是一个在Windows 10上能够运行原生Linux二进制可执行文件（ELF格式）的兼容层。它是由微软与Canonical公司合作开发，其目标是使纯正的Ubuntu 14.04 “Trusty Tahr”映像能下载和解压到用户的本地计算机，并且映像内的工具和实用工具能在此子系统上原生运行。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-12-02T08:11:39.757Z">
+<meta property="og:updated_time" content="2020-12-04T07:42:15.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WSL">
 <meta name="twitter:description" content="Windows Subsystem for Linux（简称WSL）是一个在Windows 10上能够运行原生Linux二进制可执行文件（ELF格式）的兼容层。它是由微软与Canonical公司合作开发，其目标是使纯正的Ubuntu 14.04 “Trusty Tahr”映像能下载和解压到用户的本地计算机，并且映像内的工具和实用工具能在此子系统上原生运行。">
@@ -446,6 +446,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wsl.exe -l -v</span><br><span class="line"><span class="comment">#wsl.exe --set-version Ubuntu-20.04 2</span></span><br><span class="line"><span class="comment">#wsl.exe --set-default-version 2</span></span><br></pre></td></tr></table></figure>
 <h2 id="设置默认Linux发行版"><a href="#设置默认Linux发行版" class="headerlink" title="设置默认Linux发行版"></a>设置默认Linux发行版</h2><p>参考：<a href="http://www.xitongzhijia.net/xtjc/20180316/122477.html" target="_blank" rel="noopener">http://www.xitongzhijia.net/xtjc/20180316/122477.html</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wslconfig /l</span><br><span class="line">wslconfig /setdefault Ubuntu-20.04</span><br></pre></td></tr></table></figure>
+<h2 id="备注与还原"><a href="#备注与还原" class="headerlink" title="备注与还原"></a>备注与还原</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://www.howtogeek.com/426562/how-to-export-and-import-your-linux-systems-on-windows-10/</span></span><br><span class="line"><span class="comment">#Backup</span></span><br><span class="line">wsl --list</span><br><span class="line">wsl --<span class="built_in">export</span> Ubuntu-20.04 D:\Developer\WSL\Bak\Ubuntu-20.04.tar</span><br><span class="line">wsl --import Ubuntu D:\Developer\WSL D:\Developer\WSL\Bak\Ubuntu-20.04.tar</span><br></pre></td></tr></table></figure>
 <h2 id="其他参考"><a href="#其他参考" class="headerlink" title="其他参考"></a>其他参考</h2><blockquote>
 <p><a href="https://www.jianshu.com/p/f59f902fd885" target="_blank" rel="noopener">https://www.jianshu.com/p/f59f902fd885</a></p>
 </blockquote>
@@ -645,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装WSL"><span class="nav-number">1.</span> <span class="nav-text">安装WSL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装ubuntu"><span class="nav-number">2.</span> <span class="nav-text">安装ubuntu</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终端"><span class="nav-number">3.</span> <span class="nav-text">终端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker"><span class="nav-number">4.</span> <span class="nav-text">安装docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置默认Linux发行版"><span class="nav-number">5.</span> <span class="nav-text">设置默认Linux发行版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他参考"><span class="nav-number">6.</span> <span class="nav-text">其他参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装WSL"><span class="nav-number">1.</span> <span class="nav-text">安装WSL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装ubuntu"><span class="nav-number">2.</span> <span class="nav-text">安装ubuntu</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终端"><span class="nav-number">3.</span> <span class="nav-text">终端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker"><span class="nav-number">4.</span> <span class="nav-text">安装docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置默认Linux发行版"><span class="nav-number">5.</span> <span class="nav-text">设置默认Linux发行版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#备注与还原"><span class="nav-number">6.</span> <span class="nav-text">备注与还原</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他参考"><span class="nav-number">7.</span> <span class="nav-text">其他参考</span></a></li></ol></div>
             
 
           </div>
