@@ -115,7 +115,7 @@
 <meta property="og:site_name" content="Just do it">
 <meta property="og:description" content="Windows Subsystem for Linux（简称WSL）是一个在Windows 10上能够运行原生Linux二进制可执行文件（ELF格式）的兼容层。它是由微软与Canonical公司合作开发，其目标是使纯正的Ubuntu 14.04 “Trusty Tahr”映像能下载和解压到用户的本地计算机，并且映像内的工具和实用工具能在此子系统上原生运行。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-12-10T01:21:14.068Z">
+<meta property="og:updated_time" content="2020-12-10T02:15:22.473Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WSL">
 <meta name="twitter:description" content="Windows Subsystem for Linux（简称WSL）是一个在Windows 10上能够运行原生Linux二进制可执行文件（ELF格式）的兼容层。它是由微软与Canonical公司合作开发，其目标是使纯正的Ubuntu 14.04 “Trusty Tahr”映像能下载和解压到用户的本地计算机，并且映像内的工具和实用工具能在此子系统上原生运行。">
@@ -441,7 +441,11 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"closeOnExit"</span> : <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"commandline"</span> : <span class="string">"D:\\Developer\\Git\\bin\\bash.exe --login -i"</span>,</span><br><span class="line">    <span class="string">"guid"</span> : <span class="string">"&#123;1d4e097e-fe87-4164-97d7-3ca794c316fd&#125;"</span>,</span><br><span class="line">    <span class="string">"icon"</span> : <span class="string">"D:\\Developer\\Git\\git-bash.png"</span>,</span><br><span class="line">    <span class="string">"name"</span> : <span class="string">"Bash"</span>,</span><br><span class="line">    <span class="string">"startingDirectory"</span> : <span class="string">"%USERPROFILE%"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>wsl-terminal：</p>
 <p>参考：<a href="https://link.jianshu.com/?t=https://github.com/goreliu/wsl-terminal" target="_blank" rel="noopener">https://link.jianshu.com/?t=https://github.com/goreliu/wsl-terminal</a></p>
-<h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><p>参考：<a href="https://docs.docker.com/docker-for-windows/wsl/" target="_blank" rel="noopener">https://docs.docker.com/docker-for-windows/wsl/</a></p>
+<h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><p>参考：</p>
+<ul>
+<li><a href="https://docs.docker.com/docker-for-windows/wsl/" target="_blank" rel="noopener">https://docs.docker.com/docker-for-windows/wsl/</a></li>
+<li><a href="https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/" target="_blank" rel="noopener">https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/</a></li>
+</ul>
 <p>在windows中安装Docker Desktop，在docker的Settings/Resources/WSL Integration选择ubuntu。</p>
 <p>查看已经安装的系统：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wsl.exe -l -v</span><br><span class="line"><span class="comment">#wsl.exe --set-version Ubuntu-20.04 2</span></span><br><span class="line"><span class="comment">#wsl.exe --set-default-version 2</span></span><br></pre></td></tr></table></figure>
