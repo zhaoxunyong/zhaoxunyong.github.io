@@ -2,30 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
     
-    <lastmod>2020-12-14T00:40:17.569Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2020/12/WSL.html</loc>
-    
-    <lastmod>2020-12-14T00:33:23.238Z</lastmod>
+    <lastmod>2020-12-15T08:41:17.777Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.gcalls.cn/blog/2017/09/kubernetes%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.html</loc>
     
-    <lastmod>2020-12-14T00:33:23.235Z</lastmod>
+    <lastmod>2020-12-15T06:03:01.528Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2020/12/WSL.html</loc>
     
-    <lastmod>2020-12-10T02:11:06.055Z</lastmod>
+    <lastmod>2020-12-15T02:18:05.711Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html</loc>
+    
+    <lastmod>2020-12-14T00:40:17.569Z</lastmod>
     
   </url>
   
