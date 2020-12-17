@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.gcalls.cn/blog/2020/12/WSL.html</loc>
+    
+    <lastmod>2020-12-17T03:49:38.571Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.gcalls.cn/blog/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
     
-    <lastmod>2020-12-15T08:50:01.258Z</lastmod>
+    <lastmod>2020-12-17T02:55:25.276Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
+    
+    <lastmod>2020-12-15T09:14:17.605Z</lastmod>
     
   </url>
   
@@ -16,23 +30,9 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2020/12/WSL.html</loc>
-    
-    <lastmod>2020-12-15T02:18:05.711Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.gcalls.cn/blog/2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html</loc>
     
     <lastmod>2020-12-14T00:40:17.569Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
-    
-    <lastmod>2020-12-09T09:19:23.626Z</lastmod>
     
   </url>
   
