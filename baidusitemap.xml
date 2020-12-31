@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
+    <lastmod>2020-12-31</lastmod>
+  </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html</loc>
     <lastmod>2020-12-31</lastmod>
   </url>  <url>
@@ -8,9 +11,6 @@
     <lastmod>2020-12-30</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
-    <lastmod>2020-12-30</lastmod>
-  </url>  <url>
-    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
     <lastmod>2020-12-30</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2020/12/WSL.html</loc>
