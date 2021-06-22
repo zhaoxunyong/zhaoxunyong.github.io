@@ -115,7 +115,7 @@
 <meta property="og:site_name" content="Just do it">
 <meta property="og:description" content="记录一下jenkins自动构建android与ios安装包。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-06-22T03:38:53.486Z">
+<meta property="og:updated_time" content="2021-06-22T03:56:49.977Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jenkins移动端自动构建">
 <meta name="twitter:description" content="记录一下jenkins自动构建android与ios安装包。">
@@ -424,7 +424,8 @@
         <p>记录一下jenkins自动构建android与ios安装包。</p>
 <a id="more"></a>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">brew install jenkins-lts</span><br><span class="line">brew services start jenkins-lts</span><br><span class="line"><span class="comment">#Generating for QR code</span></span><br><span class="line">brew install qrencode</span><br><span class="line"><span class="comment">#brew install md5sha1sum</span></span><br><span class="line"><span class="comment">#brew services list</span></span><br><span class="line"><span class="comment">#jenkins-lts started test /Users/test/Library/LaunchAgents/homebrew.mxcl.jenkins-lts.plist</span></span><br></pre></td></tr></table></figure>
-<p>注意：2.263.4为正确运行的版本，如果通过uninstall后，可以在安装后手动替换掉war文件：<br>cp -a /Developer/jenkins-war-2.263.4.war /usr/local/opt/jenkins-lts/libexec/jenkins.war</p>
+<p>注意：2.263.4为正确运行的版本，如果通过uninstall后，可以在安装后手动替换掉war文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -a /Developer/jenkins-war-2.263.4.war /usr/local/opt/jenkins-lts/libexec/jenkins.war</span><br></pre></td></tr></table></figure></p>
+<p>新版本的workspace默认为${ITEM_ROOT}/workspace，位于job目录下。需要修改~/.jenkins/config.xml文件的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;workspaceDir&gt;$&#123;JENKINS_HOME&#125;/workspace/$&#123;ITEM_FULL_NAME&#125;&lt;/workspaceDir&gt;</span><br></pre></td></tr></table></figure></p>
 <p>修改配置：<br>/usr/local/Cellar/jenkins-lts/2.289.1/homebrew.mxcl.jenkins-lts.plist:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;string&gt;--httpListenAddress=0.0.0.0&lt;/string&gt;</span><br><span class="line">&lt;string&gt;--httpPort=8080&lt;/string&gt;</span><br><span class="line">&lt;string&gt;--prefix=/ci&lt;/string&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><p>没有采用jenkins插件方式安装，而是通过命令行shell脚本直接运行，所以需要事先在这台电脑上安装配置好相关的环境，并确保手动构建、打包功能正常，手动发布到appstore能成功。</p>
