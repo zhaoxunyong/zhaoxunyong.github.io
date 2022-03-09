@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://blog.gcalls.cn/blog/2022/03/Loki-Log-System.html</loc>
+    <lastmod>2022-03-09</lastmod>
+  </url>  <url>
+    <loc>http://blog.gcalls.cn/blog/2021/03/iptables.html</loc>
+    <lastmod>2022-03-08</lastmod>
+  </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2020/12/Kubernetes-Development-Environment.html</loc>
     <lastmod>2022-02-18</lastmod>
   </url>  <url>
@@ -14,9 +20,6 @@
     <lastmod>2022-02-11</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2021/09/istio%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.html</loc>
-    <lastmod>2022-02-11</lastmod>
-  </url>  <url>
-    <loc>http://blog.gcalls.cn/blog/2021/03/iptables.html</loc>
     <lastmod>2022-02-11</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn/blog/2020/12/WSL.html</loc>
