@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.gcalls.cn/blog/2022/03/Loki-Log-System.html</loc>
+    
+    <lastmod>2022-04-29T07:23:02.548Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.gcalls.cn/blog/2022/04/A-Guide-to-Vagrant.html</loc>
     
-    <lastmod>2022-04-29T05:31:44.126Z</lastmod>
+    <lastmod>2022-04-29T05:34:19.792Z</lastmod>
     
   </url>
   
@@ -12,13 +19,6 @@
     <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
     
     <lastmod>2022-04-26T01:00:31.656Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2022/03/Loki-Log-System.html</loc>
-    
-    <lastmod>2022-04-06T00:57:39.662Z</lastmod>
     
   </url>
   
