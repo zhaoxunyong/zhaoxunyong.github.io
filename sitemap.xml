@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2022/03/Loki-Log-System.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2022/04/A-Guide-to-Vagrant.html</loc>
     
-    <lastmod>2022-04-01T09:17:41.405Z</lastmod>
+    <lastmod>2022-04-29T05:30:19.239Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
     
-    <lastmod>2022-03-31T08:09:51.594Z</lastmod>
+    <lastmod>2022-04-26T01:00:31.656Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2022/03/Loki-Log-System.html</loc>
+    
+    <lastmod>2022-04-06T00:57:39.662Z</lastmod>
     
   </url>
   
@@ -275,14 +282,14 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/about/index.html</loc>
+    <loc>http://blog.gcalls.cn/categories/index.html</loc>
     
     <lastmod>2022-02-07T09:45:48.647Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/categories/index.html</loc>
+    <loc>http://blog.gcalls.cn/about/index.html</loc>
     
     <lastmod>2022-02-07T09:45:48.647Z</lastmod>
     
