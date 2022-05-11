@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://blog.gcalls.cn/blog/2022/05/Containerd.html</loc>
+    <lastmod>2022-05-11</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2020/12/Kubernetes-Development-Environment.html</loc>
+    <lastmod>2022-05-11</lastmod>
+  </url>
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
+    <lastmod>2022-05-11</lastmod>
+  </url>
+  <url>
     <loc>http://blog.gcalls.cn/blog/2022/04/A-Guide-to-Vagrant.html</loc>
     <lastmod>2022-05-06</lastmod>
   </url>
   <url>
     <loc>http://blog.gcalls.cn/blog/2022/03/Loki-Log-System.html</loc>
     <lastmod>2022-04-29</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
-    <lastmod>2022-04-26</lastmod>
   </url>
   <url>
     <loc>http://blog.gcalls.cn/blog/2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html</loc>
@@ -27,10 +35,6 @@
   <url>
     <loc>http://blog.gcalls.cn/blog/2021/03/iptables.html</loc>
     <lastmod>2022-03-08</lastmod>
-  </url>
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2020/12/Kubernetes-Development-Environment.html</loc>
-    <lastmod>2022-02-18</lastmod>
   </url>
   <url>
     <loc>http://blog.gcalls.cn/blog/2018/12/elementary-os.html</loc>

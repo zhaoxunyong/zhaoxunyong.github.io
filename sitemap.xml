@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.gcalls.cn/blog/2022/05/Containerd.html</loc>
+    
+    <lastmod>2022-05-11T06:54:58.124Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2020/12/Kubernetes-Development-Environment.html</loc>
+    
+    <lastmod>2022-05-11T03:17:21.782Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
+    
+    <lastmod>2022-05-11T03:00:14.232Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.gcalls.cn/blog/2022/04/A-Guide-to-Vagrant.html</loc>
     
     <lastmod>2022-05-06T08:46:48.185Z</lastmod>
@@ -12,13 +33,6 @@
     <loc>http://blog.gcalls.cn/blog/2022/03/Loki-Log-System.html</loc>
     
     <lastmod>2022-04-29T07:23:02.548Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html</loc>
-    
-    <lastmod>2022-04-26T01:00:31.656Z</lastmod>
     
   </url>
   
@@ -47,13 +61,6 @@
     <loc>http://blog.gcalls.cn/blog/2021/03/iptables.html</loc>
     
     <lastmod>2022-03-08T02:52:03.392Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2020/12/Kubernetes-Development-Environment.html</loc>
-    
-    <lastmod>2022-02-18T01:07:36.059Z</lastmod>
     
   </url>
   
