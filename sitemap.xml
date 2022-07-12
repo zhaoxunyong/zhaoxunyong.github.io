@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.gcalls.cn/blog/2020/12/Kubernetes-Development-Environment.html</loc>
+    
+    <lastmod>2022-07-12T08:07:25.155Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2022/06/Seata.html</loc>
+    
+    <lastmod>2022-06-20T01:03:43.299Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.gcalls.cn/blog/2022/06/Fabric-Getting-Started.html</loc>
     
     <lastmod>2022-06-08T03:56:28.135Z</lastmod>
@@ -33,13 +47,6 @@
     <loc>http://blog.gcalls.cn/blog/2022/05/Containerd.html</loc>
     
     <lastmod>2022-05-11T06:54:58.124Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2020/12/Kubernetes-Development-Environment.html</loc>
-    
-    <lastmod>2022-05-11T03:17:21.782Z</lastmod>
     
   </url>
   
