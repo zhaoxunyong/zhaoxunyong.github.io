@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.gcalls.cn/blog/2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html</loc>
+    <loc>http://blog.gcalls.cn/blog/2022/06/Seata.html</loc>
     
-    <lastmod>2022-08-10T02:16:48.325Z</lastmod>
+    <lastmod>2022-10-20T09:51:04.182Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blog.gcalls.cn/blog/2022/08/Linux-Shell-Script.html</loc>
     
-    <lastmod>2022-08-10T01:14:44.842Z</lastmod>
+    <lastmod>2022-08-10T03:21:08.188Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/blog/2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html</loc>
+    
+    <lastmod>2022-08-10T02:16:48.325Z</lastmod>
     
   </url>
   
@@ -26,13 +33,6 @@
     <loc>http://blog.gcalls.cn/blog/2020/12/Kubernetes-Development-Environment.html</loc>
     
     <lastmod>2022-07-15T06:30:23.044Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/blog/2022/06/Seata.html</loc>
-    
-    <lastmod>2022-06-20T01:03:43.299Z</lastmod>
     
   </url>
   
