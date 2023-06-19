@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://blog.gcalls.cn//2022/03/Loki-Log-System.html</loc>
-    <lastmod>2023-05-15</lastmod>
-  </url>  <url>
     <loc>http://blog.gcalls.cn//2018/12/ubuntu-os.html</loc>
-    <lastmod>2023-04-28</lastmod>
+    <lastmod>2023-06-19</lastmod>
+  </url>  <url>
+    <loc>http://blog.gcalls.cn//2022/03/Loki-Log-System.html</loc>
+    <lastmod>2023-06-02</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn//2022/04/A-Guide-to-Vagrant.html</loc>
     <lastmod>2023-02-14</lastmod>
