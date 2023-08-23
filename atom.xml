@@ -5,9 +5,9 @@
   
   <link href="/blog/atom.xml" rel="self"/>
   
-  <link href="http://blog.gcalls.cn/"/>
+  <link href="http://blog.gcalls.cn/blog/"/>
   <updated>2022-08-10T03:21:08.188Z</updated>
-  <id>http://blog.gcalls.cn/</id>
+  <id>http://blog.gcalls.cn/blog/</id>
   
   <author>
     <name>zhaoxunyong</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Linux Shell Script</title>
-    <link href="http://blog.gcalls.cn//2022/08/Linux-Shell-Script.html"/>
-    <id>http://blog.gcalls.cn//2022/08/Linux-Shell-Script.html</id>
+    <link href="http://blog.gcalls.cn/blog//2022/08/Linux-Shell-Script.html"/>
+    <id>http://blog.gcalls.cn/blog//2022/08/Linux-Shell-Script.html</id>
     <published>2022-08-03T02:31:44.000Z</published>
     <updated>2022-08-10T03:21:08.188Z</updated>
     
@@ -31,17 +31,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/categories/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/categories/Linux/"/>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title>Seata</title>
-    <link href="http://blog.gcalls.cn//2022/06/Seata.html"/>
-    <id>http://blog.gcalls.cn//2022/06/Seata.html</id>
+    <link href="http://blog.gcalls.cn/blog//2022/06/Seata.html"/>
+    <id>http://blog.gcalls.cn/blog//2022/06/Seata.html</id>
     <published>2022-06-08T05:40:28.000Z</published>
     <updated>2022-12-09T08:59:47.846Z</updated>
     
@@ -53,19 +53,19 @@
     
     </summary>
     
-      <category term="java" scheme="http://blog.gcalls.cn/categories/java/"/>
+      <category term="java" scheme="http://blog.gcalls.cn/blog/categories/java/"/>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
-      <category term="java" scheme="http://blog.gcalls.cn/tags/java/"/>
+      <category term="java" scheme="http://blog.gcalls.cn/blog/tags/java/"/>
     
   </entry>
   
   <entry>
     <title>Fabric Getting Started</title>
-    <link href="http://blog.gcalls.cn//2022/06/Fabric-Getting-Started.html"/>
-    <id>http://blog.gcalls.cn//2022/06/Fabric-Getting-Started.html</id>
+    <link href="http://blog.gcalls.cn/blog//2022/06/Fabric-Getting-Started.html"/>
+    <id>http://blog.gcalls.cn/blog//2022/06/Fabric-Getting-Started.html</id>
     <published>2022-06-08T03:33:18.000Z</published>
     <updated>2022-06-08T03:56:28.135Z</updated>
     
@@ -77,19 +77,19 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/categories/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/categories/Linux/"/>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
-      <category term="BlockChain" scheme="http://blog.gcalls.cn/tags/BlockChain/"/>
+      <category term="BlockChain" scheme="http://blog.gcalls.cn/blog/tags/BlockChain/"/>
     
   </entry>
   
   <entry>
     <title>Containerd</title>
-    <link href="http://blog.gcalls.cn//2022/05/Containerd.html"/>
-    <id>http://blog.gcalls.cn//2022/05/Containerd.html</id>
+    <link href="http://blog.gcalls.cn/blog//2022/05/Containerd.html"/>
+    <id>http://blog.gcalls.cn/blog//2022/05/Containerd.html</id>
     <published>2022-05-11T03:44:06.000Z</published>
     <updated>2022-05-11T06:54:58.124Z</updated>
     
@@ -101,19 +101,19 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/categories/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/categories/Linux/"/>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
-      <category term="Kubernetes" scheme="http://blog.gcalls.cn/tags/Kubernetes/"/>
+      <category term="Kubernetes" scheme="http://blog.gcalls.cn/blog/tags/Kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>A Guide to Vagrant</title>
-    <link href="http://blog.gcalls.cn//2022/04/A-Guide-to-Vagrant.html"/>
-    <id>http://blog.gcalls.cn//2022/04/A-Guide-to-Vagrant.html</id>
+    <link href="http://blog.gcalls.cn/blog//2022/04/A-Guide-to-Vagrant.html"/>
+    <id>http://blog.gcalls.cn/blog//2022/04/A-Guide-to-Vagrant.html</id>
     <published>2022-04-29T02:43:46.000Z</published>
     <updated>2023-02-14T09:06:15.521Z</updated>
     
@@ -125,19 +125,19 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/categories/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/categories/Linux/"/>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
-      <category term="Vagrant" scheme="http://blog.gcalls.cn/tags/Vagrant/"/>
+      <category term="Vagrant" scheme="http://blog.gcalls.cn/blog/tags/Vagrant/"/>
     
   </entry>
   
   <entry>
     <title>Loki Log System</title>
-    <link href="http://blog.gcalls.cn//2022/03/Loki-Log-System.html"/>
-    <id>http://blog.gcalls.cn//2022/03/Loki-Log-System.html</id>
+    <link href="http://blog.gcalls.cn/blog//2022/03/Loki-Log-System.html"/>
+    <id>http://blog.gcalls.cn/blog//2022/03/Loki-Log-System.html</id>
     <published>2022-03-09T08:04:26.000Z</published>
     <updated>2023-06-02T09:20:17.419Z</updated>
     
@@ -149,17 +149,17 @@
     
     </summary>
     
-      <category term="Log" scheme="http://blog.gcalls.cn/categories/Log/"/>
+      <category term="Log" scheme="http://blog.gcalls.cn/blog/categories/Log/"/>
     
     
-      <category term="Log" scheme="http://blog.gcalls.cn/tags/Log/"/>
+      <category term="Log" scheme="http://blog.gcalls.cn/blog/tags/Log/"/>
     
   </entry>
   
   <entry>
     <title>istio学习总结</title>
-    <link href="http://blog.gcalls.cn//2021/09/istio%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.html"/>
-    <id>http://blog.gcalls.cn//2021/09/istio学习总结.html</id>
+    <link href="http://blog.gcalls.cn/blog//2021/09/istio%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.html"/>
+    <id>http://blog.gcalls.cn/blog//2021/09/istio学习总结.html</id>
     <published>2021-09-22T07:41:46.000Z</published>
     <updated>2022-02-11T08:58:00.309Z</updated>
     
@@ -171,17 +171,17 @@
     
     </summary>
     
-      <category term="kubernetes" scheme="http://blog.gcalls.cn/categories/kubernetes/"/>
+      <category term="kubernetes" scheme="http://blog.gcalls.cn/blog/categories/kubernetes/"/>
     
     
-      <category term="kubernetes" scheme="http://blog.gcalls.cn/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="http://blog.gcalls.cn/blog/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>iptables</title>
-    <link href="http://blog.gcalls.cn//2021/03/iptables.html"/>
-    <id>http://blog.gcalls.cn//2021/03/iptables.html</id>
+    <link href="http://blog.gcalls.cn/blog//2021/03/iptables.html"/>
+    <id>http://blog.gcalls.cn/blog//2021/03/iptables.html</id>
     <published>2021-03-02T09:36:00.000Z</published>
     <updated>2022-03-08T02:52:03.392Z</updated>
     
@@ -193,17 +193,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/categories/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/categories/Linux/"/>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title>Kubernetes Development Environment</title>
-    <link href="http://blog.gcalls.cn//2020/12/Kubernetes-Development-Environment.html"/>
-    <id>http://blog.gcalls.cn//2020/12/Kubernetes-Development-Environment.html</id>
+    <link href="http://blog.gcalls.cn/blog//2020/12/Kubernetes-Development-Environment.html"/>
+    <id>http://blog.gcalls.cn/blog//2020/12/Kubernetes-Development-Environment.html</id>
     <published>2020-12-19T01:27:52.000Z</published>
     <updated>2022-07-15T06:30:23.044Z</updated>
     
@@ -216,14 +216,14 @@
     </summary>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title>WSL</title>
-    <link href="http://blog.gcalls.cn//2020/12/WSL.html"/>
-    <id>http://blog.gcalls.cn//2020/12/WSL.html</id>
+    <link href="http://blog.gcalls.cn/blog//2020/12/WSL.html"/>
+    <id>http://blog.gcalls.cn/blog//2020/12/WSL.html</id>
     <published>2020-12-01T03:00:22.000Z</published>
     <updated>2022-02-11T08:58:00.094Z</updated>
     
@@ -236,14 +236,14 @@
     </summary>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title>EnglishPod</title>
-    <link href="http://blog.gcalls.cn//2020/01/EnglishPod%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F.html"/>
-    <id>http://blog.gcalls.cn//2020/01/EnglishPod学习方式.html</id>
+    <link href="http://blog.gcalls.cn/blog//2020/01/EnglishPod%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F.html"/>
+    <id>http://blog.gcalls.cn/blog//2020/01/EnglishPod学习方式.html</id>
     <published>2020-01-03T00:38:25.000Z</published>
     <updated>2022-02-11T08:58:00.003Z</updated>
     
@@ -255,17 +255,17 @@
     
     </summary>
     
-      <category term="English" scheme="http://blog.gcalls.cn/categories/English/"/>
+      <category term="English" scheme="http://blog.gcalls.cn/blog/categories/English/"/>
     
     
-      <category term="English" scheme="http://blog.gcalls.cn/tags/English/"/>
+      <category term="English" scheme="http://blog.gcalls.cn/blog/tags/English/"/>
     
   </entry>
   
   <entry>
     <title>English二语习得方法</title>
-    <link href="http://blog.gcalls.cn//2019/11/English%E4%BA%8C%E8%AF%AD%E4%B9%A0%E5%BE%97%E6%96%B9%E6%B3%95.html"/>
-    <id>http://blog.gcalls.cn//2019/11/English二语习得方法.html</id>
+    <link href="http://blog.gcalls.cn/blog//2019/11/English%E4%BA%8C%E8%AF%AD%E4%B9%A0%E5%BE%97%E6%96%B9%E6%B3%95.html"/>
+    <id>http://blog.gcalls.cn/blog//2019/11/English二语习得方法.html</id>
     <published>2019-11-17T08:44:00.000Z</published>
     <updated>2022-02-11T08:57:59.935Z</updated>
     
@@ -277,17 +277,17 @@
     
     </summary>
     
-      <category term="English" scheme="http://blog.gcalls.cn/categories/English/"/>
+      <category term="English" scheme="http://blog.gcalls.cn/blog/categories/English/"/>
     
     
-      <category term="English" scheme="http://blog.gcalls.cn/tags/English/"/>
+      <category term="English" scheme="http://blog.gcalls.cn/blog/tags/English/"/>
     
   </entry>
   
   <entry>
     <title>A Guide to English Grammar</title>
-    <link href="http://blog.gcalls.cn//2019/08/A-Guide-to-English-Grammar.html"/>
-    <id>http://blog.gcalls.cn//2019/08/A-Guide-to-English-Grammar.html</id>
+    <link href="http://blog.gcalls.cn/blog//2019/08/A-Guide-to-English-Grammar.html"/>
+    <id>http://blog.gcalls.cn/blog//2019/08/A-Guide-to-English-Grammar.html</id>
     <published>2019-08-28T01:01:32.000Z</published>
     <updated>2022-02-11T08:57:59.875Z</updated>
     
@@ -299,17 +299,17 @@
     
     </summary>
     
-      <category term="English" scheme="http://blog.gcalls.cn/categories/English/"/>
+      <category term="English" scheme="http://blog.gcalls.cn/blog/categories/English/"/>
     
     
-      <category term="English" scheme="http://blog.gcalls.cn/tags/English/"/>
+      <category term="English" scheme="http://blog.gcalls.cn/blog/tags/English/"/>
     
   </entry>
   
   <entry>
     <title>别错过孩子英语学习敏感期</title>
-    <link href="http://blog.gcalls.cn//2019/07/%E5%88%AB%E9%94%99%E8%BF%87%E5%AD%A9%E5%AD%90%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E6%95%8F%E6%84%9F%E6%9C%9F.html"/>
-    <id>http://blog.gcalls.cn//2019/07/别错过孩子英语学习敏感期.html</id>
+    <link href="http://blog.gcalls.cn/blog//2019/07/%E5%88%AB%E9%94%99%E8%BF%87%E5%AD%A9%E5%AD%90%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0%E6%95%8F%E6%84%9F%E6%9C%9F.html"/>
+    <id>http://blog.gcalls.cn/blog//2019/07/别错过孩子英语学习敏感期.html</id>
     <published>2019-07-28T06:19:24.000Z</published>
     <updated>2022-02-11T08:57:59.809Z</updated>
     
@@ -321,17 +321,17 @@
     
     </summary>
     
-      <category term="English" scheme="http://blog.gcalls.cn/categories/English/"/>
+      <category term="English" scheme="http://blog.gcalls.cn/blog/categories/English/"/>
     
     
-      <category term="English" scheme="http://blog.gcalls.cn/tags/English/"/>
+      <category term="English" scheme="http://blog.gcalls.cn/blog/tags/English/"/>
     
   </entry>
   
   <entry>
     <title>Jenkins移动端自动构建</title>
-    <link href="http://blog.gcalls.cn//2019/06/Jenkins%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA.html"/>
-    <id>http://blog.gcalls.cn//2019/06/Jenkins移动端自动构建.html</id>
+    <link href="http://blog.gcalls.cn/blog//2019/06/Jenkins%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BA.html"/>
+    <id>http://blog.gcalls.cn/blog//2019/06/Jenkins移动端自动构建.html</id>
     <published>2019-06-13T08:46:34.000Z</published>
     <updated>2023-08-09T02:28:04.605Z</updated>
     
@@ -344,14 +344,14 @@
     </summary>
     
     
-      <category term="app" scheme="http://blog.gcalls.cn/tags/app/"/>
+      <category term="app" scheme="http://blog.gcalls.cn/blog/tags/app/"/>
     
   </entry>
   
   <entry>
     <title>React基础</title>
-    <link href="http://blog.gcalls.cn//2019/05/React%E5%9F%BA%E7%A1%80.html"/>
-    <id>http://blog.gcalls.cn//2019/05/React基础.html</id>
+    <link href="http://blog.gcalls.cn/blog//2019/05/React%E5%9F%BA%E7%A1%80.html"/>
+    <id>http://blog.gcalls.cn/blog//2019/05/React基础.html</id>
     <published>2019-05-08T03:11:44.000Z</published>
     <updated>2022-02-11T08:57:59.673Z</updated>
     
@@ -363,17 +363,17 @@
     
     </summary>
     
-      <category term="react" scheme="http://blog.gcalls.cn/categories/react/"/>
+      <category term="react" scheme="http://blog.gcalls.cn/blog/categories/react/"/>
     
     
-      <category term="react" scheme="http://blog.gcalls.cn/tags/react/"/>
+      <category term="react" scheme="http://blog.gcalls.cn/blog/tags/react/"/>
     
   </entry>
   
   <entry>
     <title>Git如何永久删除文件与历史记录</title>
-    <link href="http://blog.gcalls.cn//2019/05/Git%E5%A6%82%E4%BD%95%E6%B0%B8%E4%B9%85%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E4%B8%8E%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.html"/>
-    <id>http://blog.gcalls.cn//2019/05/Git如何永久删除文件与历史记录.html</id>
+    <link href="http://blog.gcalls.cn/blog//2019/05/Git%E5%A6%82%E4%BD%95%E6%B0%B8%E4%B9%85%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E4%B8%8E%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.html"/>
+    <id>http://blog.gcalls.cn/blog//2019/05/Git如何永久删除文件与历史记录.html</id>
     <published>2019-05-05T01:36:43.000Z</published>
     <updated>2022-02-11T08:57:59.611Z</updated>
     
@@ -385,17 +385,17 @@
     
     </summary>
     
-      <category term="git" scheme="http://blog.gcalls.cn/categories/git/"/>
+      <category term="git" scheme="http://blog.gcalls.cn/blog/categories/git/"/>
     
     
-      <category term="git" scheme="http://blog.gcalls.cn/tags/git/"/>
+      <category term="git" scheme="http://blog.gcalls.cn/blog/tags/git/"/>
     
   </entry>
   
   <entry>
     <title>vscode的使用与插件开发</title>
-    <link href="http://blog.gcalls.cn//2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html"/>
-    <id>http://blog.gcalls.cn//2019/04/vscode的使用与插件开发.html</id>
+    <link href="http://blog.gcalls.cn/blog//2019/04/vscode%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91.html"/>
+    <id>http://blog.gcalls.cn/blog//2019/04/vscode的使用与插件开发.html</id>
     <published>2019-04-28T07:06:57.000Z</published>
     <updated>2023-07-24T04:15:49.393Z</updated>
     
@@ -407,17 +407,17 @@
     
     </summary>
     
-      <category term="vscode" scheme="http://blog.gcalls.cn/categories/vscode/"/>
+      <category term="vscode" scheme="http://blog.gcalls.cn/blog/categories/vscode/"/>
     
     
-      <category term="vscode" scheme="http://blog.gcalls.cn/tags/vscode/"/>
+      <category term="vscode" scheme="http://blog.gcalls.cn/blog/tags/vscode/"/>
     
   </entry>
   
   <entry>
     <title>黑苹果安装过程</title>
-    <link href="http://blog.gcalls.cn//2019/04/%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html"/>
-    <id>http://blog.gcalls.cn//2019/04/黑苹果安装过程.html</id>
+    <link href="http://blog.gcalls.cn/blog//2019/04/%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html"/>
+    <id>http://blog.gcalls.cn/blog//2019/04/黑苹果安装过程.html</id>
     <published>2019-04-09T00:40:52.000Z</published>
     <updated>2022-02-11T08:57:59.487Z</updated>
     
@@ -430,14 +430,14 @@
     </summary>
     
     
-      <category term="mac" scheme="http://blog.gcalls.cn/tags/mac/"/>
+      <category term="mac" scheme="http://blog.gcalls.cn/blog/tags/mac/"/>
     
   </entry>
   
   <entry>
     <title>ubuntu os</title>
-    <link href="http://blog.gcalls.cn//2018/12/ubuntu-os.html"/>
-    <id>http://blog.gcalls.cn//2018/12/ubuntu-os.html</id>
+    <link href="http://blog.gcalls.cn/blog//2018/12/ubuntu-os.html"/>
+    <id>http://blog.gcalls.cn/blog//2018/12/ubuntu-os.html</id>
     <published>2018-12-03T06:14:00.000Z</published>
     <updated>2023-08-14T00:31:14.639Z</updated>
     
@@ -449,10 +449,10 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/categories/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/categories/Linux/"/>
     
     
-      <category term="Linux" scheme="http://blog.gcalls.cn/tags/Linux/"/>
+      <category term="Linux" scheme="http://blog.gcalls.cn/blog/tags/Linux/"/>
     
   </entry>
   
