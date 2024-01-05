@@ -1,453 +1,200 @@
 <!DOCTYPE html>
+<html lang="en">
 
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<!-- Head tag -->
 <head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="kubernetes,">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
-
-
-
-
-
-
-<meta name="description" content="传统的集群安装方式还是比如麻烦，比如说添加新的node节点，需要安装kubelet/proxy，还要配置。kubeadm旨在简化这些繁琐的操作。">
-<meta name="keywords" content="kubernetes">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Kubeadm集群搭建">
-<meta property="og:url" content="http://blog.gcalls.cn/2017/09/Kubeadm集群搭建.html">
-<meta property="og:site_name" content="Just do it">
-<meta property="og:description" content="传统的集群安装方式还是比如麻烦，比如说添加新的node节点，需要安装kubelet/proxy，还要配置。kubeadm旨在简化这些繁琐的操作。">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://blog.gcalls.cn/images/Kubeadm集群搭建/dashboard_login.png">
-<meta property="og:image" content="http://blog.gcalls.cn/images/Kubeadm集群搭建/dashboard_error1.png">
-<meta property="og:image" content="http://blog.gcalls.cn/images/Kubeadm集群搭建/heapster.png">
-<meta property="og:updated_time" content="2022-02-11T08:57:58.989Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kubeadm集群搭建">
-<meta name="twitter:description" content="传统的集群安装方式还是比如麻烦，比如说添加新的node节点，需要安装kubelet/proxy，还要配置。kubeadm旨在简化这些繁琐的操作。">
-<meta name="twitter:image" content="http://blog.gcalls.cn/images/Kubeadm集群搭建/dashboard_login.png">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://blog.gcalls.cn/2017/09/Kubeadm集群搭建.html">
-
-
-
-
-
-  <title>Kubeadm集群搭建 | Just do it</title>
-  
-
-
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="平时工作中所遇到的一些问题的总结">
+    <meta name="keyword" content="undefined">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="Just do it" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        Kubeadm集群搭建｜undefined
+        
+    </title>
+
+    <link rel="canonical" href="http://blog.gcalls.cn//2017/09/Kubeadm集群搭建.html">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<style>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Just do it</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
-            
-            标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
-            
-            关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
-            
-            站点地图
-          </a>
-        </li>
-      
-
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2017/09/Kubeadm集群搭建.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="zhaoxunyong">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Just do it">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Kubeadm集群搭建</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T17:08:32+08:00">
-                2017-09-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
-                    <span itemprop="name">kubernetes</span>
-                  </a>
+    header.intro-header {
+        background-image: url('undefined')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    Just do it
                 </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/09/Kubeadm集群搭建.html" class="leancloud_visitors" data-flag-title="Kubeadm集群搭建">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
+                's Blog
+            </a>
         </div>
-      </header>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+                        
+							
+                        <li>
+                            <a href="/about/">关于我</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/categories/">分类</a>
+                        </li>
+							
+						
+                    
+                        
+							
+                        <li>
+                            <a href="/tags/">标签</a>
+                        </li>
+							
+						
+                    
+                        
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="">
+
+
+<style>
     
+    header.intro-header {
+        background-image: url('')
+    }
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</style>
 
-      
-      
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>Kubeadm集群搭建</h1>
+                    
+                    <span class="meta">
+                         作者 zhaoxunyong
+                        <span>
+                          日期 2017-09-01
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#kubernetes"
+                           title="kubernetes">kubernetes</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            Kubeadm集群搭建
+        </span>
+    </div>
+</header>
 
-      
-        <p>传统的集群安装方式还是比如麻烦，比如说添加新的node节点，需要安装kubelet/proxy，还要配置。kubeadm旨在简化这些繁琐的操作。</p>
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>传统的集群安装方式还是比如麻烦，比如说添加新的node节点，需要安装kubelet/proxy，还要配置。kubeadm旨在简化这些繁琐的操作。</p>
 <a id="more"></a>
 <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>docker版本为：1.12.6<br>kubeadm版本为：v1.7.5</p>
 <table>
@@ -644,249 +391,61 @@
 <p><a href="http://zerosre.com/2017/05/11/k8s%E6%96%B0%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">http://zerosre.com/2017/05/11/k8s%E6%96%B0%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</a><br><a href="http://www.tongtongxue.com/archives/16338.html" target="_blank" rel="noopener">http://www.tongtongxue.com/archives/16338.html</a><br><a href="http://tonybai.com/2017/07/20/fix-cannot-access-dashboard-in-k8s-1-6-4/" target="_blank" rel="noopener">http://tonybai.com/2017/07/20/fix-cannot-access-dashboard-in-k8s-1-6-4/</a><br><a href="http://blog.frognew.com/2017/04/install-ha-kubernetes-1.6-cluster.html" target="_blank" rel="noopener">http://blog.frognew.com/2017/04/install-ha-kubernetes-1.6-cluster.html</a><br><a href="http://blog.frognew.com/2017/04/kubeadm-install-kubernetes-1.6.html" target="_blank" rel="noopener">http://blog.frognew.com/2017/04/kubeadm-install-kubernetes-1.6.html</a><br><a href="http://blog.frognew.com/2017/07/kubeadm-install-kubernetes-1.7.html" target="_blank" rel="noopener">http://blog.frognew.com/2017/07/kubeadm-install-kubernetes-1.7.html</a><br><a href="https://cloudnil.com/2017/07/10/Deploy-kubernetes1.6.7-with-kubeadm/" target="_blank" rel="noopener">https://cloudnil.com/2017/07/10/Deploy-kubernetes1.6.7-with-kubeadm/</a><br><a href="https://www.centos.bz/2017/05/centos-7-kubeadm-install-k8s-kubernetes/" target="_blank" rel="noopener">https://www.centos.bz/2017/05/centos-7-kubeadm-install-k8s-kubernetes/</a><br><a href="http://leonlibraries.github.io/2017/06/15/Kubeadm%E6%90%AD%E5%BB%BAKubernetes%E9%9B%86%E7%BE%A4/" target="_blank" rel="noopener">http://leonlibraries.github.io/2017/06/15/Kubeadm%E6%90%AD%E5%BB%BAKubernetes%E9%9B%86%E7%BE%A4/</a><br><a href="http://www.jianshu.com/p/60069089c981" target="_blank" rel="noopener">http://www.jianshu.com/p/60069089c981</a><br><a href="https://github.com/opsnull/follow-me-install-kubernetes-cluster/blob/master/10-%E9%83%A8%E7%BD%B2Heapster%E6%8F%92%E4%BB%B6.md" target="_blank" rel="noopener">https://github.com/opsnull/follow-me-install-kubernetes-cluster/blob/master/10-%E9%83%A8%E7%BD%B2Heapster%E6%8F%92%E4%BB%B6.md</a><br><a href="http://jimmysong.io/blogs/kubernetes-installation-on-centos/" target="_blank" rel="noopener">http://jimmysong.io/blogs/kubernetes-installation-on-centos/</a><br><a href="http://jimmysong.io/blogs/kubernetes-ha-master-installation/" target="_blank" rel="noopener">http://jimmysong.io/blogs/kubernetes-ha-master-installation/</a><br><a href="http://c.isme.pub/2016/11/22/docker-kubernetes/" target="_blank" rel="noopener">http://c.isme.pub/2016/11/22/docker-kubernetes/</a></p>
 </blockquote>
 
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/02/Centos-ULIMIT资源限制.html" rel="next" title="Centos ULIMIT资源限制">
-                <i class="fa fa-chevron-left"></i> Centos ULIMIT资源限制
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/kubernetes学习总结.html" rel="prev" title="kubernetes学习总结">
-                kubernetes学习总结 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
-  
-    <div class="comments" id="comments">
-      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
-              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives">
-              
-                  <span class="site-state-item-count">44</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-
-          
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                Links
-              </div>
-              <ul class="links-of-blogroll-list">
+                <hr>
                 
-                  <li class="links-of-blogroll-item">
-                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
-                  </li>
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="//2017/09/kubernetes学习总结.html" data-toggle="tooltip" data-placement="top"
+                           title="kubernetes学习总结">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="//2017/02/Centos-ULIMIT资源限制.html" data-toggle="tooltip" data-placement="top"
+                           title="Centos ULIMIT资源限制">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
                 
-              </ul>
+
+                
+
+
+                <!--加入新的评论系统-->
+                
+
+                
+
             </div>
-          
 
-          
-
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境准备"><span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yum安装"><span class="toc-text">yum安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下载镜像"><span class="toc-text">下载镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#镜像列表"><span class="toc-text">镜像列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#master初始化"><span class="toc-text">master初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常处理"><span class="toc-text">异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#初始化时-会发现卡死不动-可以通过系统日志查看错误"><span class="toc-text">初始化时, 会发现卡死不动, 可以通过系统日志查看错误</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kubeadm-init时出现"><span class="toc-text">kubeadm init时出现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#configmaps-“cluster-info”-already-exists"><span class="toc-text">configmaps “cluster-info” already exists</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询node情况"><span class="toc-text">查询node情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kubectl-命令"><span class="toc-text">kubectl 命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#node加入"><span class="toc-text">node加入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#加入node到集群中"><span class="toc-text">加入node到集群中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常处理-1"><span class="toc-text">异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#node加入后，STATUS状态为：NotReady"><span class="toc-text">node加入后，STATUS状态为：NotReady</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#不能查看pod日志"><span class="toc-text">不能查看pod日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kube-dns是不能正常运行的，STATUS为Pending"><span class="toc-text">kube-dns是不能正常运行的，STATUS为Pending</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署网络"><span class="toc-text">部署网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cni网络"><span class="toc-text">cni网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flannel网络"><span class="toc-text">flannel网络</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试dns"><span class="toc-text">测试dns</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dashboard"><span class="toc-text">dashboard</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-1"><span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#最新方式"><span class="toc-text">最新方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#其他方式"><span class="toc-text">其他方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看"><span class="toc-text">查看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问"><span class="toc-text">访问</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#第1种访问方式"><span class="toc-text">第1种访问方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第2种访问方式"><span class="toc-text">第2种访问方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常处理-2"><span class="toc-text">异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#User-“system-anonymous”-cannot-get-at-the-cluster-scope"><span class="toc-text">User “system:anonymous” cannot get  at the cluster scope</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Unauthorized"><span class="toc-text">Unauthorized</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#User-“admin”-cannot-get-at-the-cluster-scope"><span class="toc-text">User “admin” cannot get  at the cluster scope</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#heapster插件部署"><span class="toc-text">heapster插件部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-2"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异常处理-3"><span class="toc-text">异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ErrImagePull"><span class="toc-text">ErrImagePull</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cannot-list-nodes-at-the-cluster-scope"><span class="toc-text">cannot list nodes at the cluster scope</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ServiceUnavailable"><span class="toc-text">ServiceUnavailable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#grafana-Problem-the-server-could-not-find-the-requested-resource"><span class="toc-text">grafana: Problem! the server could not find the requested resource</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#influxdb-404-page-not-found"><span class="toc-text">influxdb 404 page not found</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#efk插件插件部署"><span class="toc-text">efk插件插件部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-3"><span class="toc-text">安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prometheus监控"><span class="toc-text">prometheus监控</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-4"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#More-Dashboards"><span class="toc-text">More Dashboards</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#状态查询"><span class="toc-text">状态查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查看集群状态"><span class="toc-text">查看集群状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看所有信息："><span class="toc-text">查看所有信息：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+                </div>
+            </div>
         </div>
-      </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
+        <div class="row">
+            <!-- Sidebar Container -->
 
-            
-              
-            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum安装"><span class="nav-number">2.1.</span> <span class="nav-text">yum安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载镜像"><span class="nav-number">3.</span> <span class="nav-text">下载镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像列表"><span class="nav-number">3.1.</span> <span class="nav-text">镜像列表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#master初始化"><span class="nav-number">4.</span> <span class="nav-text">master初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">4.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常处理"><span class="nav-number">4.2.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化时-会发现卡死不动-可以通过系统日志查看错误"><span class="nav-number">4.2.1.</span> <span class="nav-text">初始化时, 会发现卡死不动, 可以通过系统日志查看错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kubeadm-init时出现"><span class="nav-number">4.2.2.</span> <span class="nav-text">kubeadm init时出现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#configmaps-“cluster-info”-already-exists"><span class="nav-number">4.2.3.</span> <span class="nav-text">configmaps “cluster-info” already exists</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询node情况"><span class="nav-number">4.3.</span> <span class="nav-text">查询node情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kubectl-命令"><span class="nav-number">4.4.</span> <span class="nav-text">kubectl 命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node加入"><span class="nav-number">5.</span> <span class="nav-text">node加入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加入node到集群中"><span class="nav-number">5.1.</span> <span class="nav-text">加入node到集群中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常处理-1"><span class="nav-number">5.2.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#node加入后，STATUS状态为：NotReady"><span class="nav-number">5.2.1.</span> <span class="nav-text">node加入后，STATUS状态为：NotReady</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不能查看pod日志"><span class="nav-number">5.2.2.</span> <span class="nav-text">不能查看pod日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-dns是不能正常运行的，STATUS为Pending"><span class="nav-number">5.2.3.</span> <span class="nav-text">kube-dns是不能正常运行的，STATUS为Pending</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署网络"><span class="nav-number">6.</span> <span class="nav-text">部署网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cni网络"><span class="nav-number">6.1.</span> <span class="nav-text">cni网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flannel网络"><span class="nav-number">6.2.</span> <span class="nav-text">flannel网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试dns"><span class="nav-number">7.</span> <span class="nav-text">测试dns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dashboard"><span class="nav-number">8.</span> <span class="nav-text">dashboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-number">8.1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最新方式"><span class="nav-number">8.1.1.</span> <span class="nav-text">最新方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他方式"><span class="nav-number">8.1.2.</span> <span class="nav-text">其他方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看"><span class="nav-number">8.2.</span> <span class="nav-text">查看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问"><span class="nav-number">8.3.</span> <span class="nav-text">访问</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第1种访问方式"><span class="nav-number">8.3.1.</span> <span class="nav-text">第1种访问方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第2种访问方式"><span class="nav-number">8.3.2.</span> <span class="nav-text">第2种访问方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常处理-2"><span class="nav-number">8.4.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#User-“system-anonymous”-cannot-get-at-the-cluster-scope"><span class="nav-number">8.4.1.</span> <span class="nav-text">User “system:anonymous” cannot get  at the cluster scope</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unauthorized"><span class="nav-number">8.4.2.</span> <span class="nav-text">Unauthorized</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-“admin”-cannot-get-at-the-cluster-scope"><span class="nav-number">8.5.</span> <span class="nav-text">User “admin” cannot get  at the cluster scope</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#heapster插件部署"><span class="nav-number">9.</span> <span class="nav-text">heapster插件部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-2"><span class="nav-number">9.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常处理-3"><span class="nav-number">9.2.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ErrImagePull"><span class="nav-number">9.2.1.</span> <span class="nav-text">ErrImagePull</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cannot-list-nodes-at-the-cluster-scope"><span class="nav-number">9.2.2.</span> <span class="nav-text">cannot list nodes at the cluster scope</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ServiceUnavailable"><span class="nav-number">9.2.3.</span> <span class="nav-text">ServiceUnavailable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grafana-Problem-the-server-could-not-find-the-requested-resource"><span class="nav-number">9.2.4.</span> <span class="nav-text">grafana: Problem! the server could not find the requested resource</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#influxdb-404-page-not-found"><span class="nav-number">9.2.5.</span> <span class="nav-text">influxdb 404 page not found</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#efk插件插件部署"><span class="nav-number">10.</span> <span class="nav-text">efk插件插件部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-3"><span class="nav-number">10.1.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prometheus监控"><span class="nav-number">11.</span> <span class="nav-text">prometheus监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-4"><span class="nav-number">11.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#More-Dashboards"><span class="nav-number">11.2.</span> <span class="nav-text">More Dashboards</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态查询"><span class="nav-number">12.</span> <span class="nav-text">状态查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看集群状态"><span class="nav-number">12.1.</span> <span class="nav-text">查看集群状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看所有信息："><span class="nav-number">12.2.</span> <span class="nav-text">查看所有信息：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">13.</span> <span class="nav-text">参考</span></a></li></ol></div>
-            
+                <!-- Featured Tags -->
+                
 
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
 
     </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
-
-
-
-
-        
+</article>
 
 
 
@@ -894,594 +453,106 @@
 
 
 
-        
-      </div>
-    </footer>
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
+                
 
-    
+                
 
-  </div>
+                
 
-  
+                
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Just do it 2024
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://blog.gcalls.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
 </script>
 
 
 
+<!-- Google Analytics -->
 
 
 
+<!-- Baidu Tongji -->
 
 
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
 
-  
+  _st('install','undefined','2.0.0');
+</script>
 
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-    <script type="text/javascript">
-      (function(d, s) {
-        var j, e = d.getElementsByTagName(s)[0];
-        if (typeof LivereTower === 'function') { return; }
-        j = d.createElement(s);
-        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-        j.async = true;
-        e.parentNode.insertBefore(j, e);
-      })(document, 'script');
-    </script>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
+<!--wechat title img-->
+<img class="wechat-title-img" src="undefined">
 </body>
+
 </html>
