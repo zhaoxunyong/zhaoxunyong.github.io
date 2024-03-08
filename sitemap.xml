@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.gcalls.cn/2022/04/A-Guide-to-Vagrant.html</loc>
+    
+    <lastmod>2024-03-08T04:30:14.658Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.gcalls.cn/2022/05/Containerd.html</loc>
     
-    <lastmod>2024-03-08T03:04:20.948Z</lastmod>
+    <lastmod>2024-03-08T03:10:47.513Z</lastmod>
     
   </url>
   
@@ -61,13 +68,6 @@
     <loc>http://blog.gcalls.cn/2022/03/Loki-Log-System.html</loc>
     
     <lastmod>2023-06-02T09:20:17.419Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/2022/04/A-Guide-to-Vagrant.html</loc>
-    
-    <lastmod>2023-02-14T09:06:15.521Z</lastmod>
     
   </url>
   
