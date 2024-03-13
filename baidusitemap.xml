@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://blog.gcalls.cn//2023/09/CD.html</loc>
-    <lastmod>2024-03-13</lastmod>
-  </url>  <url>
-    <loc>http://blog.gcalls.cn//2022/05/Containerd.html</loc>
+    <loc>http://blog.gcalls.cn//2018/12/elementary-os.html</loc>
     <lastmod>2024-03-13</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn//2018/12/ubuntu-os.html</loc>
     <lastmod>2024-03-13</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn//2022/04/A-Guide-to-Vagrant.html</loc>
+    <lastmod>2024-03-13</lastmod>
+  </url>  <url>
+    <loc>http://blog.gcalls.cn//2023/09/CD.html</loc>
+    <lastmod>2024-03-13</lastmod>
+  </url>  <url>
+    <loc>http://blog.gcalls.cn//2022/05/Containerd.html</loc>
     <lastmod>2024-03-13</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn//2023/08/hadoop-Ecosystem.html</loc>
@@ -51,9 +54,6 @@
   </url>  <url>
     <loc>http://blog.gcalls.cn//2021/03/iptables.html</loc>
     <lastmod>2022-03-08</lastmod>
-  </url>  <url>
-    <loc>http://blog.gcalls.cn//2018/12/elementary-os.html</loc>
-    <lastmod>2022-02-16</lastmod>
   </url>  <url>
     <loc>http://blog.gcalls.cn//2021/09/istio%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.html</loc>
     <lastmod>2022-02-11</lastmod>

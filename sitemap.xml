@@ -2,9 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.gcalls.cn/2018/12/elementary-os.html</loc>
+    
+    <lastmod>2024-03-13T09:20:50.504Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/2018/12/ubuntu-os.html</loc>
+    
+    <lastmod>2024-03-13T09:20:50.504Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/2022/04/A-Guide-to-Vagrant.html</loc>
+    
+    <lastmod>2024-03-13T09:20:49.694Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.gcalls.cn/2023/09/CD.html</loc>
     
-    <lastmod>2024-03-13T03:03:26.361Z</lastmod>
+    <lastmod>2024-03-13T07:12:44.363Z</lastmod>
     
   </url>
   
@@ -12,20 +33,6 @@
     <loc>http://blog.gcalls.cn/2022/05/Containerd.html</loc>
     
     <lastmod>2024-03-13T01:31:43.476Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/2018/12/ubuntu-os.html</loc>
-    
-    <lastmod>2024-03-13T01:10:23.809Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/2022/04/A-Guide-to-Vagrant.html</loc>
-    
-    <lastmod>2024-03-13T01:10:23.809Z</lastmod>
     
   </url>
   
@@ -117,13 +124,6 @@
     <loc>http://blog.gcalls.cn/2021/03/iptables.html</loc>
     
     <lastmod>2022-03-08T02:52:03.392Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/2018/12/elementary-os.html</loc>
-    
-    <lastmod>2022-02-16T02:20:47.132Z</lastmod>
     
   </url>
   
@@ -324,14 +324,14 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/categories/index.html</loc>
+    <loc>http://blog.gcalls.cn/about/index.html</loc>
     
     <lastmod>2022-02-07T09:45:48.647Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/about/index.html</loc>
+    <loc>http://blog.gcalls.cn/categories/index.html</loc>
     
     <lastmod>2022-02-07T09:45:48.647Z</lastmod>
     
