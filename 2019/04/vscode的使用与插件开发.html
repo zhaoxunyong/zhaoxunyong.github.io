@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vscode,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Visual Studio Code（VS code）是开发神器，通过插件配置不仅可以开发前端，还可以开发后端(java/go等)，下面介绍一下vscode的常用插件与插件如何开发一个自己的插件。">
+<meta name="keywords" content="vscode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vscode的使用与插件开发">
+<meta property="og:url" content="http://blog.gcalls.cn/2019/04/vscode的使用与插件开发.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="Visual Studio Code（VS code）是开发神器，通过插件配置不仅可以开发前端，还可以开发后端(java/go等)，下面介绍一下vscode的常用插件与插件如何开发一个自己的插件。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2024-07-25T07:36:00.049Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vscode的使用与插件开发">
+<meta name="twitter:description" content="Visual Studio Code（VS code）是开发神器，通过插件配置不仅可以开发前端，还可以开发后端(java/go等)，下面介绍一下vscode的常用插件与插件如何开发一个自己的插件。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.gcalls.cn/2019/04/vscode的使用与插件开发.html">
+
+
+
+
+
+  <title>vscode的使用与插件开发 | Just do it</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2019/04/vscode的使用与插件开发.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaoxunyong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vscode的使用与插件开发</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-28T15:06:57+08:00">
+                2019-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vscode/" itemprop="url" rel="index">
+                    <span itemprop="name">vscode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/vscode的使用与插件开发.html" class="leancloud_visitors" data-flag-title="vscode的使用与插件开发">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Visual Studio Code（VS code）是开发神器，通过插件配置不仅可以开发前端，还可以开发后端(java/go等)，下面介绍一下vscode的常用插件与插件如何开发一个自己的插件。</p>
+<a id="more"></a>
+<h2 id="git-bash"><a href="#git-bash" class="headerlink" title="git-bash"></a>git-bash</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://code.visualstudio.com/docs/editor/integrated-terminal</span></span><br><span class="line">    <span class="string">"terminal.integrated.profiles.windows"</span>: &#123;</span><br><span class="line">      <span class="string">"Cygwin"</span>: &#123;</span><br><span class="line">        <span class="string">"path"</span>: <span class="string">"D:\\Developer\\Git\\bin\\bash.exe"</span>,</span><br><span class="line">        <span class="string">"args"</span>: [<span class="string">"--login"</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"terminal.integrated.defaultProfile.windows"</span>: <span class="string">"Cygwin"</span>,</span><br></pre></td></tr></table></figure>
+<h2 id="nodejs"><a href="#nodejs" class="headerlink" title="nodejs"></a>nodejs</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash</span></span><br><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash</span><br><span class="line">. ~/.bashrc</span><br><span class="line"><span class="comment">#显示有远端的版本</span></span><br><span class="line">nvm ls-remote</span><br><span class="line"><span class="comment">#安装对应的版本</span></span><br><span class="line">nvm install 12.22.7</span><br></pre></td></tr></table></figure>
+<p>安装常用工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">npm install  hexo-cli -g</span><br><span class="line">npm install hexo-server -g</span><br><span class="line">npm install hexo-deployer-git -g</span><br><span class="line">npm install yarn -g</span><br><span class="line">npm install http-server -g</span><br><span class="line"><span class="comment">#yarn global add serve</span></span><br><span class="line"></span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmmirror.com --global</span><br><span class="line">npm config <span class="built_in">set</span> disturl https://npmmirror.com/dist --global</span><br><span class="line">yarn config <span class="built_in">set</span> registry https://registry.npmmirror.com --global</span><br><span class="line">yarn config <span class="built_in">set</span> disturl https://npmmirror.com/dist --global</span><br></pre></td></tr></table></figure>
+<h2 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h2><p>安装以下插件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#javascript</span></span><br><span class="line">eslint</span><br><span class="line">Color Picker</span><br><span class="line">npm</span><br><span class="line">Debugger <span class="keyword">for</span> Chrome</span><br><span class="line">Eclipse Keymap</span><br><span class="line"><span class="comment">#react</span></span><br><span class="line">ES7 React/Redux/GraphQL/React-Native snippets</span><br><span class="line"><span class="comment">#vue</span></span><br><span class="line">Vetur</span><br><span class="line">Vue VSCode Snippets</span><br><span class="line"><span class="comment">#git</span></span><br><span class="line">GitLens</span><br><span class="line">zerofinance-git</span><br><span class="line"><span class="comment">#其他公共插件</span></span><br><span class="line">Local History</span><br><span class="line">XML Tools</span><br><span class="line">Prettier</span><br><span class="line"><span class="comment">#https://zhuanlan.zhihu.com/p/54031899</span></span><br><span class="line">koroFileHeader</span><br><span class="line">AutoFileName</span><br><span class="line">Import Cost</span><br><span class="line"></span><br><span class="line"><span class="comment">#java</span></span><br><span class="line">Java Extension Pack</span><br><span class="line">Spring Boot Extension Pack</span><br><span class="line">Java Code Generators</span><br><span class="line">Tomcat <span class="keyword">for</span> Java</span><br><span class="line">Docker</span><br><span class="line"></span><br><span class="line"><span class="comment">#android/ios plugin</span></span><br><span class="line">Android iOS Emulator</span><br><span class="line">React Native Tools</span><br><span class="line"><span class="comment">#see debug:https://github.com/Microsoft/vscode-react-native/blob/master/doc/debugging.md#debugging-on-ios-device</span></span><br><span class="line"><span class="comment">#Install ios-deploy: npm install -g ios-deploy</span></span><br></pre></td></tr></table></figure></p>
+<p>可以在项目的.vscode目录下添加extensions.json，并添加以下内容，当第一次打开时会提示是否需要安装这些推荐的插件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"recommendations"</span>: [</span><br><span class="line">        <span class="string">"dbaeumer.vscode-eslint"</span>,</span><br><span class="line">        <span class="string">"anseki.vscode-color"</span>,</span><br><span class="line">        <span class="string">"eg2.vscode-npm-script"</span>,</span><br><span class="line">        <span class="string">"msjsdiag.debugger-for-chrome"</span>,</span><br><span class="line">        <span class="string">"alphabotsec.vscode-eclipse-keybindings"</span>,</span><br><span class="line">        <span class="string">"dsznajder.es7-react-js-snippets"</span>,</span><br><span class="line">        <span class="string">"eamodio.gitlens"</span>,</span><br><span class="line">        <span class="string">"zerofinance.zerofinance-git"</span>,</span><br><span class="line">        <span class="string">"xyz.local-history"</span>,</span><br><span class="line">        <span class="string">"DotJoshJohnson.xml"</span>,</span><br><span class="line">        <span class="string">"esbenp.prettier-vscode"</span>,</span><br><span class="line">        <span class="string">"OBKoro1.korofileheader"</span>,</span><br><span class="line">        <span class="string">"JerryHong.autofilename"</span>,</span><br><span class="line">        <span class="string">"wix.vscode-import-cost"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以通过命令行批量安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#前端------</span></span><br><span class="line">code --install-extension dbaeumer.vscode-eslint</span><br><span class="line">code --install-extension anseki.vscode-color</span><br><span class="line">code --install-extension eg2.vscode-npm-script</span><br><span class="line">code --install-extension msjsdiag.debugger-for-chrome</span><br><span class="line">code --install-extension alphabotsec.vscode-eclipse-keybindings</span><br><span class="line"><span class="comment">#react</span></span><br><span class="line">code --install-extension dsznajder.es7-react-js-snippets</span><br><span class="line"><span class="comment">#vue</span></span><br><span class="line">code --install-extension octref.vetur</span><br><span class="line">code --install-extension sdras.vue-vscode-snippets</span><br><span class="line"><span class="comment">#git</span></span><br><span class="line">code --install-extension eamodio.gitlens</span><br><span class="line">code --install-extension zerofinance.zerofinance-git</span><br><span class="line"><span class="comment">#others</span></span><br><span class="line">code --install-extension xyz.local-history</span><br><span class="line">code --install-extension DotJoshJohnson.xml</span><br><span class="line">code --install-extension esbenp.prettier-vscode</span><br><span class="line">code --install-extension OBKoro1.korofileheader</span><br><span class="line">code --install-extension JerryHong.autofilename</span><br><span class="line">code --install-extension wix.vscode-import-cost</span><br><span class="line"><span class="comment">#前端------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#java------</span></span><br><span class="line">code --install-extension vscjava.vscode-java-pack</span><br><span class="line">code --install-extension Pivotal.vscode-boot-dev-pack</span><br><span class="line">code --install-extension sohibe.java-generate-setters-getters</span><br><span class="line"><span class="comment">#java------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#docker------</span></span><br><span class="line">code --install-extension PeterJausovec.vscode-docker</span><br><span class="line"><span class="comment">#docker------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#android/ios plugin------</span></span><br><span class="line">code --install-extension DiemasMichiels.emulate</span><br><span class="line">code --install-extension vsmobile.vscode-react-native</span><br><span class="line"><span class="comment">#android/ios plugin------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#其它命令说明，不需要执行</span></span><br><span class="line"><span class="comment">#列出已经安装的插件</span></span><br><span class="line">code --list-extensions</span><br><span class="line"><span class="comment">#安装某个插件</span></span><br><span class="line">code --install-extension ms-vscode.cpptools</span><br><span class="line"><span class="comment">#卸载某个插件</span></span><br><span class="line">code --uninstall-extension ms-vscode.csharp</span><br></pre></td></tr></table></figure>
+<h2 id="代码注释"><a href="#代码注释" class="headerlink" title="代码注释"></a>代码注释</h2><p>koroFileHeader添加注释，在全局的settings.json中添加：</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/editor/emmet" target="_blank" rel="noopener">https://code.visualstudio.com/docs/editor/emmet</a></li>
+<li><a href="https://www.cnblogs.com/summit7ca/p/6944215.html" target="_blank" rel="noopener">https://www.cnblogs.com/summit7ca/p/6944215.html</a></li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">"editor.fontSize": 14,</span><br><span class="line">"terminal.integrated.fontSize": 14,</span><br><span class="line">"emmet.triggerExpansionOnTab": true,</span><br><span class="line">"emmet.includeLanguages": &#123;</span><br><span class="line">    "javascript": "javascriptreact",</span><br><span class="line">    "vue-html": "html",</span><br><span class="line">    "razor": "html",</span><br><span class="line">    "plaintext": "jade"</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// 注释</span></span><br><span class="line">"fileheader.configObj": &#123;</span><br><span class="line">  <span class="comment">// 将该选项设置为true即可开启</span></span><br><span class="line">  "autoAdd": false</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// 头部注释</span></span><br><span class="line">"fileheader.customMade": &#123;</span><br><span class="line">    "Author": "dave.zhao",</span><br><span class="line">    "Date": "Do not edit",</span><br><span class="line">    "LastEditors": "dave.zhao",</span><br><span class="line">    "LastEditTime": "Do not edit",</span><br><span class="line">    "Description": ""</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// 函数注释</span></span><br><span class="line">"fileheader.cursorMode": &#123;</span><br><span class="line">    "Date": "Do not edit",</span><br><span class="line">    "description": "",</span><br><span class="line">    "param": ""</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：Author和LastEditors填写自己的名字</p>
+<p>文件头注释快捷键：window：ctrl+alt+i,mac：ctrl+cmd+i</p>
+<p>函数注释快捷键：window：ctrl+alt+t,mac：ctrl+cmd+t</p>
+<h2 id="常用配置"><a href="#常用配置" class="headerlink" title="常用配置"></a>常用配置</h2><p>可以放在全局的settings.json中，也可以放在各个项目的settings.json中：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"eslint.validate"</span>: [<span class="string">"javascript"</span>, <span class="string">"javascriptreact"</span>],</span><br><span class="line">    <span class="attr">"javascript.updateImportsOnFileMove.enabled"</span>: <span class="string">"always"</span>,</span><br><span class="line">    <span class="comment">// 代码缩进修改成4个空格</span></span><br><span class="line">    <span class="attr">"editor.detectIndentation"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"editor.tabSize"</span>: <span class="number">4</span>,</span><br><span class="line">    <span class="attr">"editor.formatOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 每次保存的时候将代码按eslint格式进行修复</span></span><br><span class="line">    <span class="attr">"eslint.autoFixOnSave"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 让prettier使用eslint的代码格式进行校验</span></span><br><span class="line">    <span class="attr">"prettier.eslintIntegration"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 去掉代码结尾的分号</span></span><br><span class="line">    <span class="attr">"prettier.semi"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">// 使用带引号替代双引号</span></span><br><span class="line">    <span class="attr">"prettier.singleQuote"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"prettier.tabWidth"</span>: <span class="number">4</span>,</span><br><span class="line">    <span class="attr">"prettier.printWidth"</span>: <span class="number">250</span>,</span><br><span class="line">    <span class="comment">// 让函数(名)和后面的括号之间加个空格</span></span><br><span class="line">    <span class="attr">"javascript.format.insertSpaceBeforeFunctionParenthesis"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h2><p><a href="https://code.visualstudio.com/docs/languages/java" target="_blank" rel="noopener">https://code.visualstudio.com/docs/languages/java</a><br><a href="https://code.visualstudio.com/docs/remote/wsl" target="_blank" rel="noopener">https://code.visualstudio.com/docs/remote/wsl</a><br><a href="https://code.visualstudio.com/docs/java/java-tutorial" target="_blank" rel="noopener">https://code.visualstudio.com/docs/java/java-tutorial</a><br><a href="https://code.visualstudio.com/docs/java/java-project" target="_blank" rel="noopener">https://code.visualstudio.com/docs/java/java-project</a><br><a href="https://code.visualstudio.com/docs/java/java-debugging" target="_blank" rel="noopener">https://code.visualstudio.com/docs/java/java-debugging</a><br><a href="https://code.visualstudio.com/docs/java/extensions" target="_blank" rel="noopener">https://code.visualstudio.com/docs/java/extensions</a><br><a href="https://code.visualstudio.com/docs/java/java-spring-boot" target="_blank" rel="noopener">https://code.visualstudio.com/docs/java/java-spring-boot</a></p>
+<p>插件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack</span><br><span class="line">https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack</span><br><span class="line">https://marketplace.visualstudio.com/items?itemName=adashen.vscode-tomcat</span><br><span class="line"><span class="comment">#wget http://mirrors.aliyun.com/apache/tomcat/tomcat-8/v8.5.61/bin/apache-tomcat-8.5.61-windows-x64.zip</span></span><br><span class="line"><span class="comment">#https://tomcat.apache.org/tomcat-8.5-doc/appdev/sample/</span></span><br><span class="line"><span class="comment">#WSL</span></span><br><span class="line">https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack</span><br></pre></td></tr></table></figure>
+<p>Settings.json</p>
+<p>terminal.integrated.shell.windows设置为git-bash的话不能启动java项目。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"editor.fontSize"</span>: 16,</span><br><span class="line">    <span class="comment"># "terminal.integrated.shell.windows": "D:\\Developer\\Git\\bin\\bash.exe",</span></span><br><span class="line">    <span class="string">"git.autofetch"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"terminal.integrated.fontSize"</span>: 16,</span><br><span class="line">    <span class="string">"java.home"</span>: <span class="string">"D:\\Developer\\java\\jdk-11.0.9"</span>,</span><br><span class="line">    <span class="string">"java.configuration.runtimes"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"name"</span>: <span class="string">"JavaSE-1.8"</span>,</span><br><span class="line">          <span class="string">"path"</span>: <span class="string">"C:\\Program Files\\Java\\jdk1.8.0_271"</span>,</span><br><span class="line">          <span class="string">"default"</span>:  <span class="literal">true</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"name"</span>: <span class="string">"JavaSE-11"</span>,</span><br><span class="line">          <span class="string">"path"</span>: <span class="string">"D:\\Developer\\java\\jdk-11.0.9"</span></span><br><span class="line">         &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"files.exclude"</span>: &#123;</span><br><span class="line">        <span class="string">"**/.classpath"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"**/.project"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"**/.settings"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"**/.factorypath"</span>: <span class="literal">true</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">"maven.executable.path"</span>: <span class="string">"D:\\Developer\\apache-maven-3.3.9\\bin\\mvn.cmd"</span>,</span><br><span class="line">      <span class="string">"java.configuration.maven.globalSettings"</span>: <span class="string">"D:\\Developer\\apache-maven-3.3.9\\conf\\settings.xml"</span>,</span><br><span class="line">      <span class="string">"java.configuration.maven.userSettings"</span>: <span class="string">"D:\\Developer\\apache-maven-3.3.9\\conf\\settings.xml"</span>,</span><br><span class="line">      <span class="string">"editor.suggestSelection"</span>: <span class="string">"first"</span>,</span><br><span class="line">      <span class="string">"vsintellicode.modify.editor.suggestSelection"</span>: <span class="string">"automaticallyOverrodeDefaultValue"</span>,</span><br><span class="line">      <span class="string">"java.project.importOnFirstTimeStartup"</span>: <span class="string">"automatic"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>WSL for Settings.json</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"editor.fontSize"</span>: 16,</span><br><span class="line">    <span class="string">"git.autofetch"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"terminal.integrated.fontSize"</span>: 16,</span><br><span class="line">    <span class="string">"java.home"</span>: <span class="string">"/Developer/java/jdk-11.0.9"</span>,</span><br><span class="line">    <span class="string">"java.configuration.runtimes"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"name"</span>: <span class="string">"JavaSE-1.8"</span>,</span><br><span class="line">          <span class="string">"path"</span>: <span class="string">"/Developer/java/jdk1.8.0_271"</span>,</span><br><span class="line">          <span class="string">"default"</span>:  <span class="literal">true</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"name"</span>: <span class="string">"JavaSE-11"</span>,</span><br><span class="line">          <span class="string">"path"</span>: <span class="string">"/Developer/java/jdk-11.0.9"</span></span><br><span class="line">         &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"files.exclude"</span>: &#123;</span><br><span class="line">        <span class="string">"**/.classpath"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"**/.project"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"**/.settings"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">"**/.factorypath"</span>: <span class="literal">true</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">"maven.executable.path"</span>: <span class="string">"/Developer/apache-maven-3.3.9/bin/mvn"</span>,</span><br><span class="line">      <span class="string">"java.configuration.maven.globalSettings"</span>: <span class="string">"/Developer/apache-maven-3.3.9/conf/settings.xml"</span>,</span><br><span class="line">      <span class="string">"java.configuration.maven.userSettings"</span>: <span class="string">"/Developer/apache-maven-3.3.9/conf/settings.xml"</span>,</span><br><span class="line">      <span class="string">"editor.suggestSelection"</span>: <span class="string">"first"</span>,</span><br><span class="line">      <span class="string">"vsintellicode.modify.editor.suggestSelection"</span>: <span class="string">"automaticallyOverrodeDefaultValue"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Remote Debug:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#launch.json</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"configurations"</span>: [</span><br><span class="line">        // &#123;</span><br><span class="line">        //     <span class="string">"type"</span>: <span class="string">"java"</span>,</span><br><span class="line">        //     <span class="string">"name"</span>: <span class="string">"Spring Boot-TelepresenceK8sApplication&lt;telepresence-k8s&gt;"</span>,</span><br><span class="line">        //     <span class="string">"request"</span>: <span class="string">"launch"</span>,</span><br><span class="line">        //     <span class="string">"cwd"</span>: <span class="string">"<span class="variable">$&#123;workspaceFolder&#125;</span>"</span>,</span><br><span class="line">        //     <span class="string">"console"</span>: <span class="string">"internalConsole"</span>,</span><br><span class="line">        //     <span class="string">"mainClass"</span>: <span class="string">"com.ctl.telepresencek8s.TelepresenceK8sApplication"</span>,</span><br><span class="line">        //     <span class="string">"projectName"</span>: <span class="string">"telepresence-k8s"</span>,</span><br><span class="line">        //     <span class="string">"args"</span>: <span class="string">""</span></span><br><span class="line">        // &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"java"</span>,</span><br><span class="line">            <span class="string">"name"</span>: <span class="string">"Debug (Attach)-Spring Boot-TelepresenceK8sApplication&lt;telepresence-k8s&gt;"</span>,</span><br><span class="line">            <span class="string">"request"</span>: <span class="string">"attach"</span>,</span><br><span class="line">            <span class="string">"projectName"</span>: <span class="string">"telepresence-k8s"</span>,</span><br><span class="line">            <span class="string">"hostName"</span>: <span class="string">"localhost"</span>,</span><br><span class="line">            <span class="string">"port"</span>: 8000</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Developing-inside-a-Container"><a href="#Developing-inside-a-Container" class="headerlink" title="Developing inside a Container"></a>Developing inside a Container</h2><p>参考：</p>
+<ul>
+<li><a href="https://code.visualstudio.com/docs/remote/containers" target="_blank" rel="noopener">https://code.visualstudio.com/docs/remote/containers</a></li>
+<li><a href="https://code.visualstudio.com/docs/remote/create-dev-container" target="_blank" rel="noopener">https://code.visualstudio.com/docs/remote/create-dev-container</a></li>
+<li><a href="https://code.visualstudio.com/docs/remote/containers-advanced" target="_blank" rel="noopener">https://code.visualstudio.com/docs/remote/containers-advanced</a></li>
+<li><a href="https://github.com/microsoft/vscode-dev-containers" target="_blank" rel="noopener">https://github.com/microsoft/vscode-dev-containers</a></li>
+</ul>
+<p>首先要安装vscode-remote-extensionpack插件：</p>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack" target="_blank" rel="noopener">https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack</a></p>
+<p>.devcontainer/devcontainer.json</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file<span class="string">'s README at:</span></span><br><span class="line"><span class="string">// https://github.com/microsoft/vscode-dev-containers/tree/v0.137.0/containers/java</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">	"name": "employee",</span></span><br><span class="line"><span class="string">	"build": &#123;</span></span><br><span class="line"><span class="string">		"dockerfile": "Dockerfile",</span></span><br><span class="line"><span class="string">		"args": &#123;</span></span><br><span class="line"><span class="string">			"VARIANT": "8"</span></span><br><span class="line"><span class="string">		&#125;</span></span><br><span class="line"><span class="string">	&#125;,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	// Set *default* container specific settings.json values on container create.</span></span><br><span class="line"><span class="string">	"settings": &#123; </span></span><br><span class="line"><span class="string">		"terminal.integrated.shell.linux": "/bin/bash",</span></span><br><span class="line"><span class="string">		"java.home": "/Developer/java/jdk-11.0.9",</span></span><br><span class="line"><span class="string">		"maven.executable.path": "/Developer/apache-maven-3.3.9/bin/mvn",</span></span><br><span class="line"><span class="string">      	"java.configuration.maven.globalSettings": "/Developer/apache-maven-3.3.9/conf/settings.xml",</span></span><br><span class="line"><span class="string">      	"java.configuration.maven.userSettings": "/Developer/apache-maven-3.3.9/conf/settings.xml",</span></span><br><span class="line"><span class="string">		"java.configuration.runtimes": [</span></span><br><span class="line"><span class="string">			&#123;</span></span><br><span class="line"><span class="string">			  "name": "JavaSE-1.8",</span></span><br><span class="line"><span class="string">			  "path": "/Developer/java/jdk1.8.0_241",</span></span><br><span class="line"><span class="string">			  "default":  true</span></span><br><span class="line"><span class="string">			&#125;,</span></span><br><span class="line"><span class="string">			&#123;</span></span><br><span class="line"><span class="string">			  "name": "JavaSE-11",</span></span><br><span class="line"><span class="string">			  "path": "/Developer/java/jdk-11.0.9"</span></span><br><span class="line"><span class="string">			&#125;</span></span><br><span class="line"><span class="string">		]</span></span><br><span class="line"><span class="string">	&#125;,</span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">	// Add the IDs of extensions you want installed when the container is created.</span></span><br><span class="line"><span class="string">	"extensions": [</span></span><br><span class="line"><span class="string">		"vscjava.vscode-java-pack"</span></span><br><span class="line"><span class="string">	],</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">  #If you do have login access, you can use a remote filesystem bind mount instead: </span></span><br><span class="line"><span class="string">	"workspaceMount": "source=$&#123;localWorkspaceFolder&#125;,target=/Developer/workspace/employee,type=bind,consistency=cached",</span></span><br><span class="line"><span class="string">	"workspaceFolder": "/Developer/workspace/employee",</span></span><br><span class="line"><span class="string">	"mounts": [</span></span><br><span class="line"><span class="string">		"source=F:\\docker,target=/Developer/docker,type=bind,consistency=cached",</span></span><br><span class="line"><span class="string">		// "source=try-node-node_modules,target=$&#123;containerWorkspaceFolder&#125;/node_modules,type=volume",</span></span><br><span class="line"><span class="string">		"source=F:\\apache-tomcat-7.0.50,target=/Developer/apache-tomcat-7.0.50,type=bind,consistency=cached",</span></span><br><span class="line"><span class="string">		"source=C:\\Users\\Dave.zhao\\.kube,target=/root/.kube,type=bind,consistency=cached"</span></span><br><span class="line"><span class="string">	],</span></span><br><span class="line"><span class="string">	"remoteEnv": &#123;</span></span><br><span class="line"><span class="string">		"KUBERNETES_NAMESPACE": "default"</span></span><br><span class="line"><span class="string">	&#125;,</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	// Use '</span>forwardPorts<span class="string">' to make a list of ports inside the container available locally.</span></span><br><span class="line"><span class="string">	// "forwardPorts": [],</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	// Use '</span>postCreateCommand<span class="string">' to run commands after the container is created.</span></span><br><span class="line"><span class="string">	// "postCreateCommand": ". /etc/profile &amp;&amp; java -version",</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.</span></span><br><span class="line"><span class="string">	"remoteUser": "dev"</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>.devcontainer/Dockerfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># FROM java:8-jdk</span></span><br><span class="line">FROM centos:7</span><br><span class="line">RUN mkdir /Developer /config</span><br><span class="line">WORKDIR /Developer</span><br><span class="line">ENV APPNAME=employee \</span><br><span class="line">    VERSION=3.0.0-SNAPSHOT \</span><br><span class="line">    CONFIG=/config/</span><br><span class="line"><span class="comment"># RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp; echo Asia/Shanghai &gt; /etc/timezone</span></span><br><span class="line">RUN yum install -y wget sudo</span><br><span class="line"><span class="comment"># RUN groupadd dev &amp;&amp; useradd -r -g dev dev</span></span><br><span class="line">ARG USERNAME=dev</span><br><span class="line">ARG USER_UID=1000</span><br><span class="line">ARG USER_GID=<span class="variable">$USER_UID</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Create the user</span></span><br><span class="line"><span class="comment"># [Optional] Add sudo support. Omit if you don't need to install software after connecting.</span></span><br><span class="line">RUN groupadd --gid <span class="variable">$USER_GID</span> <span class="variable">$USERNAME</span> \</span><br><span class="line">  &amp;&amp; useradd --uid <span class="variable">$USER_UID</span> --gid <span class="variable">$USER_GID</span> -m <span class="variable">$USERNAME</span> \</span><br><span class="line">  &amp;&amp; <span class="built_in">echo</span> <span class="variable">$USERNAME</span> ALL=\(ALL\) NOPASSWD:ALL &gt; /etc/sudoers.d/<span class="variable">$USERNAME</span> \</span><br><span class="line">  &amp;&amp; chmod 0440 /etc/sudoers.d/<span class="variable">$USERNAME</span></span><br><span class="line"></span><br><span class="line">RUN chown -R <span class="variable">$USERNAME</span>.<span class="variable">$USERNAME</span> /Developer /config</span><br><span class="line">ADD apache-maven-3.3.9.tar.gz /Developer/</span><br><span class="line">RUN mkdir -p /Developer/java /Developer/workspace</span><br><span class="line">ADD java/* /Developer/java/</span><br><span class="line"></span><br><span class="line">ADD script.sh /Developer/</span><br><span class="line">RUN bash /Developer/script.sh</span><br></pre></td></tr></table></figure>
+<p>script.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭内核安全(如果是vagrant方式，第一次完成后需要重启vagrant才能生效。)</span></span><br><span class="line">sed -i <span class="string">'s;SELINUX=.*;SELINUX=disabled;'</span> /etc/selinux/config</span><br><span class="line">setenforce 0</span><br><span class="line">getenforce</span><br><span class="line"></span><br><span class="line">cat /etc/NetworkManager/NetworkManager.conf|grep <span class="string">"dns=none"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"dns=none"</span> &gt;&gt; /etc/NetworkManager/NetworkManager.conf</span><br><span class="line">  systemctl restart NetworkManager.service</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime</span><br><span class="line"></span><br><span class="line"><span class="comment">#logined limit</span></span><br><span class="line">cat /etc/security/limits.conf|grep 100000 &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">cat &gt;&gt; /etc/security/limits.conf  &lt;&lt; EOF</span><br><span class="line">*               soft    nofile             100000</span><br><span class="line">*               hard    nofile             100000</span><br><span class="line">*               soft    nproc              100000</span><br><span class="line">*               hard    nproc              100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s;4096;100000;g'</span> /etc/security/limits.d/20-nproc.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">#systemd service limit</span></span><br><span class="line">cat /etc/systemd/system.conf|egrep <span class="string">'^DefaultLimitCORE'</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">cat &gt;&gt; /etc/systemd/system.conf &lt;&lt; EOF</span><br><span class="line">DefaultLimitCORE=infinity</span><br><span class="line">DefaultLimitNOFILE=100000</span><br><span class="line">DefaultLimitNPROC=100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#echo "vm.swappiness = 10" &gt;&gt; /etc/sysctl.conf</span></span><br><span class="line">cat /etc/sysctl.conf|grep <span class="string">"net.ipv4.ip_local_port_range"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">cat &gt;&gt; /etc/sysctl.conf  &lt;&lt; EOF</span><br><span class="line">net.ipv4.tcp_fin_timeout = 30</span><br><span class="line">net.ipv4.tcp_keepalive_time = 300</span><br><span class="line">net.ipv4.tcp_tw_reuse = 1</span><br><span class="line">net.ipv4.tcp_tw_recycle = 1</span><br><span class="line">net.ipv4.ip_local_port_range = 1024 65535</span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line">EOF</span><br><span class="line">sysctl -p</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">su - root -c <span class="string">"ulimit -a"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># yum -y install gcc kernel-devel</span></span><br><span class="line">mv -f /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</span><br><span class="line"><span class="comment">#wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo</span></span><br><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line"></span><br><span class="line">sudo mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup</span><br><span class="line">sudo mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup</span><br><span class="line"></span><br><span class="line">yum -y install <span class="built_in">bind</span>-utils bridge-utils ntpdate setuptool iptables \</span><br><span class="line"> system-config-securitylevel-tui system-config-network-tui \</span><br><span class="line"> ntsysv net-tools lrzsz telnet lsof vim dos2unix unix2dos zip unzip</span><br><span class="line"></span><br><span class="line">cat &gt;&gt; /etc/profile &lt;&lt; EOF</span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/Developer/java/jdk1.8.0_241</span><br><span class="line"><span class="built_in">export</span> M2_HOME=/Developer/apache-maven-3.3.9</span><br><span class="line"><span class="built_in">export</span> GRADLE_USER_HOME=/Developer/.gradle</span><br><span class="line"><span class="built_in">export</span> PATH=\<span class="variable">$JAVA_HOME</span>/bin:\<span class="variable">$M2_HOME</span>/bin:\<span class="variable">$PATH</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">. /etc/profile</span><br><span class="line"><span class="comment"># /home/$USERNAME/.bashrc</span></span><br></pre></td></tr></table></figure>
+<p>参考以下文件：<a href="/files/vscode的使用与插件开发/devcontainer.zip">devcontainer.zip</a> 或者：<a href="https://github.com/zhaoxunyong/java-k8s/tree/1.0.4.RELEASE/spring-k8s-feign/spring-cloud-k8s-account-service/.devcontainer" target="_blank" rel="noopener">https://github.com/zhaoxunyong/java-k8s/tree/1.0.4.RELEASE/spring-k8s-feign/spring-cloud-k8s-account-service/.devcontainer</a></p>
+<p>注意：</p>
+<p>如果有变动，需要执行”Remote-Containers: Rebuild Container”。</p>
+<p>另外不支持远程docker(2375端口)方式打开本地的目录(因为无法远程mount目录)，但可以通过”Remote-Containers: Clone Repository in Container Volume”的方式或者：</p>
+<p><a href="https://code.visualstudio.com/docs/remote/containers-advanced#_converting-an-existing-or-predefined-devcontainerjson" target="_blank" rel="noopener">https://code.visualstudio.com/docs/remote/containers-advanced#_converting-an-existing-or-predefined-devcontainerjson</a></p>
+<p>If you do not have login access to the remote host, use a Docker “volume” for your source code.<br>Update .devcontainer/devcontainer.json as follows (replacing remote-workspace with a unique volume name if desired):<br>workspaceMount”: “source=employee-workspace,target=/Developer/workspace/employee,type=volume”,</p>
+<p>If you used a volume instead of a bind mount, use Ctrl+Shift+` to open a terminal inside the container. </p>
+<p>#You can run git clone from here to pull down your source code and use File &gt; Open… / Open Folder… to open the cloned repository.</p>
+<h2 id="Docker-from-docker"><a href="#Docker-from-docker" class="headerlink" title="Docker-from-docker"></a>Docker-from-docker</h2><p>.devcontainer/devcontainer.json</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"extensions"</span>: [</span><br><span class="line">  <span class="string">"ms-azuretools.vscode-docker"</span></span><br><span class="line">],</span><br><span class="line"><span class="string">"mounts"</span>: [ </span><br><span class="line">  <span class="string">"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"</span>,</span><br><span class="line">  <span class="string">"source=<span class="variable">$&#123;env:HOME&#125;</span><span class="variable">$&#123;env:USERPROFILE&#125;</span>/.kube,target=/home/dev/.kube,type=bind"</span></span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+<p>script.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://www.cnblogs.com/763977251-sg/p/11837130.html</span></span><br><span class="line"><span class="comment">#Docker installation</span></span><br><span class="line"><span class="comment">#https://aka.ms/vscode-remote/samples/docker-from-docker</span></span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"></span><br><span class="line">touch /var/run/docker.sock</span><br><span class="line">sudo gpasswd -a dev docker</span><br><span class="line">chown dev.dev /var/run/docker.sock</span><br></pre></td></tr></table></figure>
+<h2 id="插件开发"><a href="#插件开发" class="headerlink" title="插件开发"></a>插件开发</h2><p>参考代码<a href="https://github.com/zhaoxunyong/vs-code-git-plugin" target="_blank" rel="noopener">https://github.com/zhaoxunyong/vs-code-git-plugin</a>，具体细节待补充。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://segmentfault.com/a/1190000008968904" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008968904</a></li>
+<li><a href="https://www.cnblogs.com/virde/p/vscode-extension-input-and-output.html" target="_blank" rel="noopener">https://www.cnblogs.com/virde/p/vscode-extension-input-and-output.html</a></li>
+<li><a href="https://github.com/steveukx/git-js" target="_blank" rel="noopener">https://github.com/steveukx/git-js</a></li>
+<li><a href="https://www.jianshu.com/p/2b096d8ad9b8" target="_blank" rel="noopener">https://www.jianshu.com/p/2b096d8ad9b8</a></li>
+<li><a href="https://github.com/Microsoft/vscode-extension-samples" target="_blank" rel="noopener">https://github.com/Microsoft/vscode-extension-samples</a></li>
+<li><a href="https://www.jianshu.com/p/520c575e91c3" target="_blank" rel="noopener">https://www.jianshu.com/p/520c575e91c3</a></li>
+<li><a href="https://segmentfault.com/a/1190000017279102" target="_blank" rel="noopener">https://segmentfault.com/a/1190000017279102</a></li>
+<li><a href="https://segmentfault.com/a/1190000014758981" target="_blank" rel="noopener">https://segmentfault.com/a/1190000014758981</a></li>
+<li><a href="https://www.cnblogs.com/liuxianan/p/vscode-plugin-publish.html" target="_blank" rel="noopener">https://www.cnblogs.com/liuxianan/p/vscode-plugin-publish.html</a></li>
+<li><a href="https://www.cnblogs.com/virde/p/vscode-extension-input-and-output.html" target="_blank" rel="noopener">https://www.cnblogs.com/virde/p/vscode-extension-input-and-output.html</a></li>
+<li><a href="https://www.cnblogs.com/virde/p/vscode-extension-input-and-output.html" target="_blank" rel="noopener">https://www.cnblogs.com/virde/p/vscode-extension-input-and-output.html</a></li>
+<li><a href="http://nodejs.cn/api/fs.html#fs_fs_unlinksync_path" target="_blank" rel="noopener">http://nodejs.cn/api/fs.html#fs_fs_unlinksync_path</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vscode/" rel="tag"># vscode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/黑苹果安装过程.html" rel="next" title="黑苹果安装过程">
+                <i class="fa fa-chevron-left"></i> 黑苹果安装过程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/Git如何永久删除文件与历史记录.html" rel="prev" title="Git如何永久删除文件与历史记录">
+                Git如何永久删除文件与历史记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
+              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-bash"><span class="nav-number">1.</span> <span class="nav-text">git-bash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nodejs"><span class="nav-number">2.</span> <span class="nav-text">nodejs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用插件"><span class="nav-number">3.</span> <span class="nav-text">常用插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码注释"><span class="nav-number">4.</span> <span class="nav-text">代码注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用配置"><span class="nav-number">5.</span> <span class="nav-text">常用配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java"><span class="nav-number">6.</span> <span class="nav-text">Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Developing-inside-a-Container"><span class="nav-number">7.</span> <span class="nav-text">Developing inside a Container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-from-docker"><span class="nav-number">8.</span> <span class="nav-text">Docker-from-docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件开发"><span class="nav-number">9.</span> <span class="nav-text">插件开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">10.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

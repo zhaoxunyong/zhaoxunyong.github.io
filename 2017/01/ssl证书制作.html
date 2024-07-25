@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SSL,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="之前公司网站转为使用https方式访问，在此记录一下过程。">
+<meta name="keywords" content="SSL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ssl证书制作">
+<meta property="og:url" content="http://blog.gcalls.cn/2017/01/ssl证书制作.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="之前公司网站转为使用https方式访问，在此记录一下过程。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.gcalls.cn/images/ssl证书制作/openssl.png">
+<meta property="og:updated_time" content="2024-07-25T07:36:00.049Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ssl证书制作">
+<meta name="twitter:description" content="之前公司网站转为使用https方式访问，在此记录一下过程。">
+<meta name="twitter:image" content="http://blog.gcalls.cn/images/ssl证书制作/openssl.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.gcalls.cn/2017/01/ssl证书制作.html">
+
+
+
+
+
+  <title>ssl证书制作 | Just do it</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2017/01/ssl证书制作.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaoxunyong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ssl证书制作</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-19T12:46:33+08:00">
+                2017-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SSL/" itemprop="url" rel="index">
+                    <span itemprop="name">SSL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/01/ssl证书制作.html" class="leancloud_visitors" data-flag-title="ssl证书制作">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前公司网站转为使用https方式访问，在此记录一下过程。</p>
+<a id="more"></a>
+<h2 id="EasyRSA"><a href="#EasyRSA" class="headerlink" title="EasyRSA"></a>EasyRSA</h2><p>参考<a href="https://sskaje.me/2015/09/easy-rsa-3-howto/" target="_blank" rel="noopener">https://sskaje.me/2015/09/easy-rsa-3-howto/</a></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.3/EasyRSA-3.0.3.zip</span><br><span class="line">unzip EasyRSA-3.0.3.zip &amp;&amp; mv EasyRSA-3.0.3 /usr/<span class="built_in">local</span>/ </span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/EasyRSA-3.0.3</span><br><span class="line">wget -O vars https://raw.githubusercontent.com/OpenVPN/easy-rsa/master/easyrsa3/vars.example</span><br><span class="line"></span><br><span class="line">cat &gt;&gt; /usr/<span class="built_in">local</span>/EasyRSA-3.0.3/vars &lt;&lt; EOF</span><br><span class="line">set_var EASYRSA                 <span class="string">"\$PWD"</span></span><br><span class="line">set_var EASYRSA_PKI             <span class="string">"\$EASYRSA/pki"</span></span><br><span class="line">set_var EASYRSA_DN              <span class="string">"cn_only"</span></span><br><span class="line">set_var EASYRSA_REQ_COUNTRY     <span class="string">"CN"</span></span><br><span class="line">set_var EASYRSA_REQ_PROVINCE    <span class="string">"Guangdong"</span></span><br><span class="line">set_var EASYRSA_REQ_CITY        <span class="string">"Shenzhen"</span></span><br><span class="line">set_var EASYRSA_REQ_ORG         <span class="string">"PTC"</span></span><br><span class="line">set_var EASYRSA_REQ_EMAIL       <span class="string">"zhaoxunyong@qq.com"</span></span><br><span class="line">set_var EASYRSA_REQ_OU          <span class="string">"Devops"</span></span><br><span class="line">set_var EASYRSA_KEY_SIZE        2048</span><br><span class="line">set_var EASYRSA_ALGO            rsa</span><br><span class="line">set_var EASYRSA_CA_EXPIRE       7500</span><br><span class="line">set_var EASYRSA_CERT_EXPIRE     365</span><br><span class="line">set_var EASYRSA_NS_SUPPORT      <span class="string">"no"</span></span><br><span class="line">set_var EASYRSA_NS_COMMENT      <span class="string">"SSKAJE CERTIFICATE AUTHORITY"</span></span><br><span class="line">set_var EASYRSA_EXT_DIR         <span class="string">"\$EASYRSA/x509-types"</span></span><br><span class="line">set_var EASYRSA_SSL_CONF        <span class="string">"\$EASYRSA/openssl-1.0.cnf"</span></span><br><span class="line">set_var EASYRSA_DIGEST          <span class="string">"sha256"</span></span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h3 id="初始化PKI"><a href="#初始化PKI" class="headerlink" title="初始化PKI"></a>初始化PKI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa init-pki</span><br></pre></td></tr></table></figure>
+<h3 id="创建CA"><a href="#创建CA" class="headerlink" title="创建CA"></a>创建CA</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa build-ca</span><br></pre></td></tr></table></figure>
+<h3 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h3><p>生成证书的操作步骤就两步，生成请求文件，根据请求文件签发证书。<br>easy-rsa 3.0签发证书时要求制定type，可选的值参考x509-types目录下的文件名，包括</p>
+<p>server：TLS服务端，适用于https服务端和vpn服务端<br>client：TLS客户端，适用于web浏览器和vpn客户端<br>ca：签发子CA证书<br>gen-req, build-client-full, build-server-full 可以使用 nopass 参数生成不加密的私钥。</p>
+<p>一步创建：<br>可以使用 build-client-full 和 build-server-full 直接完成 gen-req 和 sign-req 的过程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#./easyrsa build-client-full abc.com nopass</span></span><br><span class="line"><span class="comment">#./easyrsa build-client-full abc.com nopass</span></span><br><span class="line"><span class="comment">#gen-req and sign-req，对应的文件位于pki/reqs/与pki/private目录下</span></span><br><span class="line"><span class="comment">#./easyrsa build-server-full abc.com</span></span><br><span class="line"><span class="variable">$HOSTNAME</span>=abc</span><br><span class="line">./easyrsa --subject-alt-name=<span class="string">"DNS:<span class="variable">$HOSTNAME</span>,DNS:www.example.net"</span> build-server-full <span class="variable">$HOSTNAME</span> nopass</span><br></pre></td></tr></table></figure>
+<p>abc.com:为文件名称。<br>nopass:生成不加密的私钥。</p>
+<p>也可以分步创建：<br>生成请求:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa  gen-req abc.com</span><br></pre></td></tr></table></figure>
+<p>abc.com为文件名称，最终会生成abc.com.key给你abc.com.req文件。</p>
+<p>签发证书:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa sign-req server abc.com</span><br></pre></td></tr></table></figure>
+<p>abc.com为文件名称。</p>
+<p>签发req文件:<br>如果req文件是外部创建的，可以使用 import-req 导入，再用 sign-req 签发:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa import-req &lt;request_file_path&gt; &lt;short_basename&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="导出PKCS-7-PKCS-12"><a href="#导出PKCS-7-PKCS-12" class="headerlink" title="导出PKCS 7/PKCS 12"></a>导出PKCS 7/PKCS 12</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa <span class="built_in">export</span>-p7 abc.com</span><br></pre></td></tr></table></figure>
+<h3 id="查看证书-查看请求文件"><a href="#查看证书-查看请求文件" class="headerlink" title="查看证书/查看请求文件"></a>查看证书/查看请求文件</h3><p>使用 show-cert 和 show-req 查看请求文件，参数是请求时的名字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa show-cert abc.com</span><br><span class="line">./easyrsa show-req abc.com</span><br></pre></td></tr></table></figure>
+<h3 id="更新数据库"><a href="#更新数据库" class="headerlink" title="更新数据库"></a>更新数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./easyrsa update-db</span><br></pre></td></tr></table></figure>
+<h3 id="使用2-x版本"><a href="#使用2-x版本" class="headerlink" title="使用2.x版本"></a>使用2.x版本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install easy-rsa</span><br><span class="line"><span class="built_in">cd</span> /usr/share/easy-rsa/2.0</span><br><span class="line"></span><br><span class="line"><span class="comment">#修改vars 相关变量：</span></span><br><span class="line"><span class="built_in">export</span> KEY_COUNTRY=<span class="string">"CN"</span></span><br><span class="line"><span class="built_in">export</span> KEY_PROVINCE=<span class="string">"Guangdong"</span></span><br><span class="line"><span class="built_in">export</span> KEY_CITY=<span class="string">"shenzhen"</span></span><br><span class="line"><span class="built_in">export</span> KEY_ORG=<span class="string">"abc.com"</span></span><br><span class="line"><span class="built_in">export</span> KEY_EMAIL=<span class="string">"admin@abc.com"</span></span><br><span class="line"><span class="built_in">export</span> KEY_OU=<span class="string">"OPS"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#执行以下命令：</span></span><br><span class="line">. vars </span><br><span class="line"><span class="comment">#清除文件</span></span><br><span class="line">./clean-all</span><br><span class="line"><span class="comment">#生成服务端CA</span></span><br><span class="line">./build-ca</span><br><span class="line"><span class="comment">#生成服务端证书</span></span><br><span class="line">./build-key-server server</span><br><span class="line"><span class="comment">#生成客户端证书</span></span><br><span class="line">./build-key client1</span><br></pre></td></tr></table></figure>
+<h2 id="openssl生成https-ssl的证书"><a href="#openssl生成https-ssl的证书" class="headerlink" title="openssl生成https/ssl的证书"></a>openssl生成https/ssl的证书</h2><p>假设生成根域名证书，域名为：*.abc.com。</p>
+<h3 id="颁发证书"><a href="#颁发证书" class="headerlink" title="颁发证书"></a>颁发证书</h3><p>如果是对外的服务，需要公共CA机构签署，不需要这步。<br>内网环境CA要给别人颁发证书，首先自己得有一个作为根证书：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#初始化</span></span><br><span class="line"><span class="built_in">cd</span> /etc/pki/CA/</span><br><span class="line">touch index.txt serial</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'01'</span> &gt; serial</span><br><span class="line"></span><br><span class="line"><span class="comment">#生成根密钥</span></span><br><span class="line"><span class="comment">#为了安全起见，修改cakey.pem私钥文件权限为600或400</span></span><br><span class="line"><span class="built_in">umask</span> 077; openssl genrsa -out private/cakey.pem 2048</span><br><span class="line"></span><br><span class="line"><span class="comment">#生成根证书</span></span><br><span class="line">openssl req \</span><br><span class="line">-subj <span class="string">"/C=CN/ST=GuangDong/L=ShenZhen/O=PTC/OU=Devops/CN=*.abc.com"</span> \</span><br><span class="line">-new -x509 -key private/cakey.pem -out cacert.pem</span><br></pre></td></tr></table></figure></p>
+<p>如果没有加-subj参数时，需要输入以下相关信息：<br><img src="/images/ssl证书制作/openssl.png" alt="openssl"></p>
+<h3 id="为web服务器生成ssl密钥"><a href="#为web服务器生成ssl密钥" class="headerlink" title="为web服务器生成ssl密钥"></a>为web服务器生成ssl密钥</h3><p>方法一：创建签名请求，然后通过私有CA签署：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#openssl req -newkey rsa:4096 -nodes -sha256 -keyout abc.com.key -out abc.com.csr</span></span><br><span class="line"><span class="comment">#-reqexts SAN -config参数为添加SAN信息，如果不需要SAN的话，可以不用。</span></span><br><span class="line">openssl req \</span><br><span class="line">-subj <span class="string">"/C=CN/ST=GuangDong/L=ShenZhen/O=PTC/OU=Devops/CN=*.abc.com"</span> \</span><br><span class="line">-reqexts SAN -config &lt;(cat /etc/pki/tls/openssl.cnf &lt;(<span class="built_in">printf</span> <span class="string">"[SAN]\nsubjectAltName=DNS:www.abc.com,IP:192.168.10.6"</span>)) \</span><br><span class="line">-newkey rsa:2048 -keyout abc.com.key -out abc.com.csr</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line"><span class="comment">#openssl genrsa -out abc.com.key 2048</span></span><br><span class="line"><span class="comment">#openssl req -subj "/C=CN/ST=GuangDong/L=ShenZhen/O=PTC/OU=Devops/CN=*.abc.com" -new -key abc.com.key -out abc.com.csr</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自己签署</span></span><br><span class="line"><span class="comment">#一般内网环境采用自己签署(如果是对外的服务，需要公共CA机构签署)：</span></span><br><span class="line">openssl ca -<span class="keyword">in</span> abc.com.csr -out abc.com.crt -cert /etc/pki/CA/cacert.pem -keyfile /etc/pki/CA/private/cakey.pem -outdir ./</span><br><span class="line"><span class="comment">#openssl x509 -req -in abc.com.csr -CA /etc/pki/CA/cacert.pem -CAkey /etc/pki/CA/private/cakey.pem -CAcreateserial -out abc.com.crt -days 365 -extensions v3_req -extfile openssl.cnf</span></span><br></pre></td></tr></table></figure></p>
+<p>方法二：创建签名请求，创建一个加密的私钥，然后通过私钥签署：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成私钥：</span></span><br><span class="line">openssl genrsa -des3 -out abc.key.pem.encrypted 2048</span><br><span class="line"><span class="comment"># 生成解密后的private key：</span></span><br><span class="line">openssl rsa -<span class="keyword">in</span> abc.key.pem.encrypted -out abc.com.key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建签名请求：</span></span><br><span class="line"><span class="comment">#-reqexts SAN -config参数为添加SAN信息，如果不需要SAN的话，可以不用。</span></span><br><span class="line">openssl req -utf8 -config /etc/pki/tls/openssl.cnf \</span><br><span class="line">-subj <span class="string">"/C=CN/ST=GuangDong/L=ShenZhen/O=PTC/OU=Devops/CN=*.abc.com"</span> \</span><br><span class="line">-reqexts SAN -config &lt;(cat /etc/pki/tls/openssl.cnf &lt;(<span class="built_in">printf</span> <span class="string">"[SAN]\nsubjectAltName=DNS:www.abc.com,IP:192.168.10.6"</span>)) \</span><br><span class="line">-new -key abc.key.pem.encrypted \</span><br><span class="line">-out abc.req.csr -days 365</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自己签署</span></span><br><span class="line"><span class="comment">#一般内网环境采用自己签署(如果是对外的服务，需要公共CA机构签署)：</span></span><br><span class="line">openssl x509 -req -days 365 -signkey abc.key.pem.encrypted -<span class="keyword">in</span> abc.req.csr -out abc.cert.crt</span><br></pre></td></tr></table></figure></p>
+<h3 id="公共CA机构签署"><a href="#公共CA机构签署" class="headerlink" title="公共CA机构签署"></a>公共CA机构签署</h3><p>可以购买geotrust服务或者申请startssl免费一年的服务，具体请参考<a href="https://mritd.me/2016/06/22/%E5%85%8D%E8%B4%B9%E7%94%B3%E8%AF%B7-StartSSL-%E8%AF%81%E4%B9%A6/" target="_blank" rel="noopener">免费申请-StartSSL-证书</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成key與csr</span></span><br><span class="line">openssl req -newkey rsa:2048 -keyout abc.com.key -out abc.com.csr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将csr内容上传geotrust后，会生成IntermediateCA.crt、ssl_certificate.crt两个文件</span></span><br><span class="line">cat ssl_certificate.crt IntermediateCA.crt &gt;&gt; abc.com.crt</span><br><span class="line"></span><br><span class="line"><span class="comment">### 添加</span></span><br><span class="line"><span class="comment">#将abc.com.crt与abc.key.pem加入到nginx中即可，比如：</span></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name abc.com;</span><br><span class="line">  rewrite ^(.*) https://<span class="variable">$server_name</span><span class="variable">$1</span> permanent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  listen 443;</span><br><span class="line">  server_name abc.com;</span><br><span class="line">  access_log /var/<span class="built_in">log</span>/nginx/your-domain.log main;</span><br><span class="line"></span><br><span class="line">  ssl on;</span><br><span class="line">  ssl_certificate      /etc/nginx/ssl/abc.com.crt;</span><br><span class="line">  ssl_certificate_key  /etc/nginx/ssl/abc.com.key;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line"></span><br><span class="line">    log_not_found on;</span><br><span class="line"></span><br><span class="line">    proxy_pass http://127.0.0.1:8080;</span><br><span class="line">    proxy_read_timeout 300;</span><br><span class="line">    proxy_connect_timeout 300;</span><br><span class="line">    proxy_redirect off;</span><br><span class="line"></span><br><span class="line">    proxy_set_header X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    proxy_set_header Host              <span class="variable">$http_host</span>;</span><br><span class="line">    proxy_set_header X-Real-IP         <span class="variable">$remote_addr</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="私有CA签署时，浏览器不信任证书的解决方案"><a href="#私有CA签署时，浏览器不信任证书的解决方案" class="headerlink" title="私有CA签署时，浏览器不信任证书的解决方案"></a>私有CA签署时，浏览器不信任证书的解决方案</h3><p>以macos为例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#下载ca文件</span></span><br><span class="line">sz /etc/pki/CA/cacert.pem</span><br></pre></td></tr></table></figure></p>
+<p>然后再导入系统，具体请参考：<a href="http://www.cnblogs.com/snandy/p/3262661.html" target="_blank" rel="noopener">解决Mac Chrome打开HTTPS证书错误问题</a></p>
+<h2 id="SAN"><a href="#SAN" class="headerlink" title="SAN"></a>SAN</h2><p>什么是 SAN，SAN（Subject Alternative Name）是 SSL 标准 x509 中定义的一个扩展。使用了 SAN 字段的 SSL 证书，可以扩展此证书支持的域名，使得一个证书可以支持多个不同域名的解析。比如说：Common Name 字段是 *.google.com，这张证书通过SAN就能够被 <a href="http://www.youtube.com" target="_blank" rel="noopener">www.youtube.com</a> 这个域名所使用。原因就是这是一张带有 SAN 扩展的证书。<br>所以，只执行 NO SAN 命令也可以签发证书，不过却不能够添加多个域名。</p>
+<p>想要添加多个域名或泛域名，你需要使用到该扩展。那么默认的 OpenSSL 的配置是不能够满足的，我们需要复制或下载一份默认的 openssl.cnf 文件到本地。如 <a href="https://github.com/openssl/openssl/blob/master/apps/openssl.cnf" target="_blank" rel="noopener">github openssl</a>。</p>
+<p>修改匹配策略：<br>默认匹配策略是：国家名，省份，组织名必须相同（match）。我们改为可选（optional），这样避免我们生成证书请求文件时（csr）去参考 CA 证书。</p>
+<p>编辑/etc/pki/tls/openssl.cnf文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># For the CA policy</span><br><span class="line">[ policy_match ]</span><br><span class="line">countryName         = match</span><br><span class="line">stateOrProvinceName     = optional</span><br><span class="line">organizationName        = optional</span><br><span class="line">organizationalUnitName      = optional</span><br><span class="line">commonName          = supplied</span><br><span class="line">emailAddress            = optional</span><br></pre></td></tr></table></figure></p>
+<p>以上为可选项。</p>
+<p>修改默认值：<br>修改默认值，可以让你更快的颁发证书，一直回车就可以了：<br>编辑/etc/pki/tls/openssl.cnf文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[ req_distinguished_name ]</span><br><span class="line">countryName                     = Country Name (2 letter code)</span><br><span class="line">countryName_default             = CN</span><br><span class="line">countryName_min                 = 2</span><br><span class="line">countryName_max                 = 2</span><br><span class="line"></span><br><span class="line">stateOrProvinceName             = State or Province Name (full name)</span><br><span class="line">stateOrProvinceName_default    = Guangdong</span><br><span class="line"></span><br><span class="line">localityName                    = Locality Name (eg, city)</span><br><span class="line">localityName_default            = Shenzhen</span><br><span class="line"></span><br><span class="line">0.organizationName              = Organization Name (eg, company)</span><br><span class="line">0.organizationName_default      = Dev</span><br><span class="line"></span><br><span class="line"># we can do this but it is not needed normally :-)</span><br><span class="line">#1.organizationName             = Second Organization Name (eg, company)</span><br><span class="line">#1.organizationName_default     = World Wide Web Pty Ltd</span><br><span class="line"></span><br><span class="line">organizationalUnitName          = Organizational Unit Name (eg, section)</span><br><span class="line">organizationalUnitName_default = Dev</span><br><span class="line"></span><br><span class="line">commonName                      = Common Name (eg, your name or your server\&apos;s hostname)</span><br><span class="line">commonName_max                  = 64</span><br><span class="line"></span><br><span class="line">emailAddress                    = zhaoxunyong@qq.com</span><br><span class="line">emailAddress_max                = 64</span><br><span class="line"></span><br><span class="line"># SET-ex3                       = SET extension number 3</span><br></pre></td></tr></table></figure></p>
+<p>关键步骤：<br>最关键的地方是修改 v3_req。添加成如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[ v3_req ]</span><br><span class="line"></span><br><span class="line"># Extensions to add to a certificate request</span><br><span class="line"></span><br><span class="line">basicConstraints        = CA:FALSE</span><br><span class="line">keyUsage            = nonRepudiation, digitalSignature, keyEncipherment</span><br><span class="line">subjectAltName          = @alt_names</span><br><span class="line"></span><br><span class="line">[ alt_names ]</span><br><span class="line">DNS.1 = abc.com</span><br><span class="line">DNS.2 = *.abc.com</span><br><span class="line">DNS.3 = localhost</span><br><span class="line">IP.1 = 127.0.0.1</span><br><span class="line">IP.2 = 192.168.10.6</span><br><span class="line">IP.3 = 192.168.10.7</span><br><span class="line">IP.4 = 192.168.10.8</span><br></pre></td></tr></table></figure>
+<p>环境变量：<br>openssl 通过 $ENV::name 获取环境变量，在配置文件里使用的时候只需将 name 替换为需要用到的环境变量的名称就可以了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> SNAS=DNS:abc.com,DNS:*.abc.com,DNS:xyz.com,IP:127.0.0.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 修改 openssl.cnf</span><br><span class="line">[ v3_req ]</span><br><span class="line"></span><br><span class="line"># Extensions to add to a certificate request</span><br><span class="line"></span><br><span class="line">basicConstraints        = CA:FALSE</span><br><span class="line">keyUsage            = nonRepudiation, digitalSignature, keyEncipherment</span><br><span class="line">subjectAltName          = $ENV::SANS</span><br><span class="line"></span><br><span class="line"># 注释掉这段配置</span><br><span class="line">#[ alt_names ]</span><br><span class="line">#DNS.1 = abc.com</span><br><span class="line">#DNS.2 = *.abc.com</span><br><span class="line">#DNS.3 = localhost</span><br><span class="line">#IP.1 = 127.0.0.1</span><br><span class="line">#IP.2 = 192.168.10.6</span><br><span class="line">#IP.3 = 192.168.10.7</span><br><span class="line">#IP.4 = 192.168.10.8</span><br></pre></td></tr></table></figure>
+<h2 id="jks证书"><a href="#jks证书" class="headerlink" title="jks证书"></a>jks证书</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#生成jks：</span></span><br><span class="line">keytool -genkey -<span class="built_in">alias</span> abc.com -keyalg RSA -keystore abc.jks -keysize 2048 -dname <span class="string">"CN=*.abc.com,OU=,O=xxxx有限公司,L=深圳市,ST=广东省,C=CN"</span> -storepass <span class="string">"Aa123456"</span> -keypass <span class="string">"Aa123456"</span></span><br><span class="line"><span class="comment">#注意：CN表示颁发给哪个url，可以用*.abc.com表示所有</span></span><br></pre></td></tr></table></figure>
+<p>转换jks为OpenSSL的PEM格式文件(.key + .crt)</p>
+<blockquote>
+<p><a href="http://ju.outofmemory.cn/entry/212469" target="_blank" rel="noopener">http://ju.outofmemory.cn/entry/212469</a></p>
+</blockquote>
+<p>先导出p12：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -importkeystore -srckeystore abc.jks -destkeystore abc.p12 -srcstoretype jks -deststoretype pkcs12</span><br></pre></td></tr></table></figure></p>
+<p>方式一：<br>生成pem证书(包含了key，server证书和ca证书)：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成key 加密的pem证书</span></span><br><span class="line">$ openssl pkcs12 -<span class="keyword">in</span> abc.p12 -out abc.key.pem</span><br><span class="line">Enter Import Password:</span><br><span class="line">MAC verified OK</span><br><span class="line">Enter PEM pass phrase:</span><br><span class="line">Verifying - Enter PEM pass phrase:</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 生成key 非加密的pem证书</span></span><br><span class="line">$ openssl pkcs12 -nodes -<span class="keyword">in</span> server.p12 -out abc.key.pem</span><br><span class="line">Enter Import Password:</span><br><span class="line">MAC verified OK</span><br></pre></td></tr></table></figure></p>
+<p>剩下步骤与<a href="#为web服务器生成ssl密钥">为web服务器生成ssl密钥</a>类似。</p>
+<p>方式二：<br>单独导出key：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#生成key加密的pem证书：</span></span><br><span class="line">$ openssl pkcs12 -<span class="keyword">in</span> server.p12 -out abc.key.pem</span><br><span class="line"></span><br><span class="line"><span class="comment">#生成非加密的key：</span></span><br><span class="line"><span class="comment">#(只保留BEGIN与END中的内容，包括BEGIN与END)</span></span><br><span class="line">openssl pkcs12 -<span class="keyword">in</span> abc.p12 -nocerts -nodes -out abc.key.pem</span><br></pre></td></tr></table></figure></p>
+<p>单独导出server证书:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="keyword">in</span> abc.p12  -nokeys -cacerts -out abc.cert.crt</span><br></pre></td></tr></table></figure></p>
+<p>单独导出ca证书:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="keyword">in</span> abc.p12  -nokeys -cacerts -out ca.crt</span><br></pre></td></tr></table></figure></p>
+<p>方式三：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#生成csr文件：</span></span><br><span class="line">keytool -certreq -keyalg RSA -<span class="built_in">alias</span> abc.com -file abc.req.csr -keystore abc.jks -storepass <span class="string">"Aa123456"</span> -keypass <span class="string">"Aa123456"</span></span><br></pre></td></tr></table></figure></p>
+<p>生成私钥:<br>windows下运行<a href="/files/ssl证书制作/kestore-export.zip">kestore-export</a>中的工具：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">JKS2PFX.bat abc.jks <span class="string">"Aa123456"</span> <span class="string">"abc.com"</span> <span class="string">"key/abc"</span> <span class="string">"D:\Developer\java\jdk1.7.0_51\jre\bin"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#上传key/abc.com.key到linux下并执行：</span></span><br><span class="line">openssl rsa -<span class="keyword">in</span> abc.com.key -des3 -out abc.key.encrypted</span><br><span class="line"></span><br><span class="line"><span class="comment">#自己签署csr文件：</span></span><br><span class="line"><span class="comment">#openssl x509 -req -days 365 -in abc.req.csr -signkey abc.key.encrypted -out abc.cert.crt</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将csr内容上传geotrust后，会生成IntermediateCA.crt、ssl_certificate.crt两个文件</span></span><br><span class="line">cat ssl_certificate.crt IntermediateCA.crt &gt;&gt; abc.com.crt</span><br></pre></td></tr></table></figure>
+<h2 id="格式转换"><a href="#格式转换" class="headerlink" title="格式转换"></a>格式转换</h2><blockquote>
+<p><a href="https://support.wosign.com/index.php?/Knowledgebase/Article/View/36/0/" target="_blank" rel="noopener">https://support.wosign.com/index.php?/Knowledgebase/Article/View/36/0/</a></p>
+</blockquote>
+<h3 id="key、crt转换为p12"><a href="#key、crt转换为p12" class="headerlink" title="key、crt转换为p12"></a>key、crt转换为p12</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="built_in">export</span> -clcerts -<span class="keyword">in</span> abc.cert.crt -inkey abc.key.pem -out abc.p12</span><br></pre></td></tr></table></figure>
+<h3 id="key、crt转换为pfx"><a href="#key、crt转换为pfx" class="headerlink" title="key、crt转换为pfx"></a>key、crt转换为pfx</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="built_in">export</span> -inkey abc.key.pem -<span class="keyword">in</span> abc.com.crt -out abc.pfx</span><br></pre></td></tr></table></figure>
+<h3 id="pfx转换jks"><a href="#pfx转换jks" class="headerlink" title="pfx转换jks"></a>pfx转换jks</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -importkeystore -srckeystore abc.pfx -destkeystore abc.com.jks -srcstoretype PKCS12 -deststoretype JKS</span><br></pre></td></tr></table></figure>
+<h3 id="crt转换为jks"><a href="#crt转换为jks" class="headerlink" title="crt转换为jks"></a>crt转换为jks</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -import -v -trustcacerts -storepass <span class="string">"Aa123456"</span> -<span class="built_in">alias</span> abc.com -file abc.cert.crt -keystore abc.jks</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://deepzz.com/post/based-on-openssl-privateCA-issuer-cert.html" target="_blank" rel="noopener">https://deepzz.com/post/based-on-openssl-privateCA-issuer-cert.html</a><br><a href="http://liaoph.com/openssl-san/" target="_blank" rel="noopener">http://liaoph.com/openssl-san/</a><br><a href="https://mritd.me/2016/07/03/Harbor-%E4%BC%81%E4%B8%9A%E7%BA%A7-Docker-Registry-HTTPS%E9%85%8D%E7%BD%AE/" target="_blank" rel="noopener">https://mritd.me/2016/07/03/Harbor-%E4%BC%81%E4%B8%9A%E7%BA%A7-Docker-Registry-HTTPS%E9%85%8D%E7%BD%AE/</a><br><a href="https://mritd.me/2016/07/02/%E4%BA%92%E8%81%94%E7%BD%91%E5%8A%A0%E5%AF%86%E5%8F%8AOpenSSL%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" target="_blank" rel="noopener">https://mritd.me/2016/07/02/%E4%BA%92%E8%81%94%E7%BD%91%E5%8A%A0%E5%AF%86%E5%8F%8AOpenSSL%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</a><br><a href="https://mritd.me/2016/06/22/%E5%85%8D%E8%B4%B9%E7%94%B3%E8%AF%B7-StartSSL-%E8%AF%81%E4%B9%A6/" target="_blank" rel="noopener">https://mritd.me/2016/06/22/%E5%85%8D%E8%B4%B9%E7%94%B3%E8%AF%B7-StartSSL-%E8%AF%81%E4%B9%A6/</a><br><a href="http://seanlook.com/2015/01/18/openssl-self-sign-ca/" target="_blank" rel="noopener">http://seanlook.com/2015/01/18/openssl-self-sign-ca/</a><br><a href="http://seanlook.com/2015/01/15/openssl-certificate-encryption/" target="_blank" rel="noopener">http://seanlook.com/2015/01/15/openssl-certificate-encryption/</a><br><a href="http://seanlook.com/2015/01/07/tls-ssl/#comments" target="_blank" rel="noopener">http://seanlook.com/2015/01/07/tls-ssl/#comments</a><br><a href="http://netsecurity.51cto.com/art/200602/21066.htm" target="_blank" rel="noopener">http://netsecurity.51cto.com/art/200602/21066.htm</a><br><a href="http://cnzhx.net/blog/self-signed-certificate-as-trusted-root-ca-in-windows/" target="_blank" rel="noopener">http://cnzhx.net/blog/self-signed-certificate-as-trusted-root-ca-in-windows/</a><br><a href="http://www.cnblogs.com/snandy/p/3262661.html" target="_blank" rel="noopener">http://www.cnblogs.com/snandy/p/3262661.html</a><br><a href="http://www.iloveandroid.net/2015/10/14/jksTopm/" target="_blank" rel="noopener">http://www.iloveandroid.net/2015/10/14/jksTopm/</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SSL/" rel="tag"># SSL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/etcd集群安装.html" rel="next" title="etcd集群安装">
+                <i class="fa fa-chevron-left"></i> etcd集群安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/用fpm制作RPM包.html" rel="prev" title="用fpm制作RPM包">
+                用fpm制作RPM包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
+              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#EasyRSA"><span class="nav-number">1.</span> <span class="nav-text">EasyRSA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化PKI"><span class="nav-number">1.2.</span> <span class="nav-text">初始化PKI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建CA"><span class="nav-number">1.3.</span> <span class="nav-text">创建CA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成证书"><span class="nav-number">1.4.</span> <span class="nav-text">生成证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导出PKCS-7-PKCS-12"><span class="nav-number">1.5.</span> <span class="nav-text">导出PKCS 7/PKCS 12</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看证书-查看请求文件"><span class="nav-number">1.6.</span> <span class="nav-text">查看证书/查看请求文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新数据库"><span class="nav-number">1.7.</span> <span class="nav-text">更新数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用2-x版本"><span class="nav-number">1.8.</span> <span class="nav-text">使用2.x版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#openssl生成https-ssl的证书"><span class="nav-number">2.</span> <span class="nav-text">openssl生成https/ssl的证书</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#颁发证书"><span class="nav-number">2.1.</span> <span class="nav-text">颁发证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为web服务器生成ssl密钥"><span class="nav-number">2.2.</span> <span class="nav-text">为web服务器生成ssl密钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公共CA机构签署"><span class="nav-number">2.3.</span> <span class="nav-text">公共CA机构签署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#私有CA签署时，浏览器不信任证书的解决方案"><span class="nav-number">2.4.</span> <span class="nav-text">私有CA签署时，浏览器不信任证书的解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SAN"><span class="nav-number">3.</span> <span class="nav-text">SAN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jks证书"><span class="nav-number">4.</span> <span class="nav-text">jks证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式转换"><span class="nav-number">5.</span> <span class="nav-text">格式转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#key、crt转换为p12"><span class="nav-number">5.1.</span> <span class="nav-text">key、crt转换为p12</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#key、crt转换为pfx"><span class="nav-number">5.2.</span> <span class="nav-text">key、crt转换为pfx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pfx转换jks"><span class="nav-number">5.3.</span> <span class="nav-text">pfx转换jks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#crt转换为jks"><span class="nav-number">5.4.</span> <span class="nav-text">crt转换为jks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

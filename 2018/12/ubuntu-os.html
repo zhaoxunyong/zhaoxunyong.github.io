@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="记录ubuntu的安装过程。">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu os">
+<meta property="og:url" content="http://blog.gcalls.cn/2018/12/ubuntu-os.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="记录ubuntu的安装过程。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2024-07-25T07:36:00.049Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ubuntu os">
+<meta name="twitter:description" content="记录ubuntu的安装过程。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.gcalls.cn/2018/12/ubuntu-os.html">
+
+
+
+
+
+  <title>ubuntu os | Just do it</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2018/12/ubuntu-os.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaoxunyong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ubuntu os</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-03T14:14:00+08:00">
+                2018-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/ubuntu-os.html" class="leancloud_visitors" data-flag-title="ubuntu os">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>记录ubuntu的安装过程。</p>
+<a id="more"></a>
+<h2 id="安装操作系统"><a href="#安装操作系统" class="headerlink" title="安装操作系统"></a>安装操作系统</h2><p><a href="https://ubuntu.com/download/desktop" target="_blank" rel="noopener">https://ubuntu.com/download/desktop</a></p>
+<h2 id="优化apt"><a href="#优化apt" class="headerlink" title="优化apt"></a>优化apt</h2><p>登录时使用Ubuntu on X11 Org，否则Theme不能切换。因为Gnome Wayland不成熟。</p>
+<p>Recommend: Software &amp; Update-&gt;Download from-&gt;Other去选择aliyun镜像。如果手动的话参考以下方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br><span class="line">sudo vi /etc/apt/sources.list</span><br><span class="line"></span><br><span class="line">#Adding he following lists</span><br><span class="line">#For ubuntu 22.04</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy main restricted</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-updates main restricted</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-updates universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-updates multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-backports main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-security main restricted</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-security universe</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-security multiverse</span><br></pre></td></tr></table></figure>
+<p>Update:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">#apt</span><br><span class="line">sudo add-apt-repository ppa:apt/stable</span><br><span class="line">sudo apt install apt-fast</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装基础包"><a href="#安装基础包" class="headerlink" title="安装基础包"></a>安装基础包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#sudo apt install software-properties-common</span><br><span class="line">#sudo apt install aria2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sudo apt install vim unrar gdebi curl screen keepassxc git</span><br><span class="line">#sudo apt install vlc</span><br><span class="line"></span><br><span class="line">#Installing chrome</span><br><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">sudo dpkg -i google-chrome-stable_current_amd64.deb</span><br><span class="line"></span><br><span class="line">#Installing albert</span><br><span class="line">#wget https://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_20.04/amd64/albert_0.17.2-0_amd64.deb</span><br><span class="line">wget https://download.opensuse.org/repositories/home:/manuelschneid3r/xUbuntu_22.04/amd64/albert_0.17.3-0_amd64.deb</span><br><span class="line">sudo dpkg -i albert_0.17.3-0_amd64.deb</span><br><span class="line"></span><br><span class="line">#添加application菜单</span><br><span class="line">sudo apt-get install alacarte</span><br><span class="line">#serch mainmenu就可以</span><br><span class="line"></span><br><span class="line">#mount NTFS</span><br><span class="line">sudo apt install ntfs-3g</span><br><span class="line">#Get UUID</span><br><span class="line">ls -l /dev/disk/by-uuid</span><br><span class="line">sudo vim /etc/fstab</span><br><span class="line">UUID=409AB21C9AB20F02                     /data1         ntfs-3g rw              0       0</span><br><span class="line">UUID=5E98B57C98B552EF                     /data2         ntfs-3g rw              0       0</span><br></pre></td></tr></table></figure>
+<h2 id="修改操作系统配置"><a href="#修改操作系统配置" class="headerlink" title="修改操作系统配置"></a>修改操作系统配置</h2><p>完整脚本:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line"><span class="comment">#apt-get install make g++ init inetutils-ping sudo jq iproute2 net-tools wget htop vim screen curl lsof lrzsz zip unzip expect openssh-server -y</span></span><br><span class="line">apt-get install init inetutils-ping sudo iptables psmisc jq iproute2 net-tools wget htop vim screen curl lsof lrzsz zip unzip expect openssh-server -y</span><br><span class="line"></span><br><span class="line"><span class="comment">#LANG="en_US.UTF-8"</span></span><br><span class="line"><span class="comment">#sed -i 's;LANG=.*;LANG="zh_CN.UTF-8";' /etc/locale.conf</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">disable</span> iptables</span><br><span class="line">systemctl stop iptables</span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line"><span class="comment">#ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span></span><br><span class="line">timedatectl <span class="built_in">set</span>-timezone Asia/Shanghai</span><br><span class="line"></span><br><span class="line"><span class="comment">#logined limit</span></span><br><span class="line">cat /etc/security/limits.conf|grep <span class="string">"^root"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">		cat &gt;&gt; /etc/security/limits.conf  &lt;&lt; EOF</span><br><span class="line">root            -    nofile             100000</span><br><span class="line">root            -    nproc              100000</span><br><span class="line">*               -    nofile             100000</span><br><span class="line">*               -    nproc              100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#systemd service limit</span></span><br><span class="line">cat /etc/systemd/system.conf|egrep <span class="string">'^DefaultLimitNOFILE'</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">		cat &gt;&gt; /etc/systemd/system.conf &lt;&lt; EOF</span><br><span class="line">DefaultLimitCORE=infinity</span><br><span class="line">DefaultLimitNOFILE=100000</span><br><span class="line">DefaultLimitNPROC=100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment">#user service limit</span></span><br><span class="line">cat /etc/systemd/user.conf|egrep <span class="string">'^DefaultLimitNOFILE'</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">		cat &gt;&gt; /etc/systemd/system.conf &lt;&lt; EOF</span><br><span class="line">DefaultLimitCORE=infinity</span><br><span class="line">DefaultLimitNOFILE=100000</span><br><span class="line">DefaultLimitNPROC=100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">cat /etc/sysctl.conf|grep <span class="string">"net.ipv4.ip_local_port_range"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">	cat &gt;&gt; /etc/sysctl.conf  &lt;&lt; EOF</span><br><span class="line">net.ipv4.tcp_syncookies = 1</span><br><span class="line">net.ipv4.tcp_fin_timeout = 30</span><br><span class="line">net.ipv4.tcp_keepalive_time = 300</span><br><span class="line">net.ipv4.tcp_tw_reuse = 1</span><br><span class="line">net.ipv4.ip_local_port_range = 1024 65535</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 8192</span><br><span class="line">net.ipv4.tcp_max_tw_buckets = 500</span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line">fs.inotify.max_user_instances=1280</span><br><span class="line">fs.inotify.max_user_watches=655360</span><br><span class="line">vm.overcommit_memory=1</span><br><span class="line">fs.protected_regular=0</span><br><span class="line">EOF</span><br><span class="line">sysctl -p</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">su - root -c <span class="string">"ulimit -a"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"140.82.112.4 github.com</span></span><br><span class="line"><span class="string">185.199.110.133 raw.githubusercontent.com"</span> &gt;&gt; /etc/hosts</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s;#PermitRootLogin.*;PermitRootLogin yes;g'</span> /etc/ssh/sshd_config</span><br><span class="line">systemctl <span class="built_in">enable</span> ssh</span><br><span class="line">systemctl restart ssh</span><br></pre></td></tr></table></figure>
+<h2 id="Safe-RM"><a href="#Safe-RM" class="headerlink" title="Safe-RM"></a>Safe-RM</h2><p><a href="/files/ubuntu-os/Safe-RM.zip">Safe-RM.zip</a></p>
+<p>rm.sh:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /works/shell /works/backup</span><br><span class="line">sudo chown -R dave.dave /works/</span><br><span class="line">chmod +x /works/shell/*</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#https://superuser.com/questions/192725/how-can-i-alias-a-command-for-sudo</span></span><br><span class="line">cat &gt;&gt; /etc/profile &lt;&lt;EOF</span><br><span class="line"><span class="built_in">alias</span> sudo=<span class="string">'sudo '</span></span><br><span class="line"><span class="built_in">alias</span> rm=<span class="string">"/works/shell/rm.sh"</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">. /etc/profile</span><br></pre></td></tr></table></figure></p>
+<h2 id="GIT"><a href="#GIT" class="headerlink" title="GIT"></a>GIT</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">"dave.zhao"</span></span><br><span class="line">git config --global user.email dave.zhao@zerofinance.com</span><br><span class="line">git config --global core.autocrlf <span class="literal">false</span></span><br><span class="line">git config --global core.safecrlf warn</span><br><span class="line">git config --global core.filemode <span class="literal">false</span></span><br><span class="line">git config --global core.whitespace cr-at-eol</span><br><span class="line">git config --global credential.helper store</span><br><span class="line"><span class="comment">#由于 Windows 版本的 Git 是使用 msys 编译的，它使用了旧版本的 Windows Api，限制文件名不能超过 260 个字符</span></span><br><span class="line">git config --global core.longpaths <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>vim ~/.bash_profile<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">test -f ~/.profile &amp;&amp; . ~/.profile</span><br><span class="line">test -f ~/.bashrc &amp;&amp; . ~/.bashrc</span><br><span class="line"></span><br><span class="line">alias ll=&quot;ls -l&quot;</span><br><span class="line">alias k=kubectl</span><br><span class="line">source &lt;(kubectl completion bash | sed s/kubectl/k/g)</span><br><span class="line"></span><br><span class="line">function proxy_off()&#123;</span><br><span class="line">    unset http_proxy</span><br><span class="line">    unset https_proxy</span><br><span class="line">    echo -e &quot;The proxy has been closed!&quot;</span><br><span class="line">&#125;</span><br><span class="line">function proxy_on() &#123;</span><br><span class="line">    export no_proxy=&quot;127.0.0.1,localhost,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16,*.zerofinance.net,*.aliyun.com,*.163.com,*.docker-cn.com,registry.gcalls.cn&quot;</span><br><span class="line">    export http_proxy=&quot;http://127.0.0.1:1082&quot;</span><br><span class="line">    export https_proxy=$http_proxy</span><br><span class="line">    echo -e &quot;The proxy has been opened!&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure></p>
+<h2 id="rc-local"><a href="#rc-local" class="headerlink" title="rc.local"></a>rc.local</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#http://www.atmcu.com/2256.html</span></span><br><span class="line"><span class="comment">#rc-local.service</span></span><br><span class="line">cat &gt; /etc/systemd/system/rc-local.service &lt;&lt; EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=/etc/rc.local Compatibility</span><br><span class="line">ConditionPathExists=/etc/rc.local</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">ExecStart=/etc/rc.local start</span><br><span class="line">TimeoutSec=0</span><br><span class="line">StandardOutput=tty</span><br><span class="line">RemainAfterExit=yes</span><br><span class="line">SysVStartPriority=99</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment">#rc.local</span></span><br><span class="line">cat &gt; /etc/rc.local &lt;&lt;EOF</span><br><span class="line"><span class="comment">#!/bin/sh -e</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># rc.local</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This script is executed at the end of each multiuser runlevel.</span></span><br><span class="line"><span class="comment"># Make sure that the script will "exit 0" on success or any other</span></span><br><span class="line"><span class="comment"># value on error.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># In order to enable or disable this script just change the execution</span></span><br><span class="line"><span class="comment"># bits.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># By default this script does nothing.</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment">#systemctl</span></span><br><span class="line">sudo chmod +x /etc/rc.local</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> rc-local</span><br><span class="line">sudo systemctl start rc-local.service</span><br><span class="line">sudo systemctl status rc-local.service</span><br></pre></td></tr></table></figure>
+<h2 id="搜狗输入法-for-linux"><a href="#搜狗输入法-for-linux" class="headerlink" title="搜狗输入法 for linux"></a>搜狗输入法 for linux</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#https://shurufa.sogou.com/linux</span><br><span class="line">#https://shurufa.sogou.com/linux/guide</span><br><span class="line">sudo apt install fcitx</span><br><span class="line">#按照第一步：1、添加中文语言支持  处理，并重启系统</span><br><span class="line">#安装</span><br><span class="line">wget https://ime.sogouimecdn.com/202208041520/03940f168eb3fa5819e568874dcc6a2f/dl/gzindex/1656597217/sogoupinyin_4.0.1.2800_x86_64.deb</span><br><span class="line">sudo dpkg -i sogoupinyin_4.0.1.2800_x86_64.deb</span><br><span class="line">#重启系统</span><br><span class="line">#安装其他</span><br><span class="line">sudo cp /usr/share/applications/fcitx.desktop /etc/xdg/autostart/</span><br><span class="line">sudo apt purge ibus</span><br><span class="line">sudo apt install libqt5qml5 libqt5quick5 libqt5quickwidgets5 qml-module-qtquick2</span><br><span class="line">sudo apt install libgsettings-qt1</span><br><span class="line">#重启电脑</span><br></pre></td></tr></table></figure>
+<h2 id="系统快捷键"><a href="#系统快捷键" class="headerlink" title="系统快捷键"></a>系统快捷键</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#sudo apt install deepin-screenshot</span></span><br><span class="line"><span class="comment"># sudo apt install deepin-terminal</span></span><br><span class="line"><span class="comment">#deepin-screenshot -&gt; ctrl+alt+Q</span></span><br><span class="line"><span class="comment">#deepin-terminal -&gt; ctrl+alt+T</span></span><br><span class="line">sudo apt install  flameshot</span><br><span class="line">xdg-open . -&gt; Win+E</span><br><span class="line">flameshot gui -&gt; ctrl+alt+Q</span><br></pre></td></tr></table></figure>
+<h2 id="NODEJS"><a href="#NODEJS" class="headerlink" title="NODEJS"></a>NODEJS</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://github.com/nvm-sh/nvm</span></span><br><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash</span><br><span class="line">. ~/.bashrc</span><br><span class="line"><span class="comment">#显示有远端的版本</span></span><br><span class="line">nvm ls-remote</span><br><span class="line"><span class="comment">#安装对应的版本</span></span><br><span class="line">nvm install v12.22.6</span><br></pre></td></tr></table></figure>
+<p>安装常用工具：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry https://registry.npmmirror.com --global</span><br><span class="line">npm config <span class="built_in">set</span> disturl https://npmmirror.com/dist --global</span><br><span class="line">npm install  hexo-cli -g</span><br><span class="line">npm install hexo-server -g</span><br><span class="line">npm install hexo-deployer-git -g</span><br><span class="line">npm install yarn -g</span><br><span class="line">npm install http-server -g</span><br><span class="line"></span><br><span class="line">yarn config <span class="built_in">set</span> registry https://registry.npmmirror.com --global</span><br><span class="line">yarn config <span class="built_in">set</span> disturl https://npmmirror.com/dist --global</span><br><span class="line"><span class="comment">#yarn global add serve</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="JAVA"><a href="#JAVA" class="headerlink" title="JAVA"></a>JAVA</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /Developer/java /Developer/workspace</span><br><span class="line">sudo chown -R dave.dave /Developer</span><br><span class="line">sudo vim /etc/profile.d/java.sh</span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/Developer/java/jdk1.8.0_202</span><br><span class="line"><span class="comment">#export JAVA_HOME=$(/usr/libexec/java_home)</span></span><br><span class="line"><span class="built_in">export</span> M2_HOME=/Developer/apache-maven-3.5.4</span><br><span class="line"><span class="built_in">export</span> GRADLE_USER_HOME=/Developer/.gradle</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$M2_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+<h2 id="gnome-shell"><a href="#gnome-shell" class="headerlink" title="gnome-shell"></a>gnome-shell</h2><p>安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#For 22.04</span><br><span class="line">sudo apt install gnome-tweaks chrome-gnome-shell gnome-shell-extension-manager</span><br><span class="line">#open with firefox or chrome</span><br><span class="line">https://extensions.gnome.org</span><br><span class="line">#Click: Click here to install browser extension</span><br><span class="line"></span><br><span class="line">plugin:</span><br><span class="line">User Themes: https://extensions.gnome.org/extension/19/user-themes/</span><br><span class="line">#dock-from-dash: https://extensions.gnome.org/extension/4703/dock-from-dash/</span><br><span class="line">dash2dock-lite: https://extensions.gnome.org/extension/4994/dash2dock-lite/</span><br><span class="line">dash-to-panel: https://extensions.gnome.org/extension/1160/dash-to-panel/</span><br><span class="line">arc menu: https://extensions.gnome.org/extension/3628/arcmenu/</span><br><span class="line"></span><br><span class="line">Gnome Wayland不成熟，登录时使用Ubuntu on X11 Org，否则Theme不能切换。</span><br><span class="line"></span><br><span class="line">##Disable wayland on Ubuntu 22.04 Desktop</span><br><span class="line">##https://linuxconfig.org/how-to-enable-disable-wayland-on-ubuntu-22-04-desktop</span><br><span class="line">#echo $XDG_SESSION_TYPE</span><br><span class="line">#sudo nano /etc/gdm3/custom.conf</span><br><span class="line">##Within this file, look for the line that says #WaylandEnable=false. You can uncomment this line and either set it to true or #false, depending on whether you want Wayland enabled or not.</span><br><span class="line">#WaylandEnable=false</span><br><span class="line">##Restart</span><br><span class="line">#sudo systemctl restart gdm3</span><br></pre></td></tr></table></figure></p>
+<h2 id="Wine"><a href="#Wine" class="headerlink" title="Wine"></a>Wine</h2><p>企业微信需要用wine7安装才会有消息提醒，推荐使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://itslinuxfoss.com/install-wine-latest-stable-release-ubuntu-22-04/</span></span><br><span class="line"><span class="comment">#https://wiki.winehq.org/Ubuntu_zhcn</span></span><br><span class="line"><span class="comment">#注意官网不能安装winehq-stable</span></span><br><span class="line">sudo dpkg --add-architecture i386</span><br><span class="line">wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -</span><br><span class="line">sudo add-apt-repository <span class="string">'deb https://dl.winehq.org/wine-builds/ubuntu/ impish main'</span></span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install --install-recommends winehq-stable</span><br><span class="line">wine --version</span><br><span class="line"></span><br><span class="line"><span class="comment">#企业微信</span></span><br><span class="line">wine WeCom_3.1.16.3008.exe</span><br><span class="line"><span class="comment">#微信</span></span><br><span class="line">wine WeChatSetup_V3.4.0.38.exe</span><br><span class="line"><span class="comment">#卸载</span></span><br><span class="line">wine uninstaller</span><br><span class="line"><span class="comment">#配置</span></span><br><span class="line">wine winecfg</span><br><span class="line"></span><br><span class="line"><span class="comment">#输入框不能正常显示（不显示）输入的文字</span></span><br><span class="line"><span class="comment">#https://blog.csdn.net/hongxiao2016/article/details/115156831</span></span><br><span class="line">sudo apt install winetricks</span><br><span class="line">proxy_on</span><br><span class="line">winetricks riched20</span><br><span class="line"></span><br><span class="line"><span class="comment">#英文模式下微信乱码解决：</span></span><br><span class="line"><span class="comment">#https://blog.csdn.net/ysy950803/article/details/80326832</span></span><br><span class="line"><span class="comment">#cp -a /Developer/Software/Themes/Fonts/* ~/.deepinwine/Deepin-WeChat/drive_c/windows/Fonts/</span></span><br><span class="line">cp -a /Developer/linux/software/Themes/Fonts/* ~/.wine/drive_c/windows/Fonts/</span><br><span class="line">vim msyh_font.reg</span><br><span class="line">REGEDIT4</span><br><span class="line"> </span><br><span class="line">[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\FontLink\SystemLink]</span><br><span class="line"><span class="string">"Lucida Sans Unicode"</span>=<span class="string">"msyh.ttc"</span></span><br><span class="line"><span class="string">"Microsoft Sans Serif"</span>=<span class="string">"msyh.ttc"</span></span><br><span class="line"><span class="string">"MS Sans Serif"</span>=<span class="string">"msyh.ttc"</span></span><br><span class="line"><span class="string">"Tahoma"</span>=<span class="string">"msyh.ttc"</span></span><br><span class="line"><span class="string">"Tahoma Bold"</span>=<span class="string">"msyhbd.ttc"</span></span><br><span class="line"><span class="string">"msyh"</span>=<span class="string">"msyh.ttc"</span></span><br><span class="line"><span class="string">"Arial"</span>=<span class="string">"msyh.ttc"</span></span><br><span class="line"><span class="string">"Arial Black"</span>=<span class="string">"msyh.ttc"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#deepin-wine6-stable regedit msyh_font.reg</span></span><br><span class="line">wine regedit msyh_font.reg</span><br><span class="line"></span><br><span class="line"><span class="comment">#vim /home/dave/.deepinwine/Deepin-WeChat/system.reg</span></span><br><span class="line"><span class="comment">#vim ~/.wine/system.reg</span></span><br><span class="line"><span class="comment">#查找关键词FontSubstitutes，把它下面挨着的“MS Shell Dlg”与“MS Shell Dlg2”的内容改为“msyh”</span></span><br><span class="line">sed -i <span class="string">'s;"MS Shell Dlg"="Tahoma";"MS Shell Dlg"="msyh";g'</span> ~/.wine/system.reg</span><br><span class="line">sed -i <span class="string">'s;"MS Shell Dlg 2"="Tahoma";"MS Shell Dlg 2"="msyh";g'</span> ~/.wine/system.reg</span><br></pre></td></tr></table></figure>
+<h2 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openconnect</span><br><span class="line">sudo apt install network-manager-openconnect</span><br><span class="line">sudo apt install network-manager-openconnect-gnome</span><br></pre></td></tr></table></figure>
+<h2 id="SecureCRT"><a href="#SecureCRT" class="headerlink" title="SecureCRT"></a>SecureCRT</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#libssl1.0.0</span></span><br><span class="line">sudo dpkg -i libssl1.0.0_1.0.2g-1ubuntu4.20_amd64.deb</span><br><span class="line">sudo apt-get install libpython2.7</span><br><span class="line"><span class="comment">#libpng12</span></span><br><span class="line">sudo add-apt-repository ppa:linuxuprising/libpng12</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install libpng12-0</span><br><span class="line"><span class="comment"># sudo apt install build-essential zlib1g-dev</span></span><br><span class="line"><span class="comment"># cd</span></span><br><span class="line"><span class="comment"># mkdir src</span></span><br><span class="line"><span class="comment"># wget https://ppa.launchpadcontent.net/linuxuprising/libpng12/ubuntu/pool/main/libp/libpng/libpng_1.2.54.orig.tar.xz</span></span><br><span class="line"><span class="comment"># tar Jxfv libpng_1.2.54.orig.tar.xz</span></span><br><span class="line"><span class="comment"># cd libpng-1.2.54</span></span><br><span class="line"><span class="comment"># ./configure</span></span><br><span class="line"><span class="comment"># make</span></span><br><span class="line"><span class="comment"># sudo make install</span></span><br><span class="line"><span class="comment"># sudo ln -s /usr/local/lib/libpng12.so.0.54.0 /usr/lib/libpng12.so</span></span><br><span class="line"><span class="comment"># sudo ln -s /usr/local/lib/libpng12.so.0.54.0 /usr/lib/libpng12.so.0</span></span><br><span class="line"></span><br><span class="line">sudo dpkg -i scrt-sfx-8.3.4-1699.ubuntu16-64.x86_64.deb</span><br></pre></td></tr></table></figure>
+<h2 id="Navicat-Premium-15"><a href="#Navicat-Premium-15" class="headerlink" title="Navicat Premium 15"></a>Navicat Premium 15</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libfuse2</span><br><span class="line"></span><br><span class="line"><span class="comment">#Crack</span></span><br><span class="line">./navicat-keygen --text ./RegPrivateKey.pem</span><br><span class="line"></span><br><span class="line">sudo cp -a libgio-2.0.so.0 /Developer/Navicat15/</span><br><span class="line"></span><br><span class="line"><span class="comment">#/lib/x86_64-linux-gnu/libgio-2.0.so.0: undefined symbol: g_module_open_full的解决：</span></span><br><span class="line"><span class="comment">#vim navicat15.sh</span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=/Developer/Navicat15:<span class="variable">$LD_LIBRARY_PATH</span>;</span><br><span class="line">/Developer/Navicat15/navicat15-premium-cs-patched.AppImage</span><br><span class="line"></span><br><span class="line"><span class="comment">#Start</span></span><br><span class="line">/Developer/Navicat15/navicat15.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#https://www.zssnp.top/2021/11/11/netease/</span></span><br><span class="line"><span class="comment">#sudo mv /lib/x86_64-linux-gnu/libgio-2.0.so.0 /lib/x86_64-linux-gnu/libgio-2.0.so.0.bak</span></span><br><span class="line"><span class="comment">##download libgio-2.0.so.0 from: https://wwx.lanzoui.com/iNxJNwdnkle</span></span><br><span class="line"><span class="comment">#sudo cp -a libgio-2.0.so.0 /lib/x86_64-linux-gnu/</span></span><br><span class="line"><span class="comment">##发现处理后settings打不开,恢复：</span></span><br><span class="line"><span class="comment">#sudo ln -sf /lib/x86_64-linux-gnu/libgio-2.0.so.0.7200.1 /lib/x86_64-linux-gnu/libgio-2.0.so.0</span></span><br><span class="line"><span class="comment">##libselinux.so.1: no version information available (required by /lib/x86_64-linux-gnu/libgio-2.0.so.0)</span></span><br><span class="line"><span class="comment">#可以忽略，不影响使用</span></span><br></pre></td></tr></table></figure>
+<h2 id="Cider"><a href="#Cider" class="headerlink" title="Cider"></a>Cider</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://cider.sh/</span></span><br><span class="line">wget https://github.com/ciderapp/cider-releases/releases/download/v1.5.0/cider_1.5.0_amd64.deb</span><br><span class="line">sudo dpkg -i cider_1.5.0_amd64.deb</span><br></pre></td></tr></table></figure>
+<h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#wget "https://dl-sh-ctc-2.pchome.net/25/rm/YosemiteSanFranciscoFont-master.zip"</span></span><br><span class="line"><span class="comment">#mv YosemiteSanFranciscoFont-master SanFranciscoFont</span></span><br><span class="line"><span class="comment">#sudo cp -a SanFranciscoFont /usr/share/fonts/</span></span><br><span class="line">sudo git <span class="built_in">clone</span> https://github.com/AppleDesignResources/SanFranciscoFont /usr/share/fonts/SanFranciscoFont</span><br></pre></td></tr></table></figure>
+<p>San Francisco Text Medium</p>
+<h2 id="WPS字体"><a href="#WPS字体" class="headerlink" title="WPS字体"></a>WPS字体</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://blog.huzhifeng.com/2017/01/15/WPS/</span></span><br><span class="line"><span class="comment">#https://www.dropbox.com/s/q6rhaorhsbxbylk/wps_symbol_fonts.zip?dl=0</span></span><br><span class="line">sudo mkdir -p /usr/share/fonts/wps_symbol_fonts</span><br><span class="line">sudo unzip wps_symbol_fonts.zip -d /usr/share/fonts/wps_symbol_fonts</span><br><span class="line">sudo chmod 755 /usr/share/fonts/wps_symbol_fonts</span><br></pre></td></tr></table></figure>
+<h2 id="开机画面"><a href="#开机画面" class="headerlink" title="开机画面"></a>开机画面</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#https://www.gnome-look.org/browse/cat/109/ord/latest/</span><br><span class="line">git clone https://github.com/vinceliuice/grub2-themes</span><br><span class="line">cd grub2-themes</span><br><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
+<h2 id="SysMonitor"><a href="#SysMonitor" class="headerlink" title="SysMonitor"></a>SysMonitor</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#https://www.zhyong.cn/posts/f35/</span><br><span class="line">sudo apt install python3-psutil gir1.2-appindicator3-0.1</span><br><span class="line">git clone https://github.com/fossfreedom/indicator-sysmonitor.git</span><br><span class="line">cd indicator-sysmonitor</span><br><span class="line">sudo make install</span><br><span class="line">cd ..</span><br><span class="line">rm -rf indicator-sysmonitor</span><br><span class="line"></span><br><span class="line">#配置</span><br><span class="line">方案一</span><br><span class="line">&#123;net&#125;║cpu:&#123;cpu&#125;/&#123;cputemp&#125;</span><br><span class="line">方案二</span><br><span class="line">&#123;net&#125;║CPU &#123;cpu&#125;/&#123;cputemp&#125;║MEM &#123;mem&#125;/&#123;fs///&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="修复grub"><a href="#修复grub" class="headerlink" title="修复grub"></a>修复grub</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#view UUID</span><br><span class="line">blkid </span><br><span class="line"></span><br><span class="line">#Starting repair grub</span><br><span class="line">#root=(hd0,gpt8)</span><br><span class="line">#prefix=/boot/grub</span><br><span class="line">set root=(hd0,gpt8)</span><br><span class="line">set prefix=(hd0,gpt8)/boot/grub</span><br><span class="line">insmod normal</span><br><span class="line">normal</span><br><span class="line">#Logon System</span><br><span class="line">sudo update-grub</span><br><span class="line">sudo grub-install /dev/nvme0n1</span><br><span class="line">#或者</span><br><span class="line">sudo add-apt-repository ppa:yannubuntu/boot-repair</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install boot-repair</span><br><span class="line">#打开Dash，输入boot-repair，打开它，点击recommanded repair按钮。接下来按照提示修复即可。</span><br><span class="line"></span><br><span class="line">#Fixed fstab error</span><br><span class="line">mount -o remount, rw /</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><h3 id="二进制文件安装"><a href="#二进制文件安装" class="headerlink" title="二进制文件安装"></a>二进制文件安装</h3><p>全自动安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">sudo apt-get install libaio1 libaio-dev -y</span><br><span class="line">sudo apt-get install libnuma-dev -y</span><br><span class="line">sudo apt-get install libncurses5 -y</span><br><span class="line"></span><br><span class="line">cat &gt; /etc/my.cnf &lt;&lt; EOF</span><br><span class="line">[mysqld]</span><br><span class="line"><span class="built_in">bind</span>-address=0.0.0.0</span><br><span class="line">port=3306</span><br><span class="line">socket=/Developer/mysql-5.7.37/data/mysql.sock</span><br><span class="line">pid-file=/Developer/mysql-5.7.37/logs/mysql.pid</span><br><span class="line">basedir=/Developer/mysql-5.7.37</span><br><span class="line">datadir=/Developer/mysql-5.7.37/data</span><br><span class="line">max_connections=20</span><br><span class="line"></span><br><span class="line">character-set-server=utf8</span><br><span class="line">collation-server=utf8_general_ci</span><br><span class="line">lower_case_table_names=1</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">cat &gt; /usr/lib/systemd/system/mysqld.service &lt;&lt; EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=MySQL Server</span><br><span class="line">After=syslog.target</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">PermissionsStartOnly=<span class="literal">true</span></span><br><span class="line"><span class="comment">#ExecStartPre=/bin/mkdir -p /var/run/mysqld</span></span><br><span class="line"><span class="comment">#ExecStartPre=/bin/chown mysql:mysql -R /var/run/mysqld</span></span><br><span class="line">ExecStart=/Developer/mysql-5.7.37/bin/mysqld_safe --defaults-file=/etc/my.cnf</span><br><span class="line">ExecStop=/Developer/mysql-5.7.37/bin/mysql.server stop</span><br><span class="line">TimeoutSec=300</span><br><span class="line">PrivateTmp=<span class="literal">true</span></span><br><span class="line">User=mysql</span><br><span class="line">Group=mysql</span><br><span class="line">WorkingDirectory=/Developer/mysql-5.7.37</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">tar zxf mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz</span><br><span class="line">mkdir -p /Developer/mysql-5.7.37/</span><br><span class="line">cp -a mysql-5.7.37-linux-glibc2.12-x86_64/* /Developer/mysql-5.7.37/</span><br><span class="line">rm -fr mysql-5.7.37-linux-glibc2.12-x86_64</span><br><span class="line"></span><br><span class="line">cp -a /Developer/mysql-5.7.37/support-files/mysql.server /Developer/mysql-5.7.37/bin/mysql.server</span><br><span class="line">sed -i <span class="string">"s;^basedir=.*;basedir=/Developer/mysql-5.7.37;g"</span> /Developer/mysql-5.7.37/bin/mysql.server</span><br><span class="line">sed -i <span class="string">"s;^datadir=.*;datadir=/Developer/mysql-5.7.37/data;g"</span> /Developer/mysql-5.7.37/bin/mysql.server</span><br><span class="line"></span><br><span class="line">groupadd mysql</span><br><span class="line">useradd -r -g mysql mysql</span><br><span class="line">sudo chown -R mysql:mysql /Developer/mysql-5.7.37</span><br><span class="line">sudo mkdir -p /Developer/mysql-5.7.37/logs/</span><br><span class="line">sudo chown -R mysql.mysql /Developer/mysql-5.7.37/logs/</span><br><span class="line"></span><br><span class="line">sudo /Developer/mysql-5.7.37/bin/mysqld --initialize --user=mysql &gt; ./<span class="built_in">log</span> 2&gt;&amp;1</span><br><span class="line">rootpwd=`cat ./<span class="built_in">log</span> | grep <span class="string">"temporary password"</span>|sed <span class="string">'s;^.*: ;;g'</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"root pwd is: <span class="variable">$rootpwd</span>"</span></span><br><span class="line"><span class="comment">#--basedir=/Developer/mysql-5.7.37 --datadir=/Developer/mysql-5.7.37/data</span></span><br><span class="line"></span><br><span class="line">ln -s /Developer/mysql-5.7.37/bin/mysql /usr/bin/mysql</span><br><span class="line"></span><br><span class="line">ln -s /Developer/mysql-5.7.37/data/mysql.sock /tmp/mysql.sock</span><br><span class="line"><span class="comment">#Doesn't work for docker build</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> mysqld</span><br><span class="line"></span><br><span class="line">su - mysql -c <span class="string">"/Developer/mysql-5.7.37/bin/mysqld_safe --defaults-file=/etc/my.cnf &amp;"</span></span><br><span class="line">mkdir -p /var/run/mysqld/</span><br><span class="line">ln -s /Developer/mysql-5.7.37/data/mysql.sock /var/run/mysqld/mysqld.sock</span><br><span class="line">ln -s /Developer/mysql-5.7.37/bin/mysqladmin /usr/bin/mysqladmin</span><br><span class="line">sleep 3</span><br><span class="line"></span><br><span class="line">mysql -uroot -h127.0.0.1 -p<span class="variable">$rootpwd</span> --connect-expired-password -e <span class="string">"alter user user() identified by '';FLUSH PRIVILEGES;"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"The root password has been empty for localhost!"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Starting granting some privileges..."</span></span><br><span class="line">mysql -uroot -h127.0.0.1 -e <span class="string">" \</span></span><br><span class="line"><span class="string">grant all privileges on *.* to root@'%' identified by 'Aa123#@!' WITH GRANT OPTION; \</span></span><br><span class="line"><span class="string">grant all privileges on *.* to webase@'%' identified by 'Aa123#@!' WITH GRANT OPTION; \</span></span><br><span class="line"><span class="string">FLUSH PRIVILEGES; \</span></span><br><span class="line"><span class="string">"</span></span><br><span class="line"></span><br><span class="line">mysqladmin  -uroot -S /var/run/mysqld/mysqld.sock shutdown</span><br></pre></td></tr></table></figure>
+<p>手动安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">#https://blog.csdn.net/weixin_36349646/article/details/102616914</span><br><span class="line">#https://www.cnblogs.com/ralap7/p/9034879.html</span><br><span class="line">#https://raw.githubusercontent.com/zhaoxunyong/stock-webapp/1.1.x/backend/README.md</span><br><span class="line"></span><br><span class="line">sudo apt-get install libaio1 libaio-dev -y</span><br><span class="line">sudo apt-get install libnuma-dev -y</span><br><span class="line"></span><br><span class="line">#创建用户组mysql</span><br><span class="line">groupadd mysql             </span><br><span class="line">#-r参数表示mysql用户是系统用户，不可用于登录系统，创建用户mysql并将其添加到用户组mysql中</span><br><span class="line">useradd -r -g mysql mysql</span><br><span class="line">sudo chown -R mysql:mysql /Developer/mysql-5.7.37</span><br><span class="line">sudo mkdir -p /Developer/mysql-5.7.37/logs/</span><br><span class="line">sudo chown -R mysql.mysql /Developer/mysql-5.7.37/logs/</span><br><span class="line"></span><br><span class="line">vim my.cnf</span><br><span class="line">[mysqld]</span><br><span class="line">bind-address=0.0.0.0</span><br><span class="line">port=3306</span><br><span class="line">socket=/Developer/mysql-5.7.37/data/mysql.sock</span><br><span class="line">pid-file=/Developer/mysql-5.7.37/logs/mysql.pid</span><br><span class="line">basedir=/Developer/mysql-5.7.37</span><br><span class="line">datadir=/Developer/mysql-5.7.37/data</span><br><span class="line">max_connections=20</span><br><span class="line"></span><br><span class="line">character-set-server=utf8</span><br><span class="line">collation-server=utf8_general_ci</span><br><span class="line">lower_case_table_names=1</span><br><span class="line"></span><br><span class="line">sudo cp -a my.cnf /etc/my.cnf</span><br><span class="line"></span><br><span class="line">/usr/lib/systemd/system/mysqld.service</span><br><span class="line">#vim mysqld.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=MySQL Server</span><br><span class="line">After=syslog.target</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">PermissionsStartOnly=true</span><br><span class="line">#ExecStartPre=/bin/mkdir -p /var/run/mysqld</span><br><span class="line">#ExecStartPre=/bin/chown mysql:mysql -R /var/run/mysqld</span><br><span class="line">ExecStart=/Developer/mysql-5.7.37/bin/mysqld_safe --defaults-file=/etc/my.cnf</span><br><span class="line">ExecStop=/Developer/mysql-5.7.37/bin/mysql.server stop</span><br><span class="line">TimeoutSec=300</span><br><span class="line">PrivateTmp=true</span><br><span class="line">User=mysql</span><br><span class="line">Group=mysql</span><br><span class="line">WorkingDirectory=/Developer/mysql-5.7.37</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br><span class="line">sudo cp -a mysqld.service /usr/lib/systemd/system/mysqld.service</span><br><span class="line"></span><br><span class="line">cp -a /Developer/mysql-5.7.37/support-files/mysql.server /Developer/mysql-5.7.37/bin/mysql.server</span><br><span class="line">sed -i &quot;s;^basedir=.*;basedir=/Developer/mysql-5.7.37;g&quot; /Developer/mysql-5.7.37/bin/mysql.server</span><br><span class="line">sed -i &quot;s;^datadir=.*;datadir=/Developer/mysql-5.7.37/data;g&quot; /Developer/mysql-5.7.37/bin/mysql.server</span><br><span class="line"></span><br><span class="line">#Copying the following password the command&apos;s generated:</span><br><span class="line">sudo bin/mysqld --initialize --user=mysql --basedir=/Developer/mysql-5.7.37 --datadir=/Developer/mysql-5.7.37/data</span><br><span class="line"></span><br><span class="line">#Starting 1</span><br><span class="line">sudo systemctl start mysqld</span><br><span class="line"></span><br><span class="line">#Starting 2</span><br><span class="line">#sudo vim support-files/mysql.server </span><br><span class="line">basedir=/Developer/mysql-5.7.37</span><br><span class="line">datadir=/Developer/mysql-5.7.37/data</span><br><span class="line">#Starting MySQL Server</span><br><span class="line">sudo support-files/mysql.server start</span><br><span class="line">sudo support-files/mysql.server stop</span><br><span class="line"></span><br><span class="line">#Starting 3</span><br><span class="line">#/works/app/mysql/bin/mysqld_safe --datadir=/works/data/mydata --socket=/works/app/mysql/mysql.sock &amp;</span><br><span class="line">#mysqladmin  -uroot -p -S /works/app/mysql/mysql.sock shutdown</span><br><span class="line">/Developer/mysql-5.7.37/bin/mysqld_safe --defaults-file=/etc/my.cnf --socket=/works/app/mysql/mysql.sock &amp;</span><br><span class="line">mysqladmin  -uroot -p -S /works/app/mysql/mysql.sock shutdown</span><br><span class="line"></span><br><span class="line">#bin/mysql -uroot -p</span><br><span class="line">alter user &apos;root&apos;@&apos;localhost&apos; identified by &apos;Aa654321&apos;; </span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">grant all privileges on *.* to root@&apos;%&apos; identified by &apos;123456&apos; WITH GRANT OPTION;</span><br><span class="line">#grant all privileges on *.* to root@&apos;localhost&apos; identified by &apos;Aa654321&apos;;</span><br><span class="line">CREATE DATABASE `saas` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; </span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure>
+<h3 id="docker安装"><a href="#docker安装" class="headerlink" title="docker安装"></a>docker安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://raw.githubusercontent.com/zhaoxunyong/stock-webapp/1.1.x/backend/README.md</span></span><br><span class="line">docker run -d -p 3306:3306 --restart=always --name mysql \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD=123456 \</span><br><span class="line"><span class="comment"># -e MYSQL_DATABASE=test \</span></span><br><span class="line">-e MYSQL_USER=webase \</span><br><span class="line">-e MYSQL_PASSWORD=123456 \</span><br><span class="line">mysql:5.7.32 \</span><br><span class="line">--character-set-server=utf8 --collation-server=utf8_general_ci --lower_case_table_names=1</span><br></pre></td></tr></table></figure>
+<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable iptables</span><br><span class="line">systemctl stop iptables</span><br><span class="line">systemctl disable firewalld</span><br><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line">#Uninstalling old versions:</span><br><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br><span class="line"></span><br><span class="line">#Installation from docker offical:</span><br><span class="line">#https://docs.docker.com/engine/install/ubuntu/</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">sudo add-apt-repository \</span><br><span class="line">   &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \</span><br><span class="line">   $(lsb_release -cs) \</span><br><span class="line">   stable&quot;</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install docker-ce docker-ce-cli containerd.io</span><br><span class="line"></span><br><span class="line">#Or Installation From Aliyun</span><br><span class="line">#https://www.cnblogs.com/763977251-sg/p/11837130.html</span><br><span class="line">#Docker installation</span><br><span class="line">#https://aka.ms/vscode-remote/samples/docker-from-docker</span><br><span class="line">apt-get -y install apt-transport-https ca-certificates software-properties-common</span><br><span class="line"># step 2: 安装GPG证书</span><br><span class="line">curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | apt-key add -</span><br><span class="line"># Step 3: 写入软件源信息</span><br><span class="line">add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;</span><br><span class="line"># Step 4: 更新并安装 Docker-CE</span><br><span class="line">apt-get -y update</span><br><span class="line">#apt install python3 -y</span><br><span class="line">#apt-get -y install docker-ce</span><br><span class="line">#sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"></span><br><span class="line">#History Version:</span><br><span class="line">apt-cache madison docker-ce</span><br><span class="line"></span><br><span class="line">#Uninstall</span><br><span class="line">#sudo apt-get purge docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line">#Images, containers, volumes, or customized configuration files on your host are not automatically removed. To #delete all images, containers, and volumes:</span><br><span class="line">sudo rm -rf /var/lib/docker</span><br><span class="line">sudo rm -rf /var/lib/containerd</span><br><span class="line"></span><br><span class="line">#Setting china mirror</span><br><span class="line">#https://www.cnblogs.com/wushuaishuai/p/9984228.html</span><br><span class="line">https://github.com/zhaoxunyong/vagrant/blob/master/boxes/docker/script.sh</span><br><span class="line"></span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;dns&quot; : [</span><br><span class="line">     &quot;8.8.4.4&quot;,</span><br><span class="line">     &quot;8.8.8.8&quot;,</span><br><span class="line">     &quot;114.114.114.114&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;registry-mirrors&quot;: [</span><br><span class="line">    &quot;https://registry.docker-cn.com&quot;,</span><br><span class="line">    &quot;https://3laho3y3.mirror.aliyuncs.com&quot;,</span><br><span class="line">    &quot;http://hub-mirror.c.163.com&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">#Proxy</span><br><span class="line">sudo mkdir -p /etc/systemd/system/docker.service.d</span><br><span class="line">sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf &lt;&lt;-&apos;EOF&apos;</span><br><span class="line">[Service]</span><br><span class="line">Environment=&quot;HTTP_PROXY=http://192.168.101.175:1082&quot;</span><br><span class="line">Environment=&quot;HTTPS_PROXY=http://192.168.101.175:1082&quot;</span><br><span class="line">Environment=&quot;NO_PROXY=127.0.0.1,localhost,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16,*.zerofinance.net,*.aliyun.com,*.163.com,*.docker-cn.com,kubernetes.docker.internal&quot;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">或者：</span><br><span class="line">vim /usr/lib/systemd/system/docker.service </span><br><span class="line"># 在dockerd后面加参数</span><br><span class="line">ExecStart=/usr/bin/dockerd \</span><br><span class="line">--registry-mirror=https://registry.docker-cn.com \</span><br><span class="line">--registry-mirror=https://3laho3y3.mirror.aliyuncs.com \</span><br><span class="line">--registry-mirror=http://hub-mirror.c.163.com;&quot; \</span><br><span class="line">...</span><br><span class="line">以上操作后重启一下 Docker</span><br><span class="line"></span><br><span class="line">#开启远程API访问端口</span><br><span class="line">https://cloud.tencent.com/developer/article/1683689</span><br><span class="line"># vim /usr/lib/systemd/system/docker.service</span><br><span class="line">[Service]</span><br><span class="line">ExecStart=</span><br><span class="line">ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock</span><br><span class="line"></span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br><span class="line">lsof -i:2375</span><br><span class="line">COMMAND     PID USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME</span><br><span class="line">dockerd 1259648 root    6u  IPv6 2709332      0t0  TCP *:2375 (LISTEN)</span><br><span class="line"></span><br><span class="line">#Test</span><br><span class="line">docker pull k8s.gcr.io/echoserver:1.4</span><br><span class="line"></span><br><span class="line">sudo groupadd docker</span><br><span class="line">sudo gpasswd -a $&#123;USER&#125; docker</span><br><span class="line">sudo chmod 666 /var/run/docker.sock</span><br><span class="line">sudo systemctl restart docker</span><br><span class="line">docker info后是否有Registry Mirrors.</span><br><span class="line"></span><br><span class="line">测速：</span><br><span class="line">docker rmi node:latest</span><br><span class="line">time docker pull node:latest</span><br></pre></td></tr></table></figure>
+<p>History docker installation:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">docker version is: 20.10.7:</span><br><span class="line"><span class="comment">#https://blog.csdn.net/u011519550/article/details/102688892</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install apt-transport-https ca-certificates curl software-properties-common</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">sudo add-apt-repository <span class="string">"deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"</span></span><br><span class="line"></span><br><span class="line">apt-cache madison docker-ce</span><br><span class="line">apt install docker-ce-cli=5:20.10.7~3-0~ubuntu-xenial docker-ce=5:20.10.7~3-0~ubuntu-xenial</span><br><span class="line"></span><br><span class="line">Ubuntu: Failed to get D-Bus connection: No such file or directory:</span><br><span class="line">cat /etc/rc.local</span><br><span class="line">sudo mkdir /sys/fs/cgroup/systemd</span><br><span class="line">mount -t cgroup -o none,name=systemd cgroup /sys/fs/cgroup/systemd</span><br><span class="line"><span class="comment">#reboot and docker start your container.</span></span><br></pre></td></tr></table></figure></p>
+<p>Creating centos instance with restrict cpu and memory:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --privileged=<span class="literal">true</span> --cpus=4 --cpu-shares=4000 -m 2048m --memory-reservation=256m --name mycento registry.zerofinance.net/library/centos:7 /usr/sbin/init</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/elementary-os.html" rel="next" title="elementary os">
+                <i class="fa fa-chevron-left"></i> elementary os
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/黑苹果安装过程.html" rel="prev" title="黑苹果安装过程">
+                黑苹果安装过程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
+              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装操作系统"><span class="nav-number">1.</span> <span class="nav-text">安装操作系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化apt"><span class="nav-number">2.</span> <span class="nav-text">优化apt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装基础包"><span class="nav-number">3.</span> <span class="nav-text">安装基础包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改操作系统配置"><span class="nav-number">4.</span> <span class="nav-text">修改操作系统配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Safe-RM"><span class="nav-number">5.</span> <span class="nav-text">Safe-RM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GIT"><span class="nav-number">6.</span> <span class="nav-text">GIT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量"><span class="nav-number">7.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rc-local"><span class="nav-number">8.</span> <span class="nav-text">rc.local</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜狗输入法-for-linux"><span class="nav-number">9.</span> <span class="nav-text">搜狗输入法 for linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统快捷键"><span class="nav-number">10.</span> <span class="nav-text">系统快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NODEJS"><span class="nav-number">11.</span> <span class="nav-text">NODEJS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JAVA"><span class="nav-number">12.</span> <span class="nav-text">JAVA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gnome-shell"><span class="nav-number">13.</span> <span class="nav-text">gnome-shell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wine"><span class="nav-number">14.</span> <span class="nav-text">Wine</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPN"><span class="nav-number">15.</span> <span class="nav-text">VPN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SecureCRT"><span class="nav-number">16.</span> <span class="nav-text">SecureCRT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Navicat-Premium-15"><span class="nav-number">17.</span> <span class="nav-text">Navicat Premium 15</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cider"><span class="nav-number">18.</span> <span class="nav-text">Cider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字体"><span class="nav-number">19.</span> <span class="nav-text">字体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WPS字体"><span class="nav-number">20.</span> <span class="nav-text">WPS字体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开机画面"><span class="nav-number">21.</span> <span class="nav-text">开机画面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SysMonitor"><span class="nav-number">22.</span> <span class="nav-text">SysMonitor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修复grub"><span class="nav-number">23.</span> <span class="nav-text">修复grub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">24.</span> <span class="nav-text">MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二进制文件安装"><span class="nav-number">24.1.</span> <span class="nav-text">二进制文件安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker安装"><span class="nav-number">24.2.</span> <span class="nav-text">docker安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker"><span class="nav-number">25.</span> <span class="nav-text">Docker</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

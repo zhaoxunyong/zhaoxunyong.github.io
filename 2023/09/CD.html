@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kubernetes,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="This is a guide to CD and CI.">
+<meta name="keywords" content="Kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CD">
+<meta property="og:url" content="http://blog.gcalls.cn/2023/09/CD.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="This is a guide to CD and CI.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.gcalls.cn/images/2023-09-26-CD/image-20230926173648087.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/2023-09-26-CD/image-20230926163552595.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/2023-09-26-CD/image-20230926173551648.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/2023-09-26-CD/image-20230926162504964.png">
+<meta property="og:updated_time" content="2024-07-25T07:36:00.053Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CD">
+<meta name="twitter:description" content="This is a guide to CD and CI.">
+<meta name="twitter:image" content="http://blog.gcalls.cn/images/2023-09-26-CD/image-20230926173648087.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.gcalls.cn/2023/09/CD.html">
+
+
+
+
+
+  <title>CD | Just do it</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2023/09/CD.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaoxunyong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CD</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-09-26T15:25:04+08:00">
+                2023-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2023/09/CD.html" class="leancloud_visitors" data-flag-title="CD">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This is a guide to CD and CI.</p>
+<a id="more"></a>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1. ArgoCD &lt;--- ok</span><br><span class="line">2. FluxCD &lt;--- Not Recommend</span><br><span class="line">3. JenkinsX &lt;--- Not Recommend</span><br><span class="line">4. aliyun</span><br><span class="line">5. GitlabCI &lt;--- ok</span><br><span class="line">6. tekton &lt;--- based on k8s, more complicated than others.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Prometheus</span><br><span class="line">kustomize &lt;--- ok</span><br><span class="line"></span><br><span class="line">rancher &lt;--- ok</span><br><span class="line">k3s/AutoK3s &lt;--- ok</span><br></pre></td></tr></table></figure>
+<h2 id="K3s"><a href="#K3s" class="headerlink" title="K3s"></a>K3s</h2><p>A lightweight kubernetes, like minikube.</p>
+<p><a href="https://k3s.io/" target="_blank" rel="noopener">K3s</a></p>
+<h3 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://docs.k3s.io/quick-start</span></span><br><span class="line"><span class="comment">#https://github.com/k3s-io/k3s/issues/1160</span></span><br><span class="line"><span class="comment">#Must have hostname can resolved by dns, or add them in /etc/hosts file of all machines:</span></span><br><span class="line">cat /etc/hosts:</span><br><span class="line">192.168.101.82 dave-PC</span><br><span class="line">192.168.109.50 dave-analysis-server</span><br><span class="line">192.168.109.52 peter-analysis-server</span><br><span class="line">192.168.109.53 eino-analysis-server</span><br><span class="line"></span><br><span class="line"><span class="comment">#Install Master:</span></span><br><span class="line">curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=<span class="string">"server --disable traefik"</span> sh</span><br><span class="line"><span class="comment">#In China:</span></span><br><span class="line">curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_EXEC=<span class="string">"server --disable traefik"</span> INSTALL_K3S_MIRROR=cn sh -</span><br><span class="line"></span><br><span class="line">cp -a /etc/rancher/k3s/k3s.yaml ~/.kube/config</span><br><span class="line">sed -i <span class="string">'s;127.0.0.1;192.168.101.82;g'</span> ~/.kube/config</span><br><span class="line">kubectl get all -A -o wide</span><br><span class="line"></span><br><span class="line"><span class="comment">#Install Node:</span></span><br><span class="line"><span class="comment">#K3S_TOKEN is located in Master Server: /var/lib/rancher/k3s/server/node-token</span></span><br><span class="line">curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | \</span><br><span class="line">INSTALL_K3S_EXEC=<span class="string">"--node-ip=192.168.109.50 --flannel-iface=eth1"</span> \</span><br><span class="line">INSTALL_K3S_MIRROR=cn K3S_URL=https://192.168.101.82:6443 K3S_NODE_NAME=dave-analysis-server \</span><br><span class="line">K3S_TOKEN=K10944a3ff29886d4bc05ba79fa6f8a8504bca00e35231e397f9242d7af6724d16c::server:32d4961ba4b4ea871855e856d0ccef06 sh -</span><br><span class="line"></span><br><span class="line">curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | \</span><br><span class="line">INSTALL_K3S_EXEC=<span class="string">"--node-ip=192.168.109.52 --flannel-iface=eth1"</span> \</span><br><span class="line">INSTALL_K3S_MIRROR=cn K3S_URL=https://192.168.101.82:6443 K3S_NODE_NAME=peter-analysis-server \</span><br><span class="line">K3S_TOKEN=K10944a3ff29886d4bc05ba79fa6f8a8504bca00e35231e397f9242d7af6724d16c::server:32d4961ba4b4ea871855e856d0ccef06 sh -</span><br><span class="line"></span><br><span class="line">curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | \</span><br><span class="line">INSTALL_K3S_EXEC=<span class="string">"--node-ip=192.168.109.53 --flannel-iface=eth1"</span> \</span><br><span class="line">INSTALL_K3S_MIRROR=cn K3S_URL=https://192.168.101.82:6443 K3S_NODE_NAME=eino-analysis-server \</span><br><span class="line">K3S_TOKEN=K10944a3ff29886d4bc05ba79fa6f8a8504bca00e35231e397f9242d7af6724d16c::server:32d4961ba4b4ea871855e856d0ccef06 sh -</span><br><span class="line"></span><br><span class="line"><span class="comment">#cloudeon(Just a memo, ignore this)</span></span><br><span class="line"><span class="comment">#https://cloudeon.top/</span></span><br><span class="line">docker run -d -p 7700:7700  --name cloudeon \</span><br><span class="line"> -v /data/cloudeon/application.properties:/usr/<span class="built_in">local</span>/cloudeon/cloudeon-assembly/conf/application.properties \</span><br><span class="line"> registry.cn-hangzhou.aliyuncs.com/udh/cloudeon:v1.3.0</span><br><span class="line"></span><br><span class="line"><span class="comment">#https://blog.thenets.org/how-to-create-a-k3s-cluster-with-nginx-ingress-controller/</span></span><br><span class="line"><span class="comment">#https://blog.csdn.net/weixin_45444133/article/details/116952250</span></span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.5/deploy/static/provider/cloud/deploy.yaml</span><br></pre></td></tr></table></figure>
+<h3 id="Uninstall"><a href="#Uninstall" class="headerlink" title="Uninstall"></a>Uninstall</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Master</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin/k3s-uninstall.sh</span><br><span class="line"><span class="comment">#Node</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin/k3s-agent-uninstall.sh</span><br></pre></td></tr></table></figure>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Create a test Namespace, if not exist</span></span><br><span class="line"><span class="string">kubectl</span> <span class="string">create</span> <span class="string">namespace</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Apply the example file</span></span><br><span class="line"><span class="comment">#https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/</span></span><br><span class="line"><span class="string">kubectl</span> <span class="string">-n</span> <span class="string">test</span> <span class="string">apply</span> <span class="string">-f</span> <span class="string">my-example.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">test-nginx-app</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">test-nginx-backend</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">test-nginx-backend</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">backend</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">docker.io/nginx:alpine</span></span><br><span class="line">          <span class="attr">imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line">          <span class="attr">ports:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">test-nginx-service</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">test-nginx-backend</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">test-nginx-ingress</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">test.w1.thenets.org</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">          <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">          <span class="attr">backend:</span></span><br><span class="line">            <span class="attr">service:</span></span><br><span class="line">              <span class="attr">name:</span> <span class="string">test-nginx-service</span></span><br><span class="line">              <span class="attr">port:</span> </span><br><span class="line">                <span class="attr">number:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">ingressClassName:</span> <span class="string">nginx</span></span><br></pre></td></tr></table></figure>
+<h2 id="Kustomize"><a href="#Kustomize" class="headerlink" title="Kustomize"></a>Kustomize</h2><p><a href="https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/" target="_blank" rel="noopener">Declarative Management of Kubernetes Objects Using Kustomize | Kubernetes</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Kustomize/</span><br><span class="line">├── base</span><br><span class="line">│   ├── deployment.yaml</span><br><span class="line">│   ├── kustomization.yaml</span><br><span class="line">│   └── service.yaml</span><br><span class="line">└── overlays</span><br><span class="line">    ├── dev</span><br><span class="line">    │   ├── deployment.yaml</span><br><span class="line">    │   ├── kustomization.yaml</span><br><span class="line">    │   ├── password.txt</span><br><span class="line">    │   └── service.yaml</span><br><span class="line">    └── prod</span><br><span class="line">        ├── deployment.yaml</span><br><span class="line">        ├── kustomization.yaml</span><br><span class="line">        ├── password.txt</span><br><span class="line">        └── service.yaml</span><br></pre></td></tr></table></figure>
+<p>base/kustomization.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">commonLabels:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">demo</span></span><br><span class="line"><span class="attr">commonAnnotations:</span></span><br><span class="line">  <span class="attr">version:</span> <span class="number">1.1</span><span class="number">.0</span></span><br><span class="line"><span class="attr">resources:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">deployment.yaml</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">service.yaml</span></span><br></pre></td></tr></table></figure>
+<p>base/deployment.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">apache</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">portfolio</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">apache</span></span><br><span class="line">  <span class="attr">strategy:</span> <span class="string">&#123;&#125;</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">apache</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">singharunk/webserver:v3</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">portfolio</span></span><br><span class="line">        <span class="attr">resources:</span> <span class="string">&#123;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>base/service.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">portfolio-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">apache</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">porty</span></span><br></pre></td></tr></table></figure>
+<p>Dev environment:</p>
+<p>overlays/dev/kustomization.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">namePrefix:</span> <span class="string">dev-</span></span><br><span class="line"><span class="attr">commonLabels:</span></span><br><span class="line">  <span class="attr">env:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">commonAnnotations:</span></span><br><span class="line">  <span class="attr">typeofApp:</span> <span class="string">htmlApp</span></span><br><span class="line"><span class="attr">bases:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">../../base</span></span><br><span class="line"><span class="attr">namespace:</span> <span class="string">kustomize-namespace</span></span><br><span class="line"><span class="attr">patchesStrategicMerge:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">deployment.yaml</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">service.yaml</span></span><br><span class="line"><span class="attr">secretGenerator:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">dummy</span></span><br><span class="line">  <span class="attr">files:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">password.txt</span></span><br></pre></td></tr></table></figure>
+<p>overlays/dev/deployment.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">portfolio</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">singharunk/webserver:v3</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">portfolio</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">dummy</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/opt/password.txt</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">dummy</span></span><br><span class="line">          <span class="attr">secret:</span></span><br><span class="line">             <span class="attr">secretName:</span> <span class="string">dummy</span></span><br></pre></td></tr></table></figure>
+<p>overlays/dev/password.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this is dummy secret but now I am changing it</span><br></pre></td></tr></table></figure>
+<p>overlays/dev/service.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">portfolio-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">apache</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">82</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">httpx</span></span><br></pre></td></tr></table></figure>
+<p>Prod environment:</p>
+<p>overlays/prod/kustomization.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">namePrefix:</span> <span class="string">prd-</span></span><br><span class="line"></span><br><span class="line"><span class="attr">commonLabels:</span></span><br><span class="line">  <span class="attr">env:</span> <span class="string">prd</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="attr">commonAnnotations:</span></span><br><span class="line">  <span class="attr">typeofApp:</span> <span class="string">htmlApp</span></span><br><span class="line">  <span class="attr">rollout:</span> <span class="string">value2</span></span><br><span class="line"></span><br><span class="line"><span class="attr">bases:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">../../base</span></span><br><span class="line"></span><br><span class="line"><span class="attr">patchesStrategicMerge:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">deployment.yaml</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">service.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">secretGenerator:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">dummy</span></span><br><span class="line">  <span class="attr">files:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">password.txt</span></span><br><span class="line"></span><br><span class="line"><span class="attr">namespace:</span> <span class="string">kustomize-namespace</span></span><br><span class="line"></span><br><span class="line"><span class="attr">generatorOptions:</span></span><br><span class="line">  <span class="attr">disableNameSuffixHash:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>overlays/prod/deployment.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">portfolio</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">singharunk/webserver:v3</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">portfolio</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">dummy</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/opt/password.txt</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">dummy</span></span><br><span class="line">          <span class="attr">secret:</span></span><br><span class="line">             <span class="attr">secretName:</span> <span class="string">dummy</span></span><br></pre></td></tr></table></figure>
+<p>overlays/prod/password.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this is dummy secret</span><br></pre></td></tr></table></figure>
+<p>overlays/prod/service.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">portfolio-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">apache</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">81</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">portx</span></span><br></pre></td></tr></table></figure>
+<p>Create</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> overlays/dev</span><br><span class="line"><span class="comment">#Run kubectl kustomize ./ to check if any error occurred</span></span><br><span class="line"><span class="comment">#kubectl kustomize &lt;kustomization_directory&gt;</span></span><br><span class="line">kubectl kustomize ./</span><br><span class="line"><span class="comment">#To apply those Resources, run kubectl apply with --kustomize or -k flag:</span></span><br><span class="line">kubectl apply -k &lt;kustomization_directory&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Argocd"><a href="#Argocd" class="headerlink" title="Argocd"></a>Argocd</h2><p><a href="https://argo-cd.readthedocs.io/en/stable/getting_started/" target="_blank" rel="noopener">Getting Started - Argo CD - Declarative GitOps CD for Kubernetes (argo-cd.readthedocs.io)</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzU1MzY4NzQ1OA==&amp;mid=2247512193&amp;idx=1&amp;sn=da41bb4072870e34bdf338c22bcbc8cc&amp;chksm=fbedf04ccc9a795a08f4b0deb5a8518aa901dc1e8678277d232fff0d05ba1613a3f8d8636ab9&amp;scene=178&amp;cur_album_id=2470838961377427457#rd" target="_blank" rel="noopener">Argo CD 保姆级入门教程 (qq.com)</a></p>
+<h3 id="Install-1"><a href="#Install-1" class="headerlink" title="Install"></a>Install</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#argocd with kubernetes 1.18</span></span><br><span class="line"><span class="comment">#https://argo-cd.readthedocs.io/en/stable/getting_started/</span></span><br><span class="line"><span class="comment">#https://mp.weixin.qq.com/s?__biz=MzU1MzY4NzQ1OA==&amp;mid=2247512193&amp;idx=1&amp;sn=da41bb4072870e34bdf338c22bcbc8cc&amp;chksm=fbedf04ccc9a795a08f4b0deb5a8518aa901dc1e8678277d232fff0d05ba1613a3f8d8636ab9&amp;scene=178&amp;cur_album_id=2470838961377427457#rd</span></span><br><span class="line"></span><br><span class="line">kubectl create namespace argocd</span><br><span class="line"><span class="comment">#kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml</span></span><br><span class="line">kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.1.2/manifests/install.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment">#Service Type Load Balancer</span></span><br><span class="line"><span class="comment">#Change the argocd-server service type to LoadBalancer:</span></span><br><span class="line">kubectl patch svc argocd-server -n argocd -p <span class="string">'&#123;"spec": &#123;"type": "LoadBalancer"&#125;&#125;'</span></span><br><span class="line">kubectl -n argocd get svc</span><br></pre></td></tr></table></figure>
+<p>Enable external web ui</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#Change port to 8443 and 8080</span><br><span class="line">kubectl -n argocd edit svc argocd-serve</span><br><span class="line">  ports:</span><br><span class="line">  - name: http</span><br><span class="line">    nodePort: 31291</span><br><span class="line">    port: 8080</span><br><span class="line">    protocol: TCP</span><br><span class="line">    targetPort: 8080</span><br><span class="line">  - name: https</span><br><span class="line">    nodePort: 31592</span><br><span class="line">    port: 8443</span><br><span class="line">    protocol: TCP</span><br><span class="line">    targetPort: 8080</span><br></pre></td></tr></table></figure>
+<p>The URL is: <a href="https://192.168.64.6:8443/" target="_blank" rel="noopener">https://192.168.64.6:8443/</a>, login name is admin.  Getting password from:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=&quot;&#123;.data.password&#125;&quot; | base64 -d; echo</span><br></pre></td></tr></table></figure>
+<p><img src="/images/2023-09-26-CD/image-20230926173648087.png" alt="image-20230926173648087"></p>
+<h3 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo"></a>Demo</h3><h4 id="Demo1"><a href="#Demo1" class="headerlink" title="Demo1"></a>Demo1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fleet/</span><br><span class="line">├── application.yaml</span><br><span class="line">└── dev</span><br><span class="line">    ├── deployment.yaml</span><br><span class="line">    └── service.yaml</span><br></pre></td></tr></table></figure>
+<p>application.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">argoproj.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Application</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">argo-demo</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">argocd</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">project:</span> <span class="string">default</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">source:</span></span><br><span class="line">    <span class="comment">#repoURL: https://github.com/yangchuansheng/argocd-lab.git</span></span><br><span class="line">    <span class="attr">repoURL:</span> <span class="string">http://gitlab.zerofinance.net/dave.zhao/fleet_demo.git</span></span><br><span class="line">    <span class="attr">targetRevision:</span> <span class="string">master</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">dev</span></span><br><span class="line">  <span class="attr">destination:</span> </span><br><span class="line">    <span class="attr">server:</span> <span class="string">https://kubernetes.default.svc</span></span><br><span class="line">    <span class="attr">namespace:</span> <span class="string">myapp</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># syncPolicy:</span></span><br><span class="line">  <span class="comment">#   syncOptions:</span></span><br><span class="line">  <span class="comment">#   - CreateNamespace=true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">#   automated:</span></span><br><span class="line">  <span class="comment">#     selfHeal: true</span></span><br><span class="line">  <span class="comment">#     prune: true</span></span><br></pre></td></tr></table></figure>
+<p>dev/deployment.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># deployment.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">myapp</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">myapp</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">myapp</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">myapp</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">registry.zerofinance.net/xpayappimage/am-webhook:1.0.x</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">8088</span></span><br></pre></td></tr></table></figure>
+<p>dev/service.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># service.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">myapp-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">myapp</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">8088</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8088</span></span><br></pre></td></tr></table></figure>
+<p>Create Apps Via Command</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f application.yaml</span><br></pre></td></tr></table></figure>
+<p>Creating Apps Via UI</p>
+<p>Open a browser to the Argo CD external UI, and login by visiting the IP/hostname in a browser and use the credentials set in step 4.</p>
+<p>After logging in, click the <strong>+ New App</strong> button:</p>
+<p><img src="/images/2023-09-26-CD/image-20230926163552595.png" alt="image-20230926163552595"></p>
+<p><strong><em>Notice: If you create apps via UI, you don’t need application.yaml located in root folder.</em></strong></p>
+<p>More usage please visit: <a href="https://argo-cd.readthedocs.io/en/stable/getting_started/" target="_blank" rel="noopener">Getting Started - Argo CD - Declarative GitOps CD for Kubernetes (argo-cd.readthedocs.io)</a></p>
+<h4 id="Demo2"><a href="#Demo2" class="headerlink" title="Demo2"></a>Demo2</h4><p>guestbook-ui-deployment.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">guestbook-ui</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">revisionHistoryLimit:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">guestbook-ui</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">guestbook-ui</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">gcr.io/heptio-images/ks-guestbook-demo:0.2</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">guestbook-ui</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p>guestbook-ui-svc.yaml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">guestbook/</span><br><span class="line">├── guestbook-ui-deployment.yaml</span><br><span class="line">└── guestbook-ui-svc.yaml</span><br></pre></td></tr></table></figure>
+<p>guestbook-ui-deployment.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">guestbook-ui</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">revisionHistoryLimit:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">guestbook-ui</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">guestbook-ui</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">gcr.io/heptio-images/ks-guestbook-demo:0.2</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">guestbook-ui</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p>guestbook-ui-svc.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">guestbook-ui</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">guestbook-ui</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ---</span></span><br><span class="line"><span class="comment"># apiVersion: networking.k8s.io/v1</span></span><br><span class="line"><span class="comment"># kind: Ingress</span></span><br><span class="line"><span class="comment"># metadata:</span></span><br><span class="line"><span class="comment">#   name: rollouts-bluegreen-ingress</span></span><br><span class="line"><span class="comment">#   annotations:</span></span><br><span class="line"><span class="comment">#     kubernetes.io/ingress.class: nginx</span></span><br><span class="line"><span class="comment"># spec:</span></span><br><span class="line"><span class="comment">#   rules:</span></span><br><span class="line"><span class="comment">#   - host: guestbook-ui.local</span></span><br><span class="line"><span class="comment">#     http:</span></span><br><span class="line"><span class="comment">#       paths:</span></span><br><span class="line"><span class="comment">#       - path: /</span></span><br><span class="line"><span class="comment">#         pathType: Prefix</span></span><br><span class="line"><span class="comment">#         backend:</span></span><br><span class="line"><span class="comment">#           # Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field</span></span><br><span class="line"><span class="comment">#           service:</span></span><br><span class="line"><span class="comment">#             name: guestbook-ui</span></span><br><span class="line"><span class="comment">#             port:</span></span><br><span class="line"><span class="comment">#               number: 80</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">guestbook-ui-ingress</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">guestbook-ui.local</span></span><br><span class="line">      <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">serviceName:</span> <span class="string">guestbook-ui</span></span><br><span class="line">              <span class="attr">servicePort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<h2 id="argo-rollouts"><a href="#argo-rollouts" class="headerlink" title="argo-rollouts"></a>argo-rollouts</h2><h3 id="Install-2"><a href="#Install-2" class="headerlink" title="Install"></a>Install</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kubectl create namespace argo-rollouts</span><br><span class="line"><span class="comment">#kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml</span></span><br><span class="line">kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/download/v1.2.2/install.yaml</span><br><span class="line"></span><br><span class="line">wget https://github.com/argoproj/argo-rollouts/releases/download/v1.2.2/kubectl-argo-rollouts-linux-amd64</span><br><span class="line">wget https://github.com/argoproj/argo-rollouts/releases/download/v1.2.2/kubectl-argo-rollouts-windows-amd64</span><br></pre></td></tr></table></figure>
+<h3 id="Demo-2"><a href="#Demo-2" class="headerlink" title="Demo"></a>Demo</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#demo</span></span><br><span class="line"><span class="comment">#kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/master/docs/getting-started/basic/rollout.yaml</span></span><br><span class="line"><span class="comment">#kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/master/docs/getting-started/basic/service.yaml</span></span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/v1.2.2/docs/getting-started/basic/rollout.yaml</span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/v1.2.2/docs/getting-started/basic/service.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment">#Watch</span></span><br><span class="line"><span class="comment">#kubectl argo rollouts get rollout rollouts-demo -w</span></span><br><span class="line">kubectl argo rollouts -n testing get rollout rollouts-demo --watch</span><br><span class="line"></span><br><span class="line"><span class="comment">#Updating a Rollout</span></span><br><span class="line">kubectl argo rollouts -n testing <span class="built_in">set</span> image rollouts-demo \</span><br><span class="line">  rollouts-demo=argoproj/rollouts-demo:yellow</span><br><span class="line"></span><br><span class="line"><span class="comment">#Promoting a Rollout</span></span><br><span class="line">kubectl argo rollouts -n testing promote rollouts-demo</span><br><span class="line"></span><br><span class="line"><span class="comment">#Updating a red Rollout</span></span><br><span class="line">kubectl argo rollouts -n testing <span class="built_in">set</span> image rollouts-demo \</span><br><span class="line">  rollouts-demo=argoproj/rollouts-demo:red</span><br><span class="line"></span><br><span class="line"><span class="comment">#Aborting a Rollout</span></span><br><span class="line">kubectl argo rollouts -n testing abort rollouts-demo</span><br><span class="line"></span><br><span class="line"><span class="comment">#In order to make Rollout considered Healthy again and not Degraded, it is necessary to change the desired state back to the previous, stable versio</span></span><br><span class="line">kubectl argo rollouts -n testing <span class="built_in">set</span> image rollouts-demo \</span><br><span class="line">  rollouts-demo=argoproj/rollouts-demo:yellow</span><br><span class="line">  </span><br><span class="line"><span class="comment">#ingress:</span></span><br><span class="line"><span class="comment">#https://argoproj.github.io/argo-rollouts/getting-started/nginx/</span></span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/master/docs/getting-started/nginx/rollout.yaml</span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/master/docs/getting-started/nginx/services.yaml</span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-rollouts/master/docs/getting-started/nginx/ingress.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment">#cat ingress.yaml has to be changed from &gt;=1.19 cluster</span></span><br><span class="line">apiVersion: networking.k8s.io/v1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: rollouts-demo-stable</span><br><span class="line">  annotations:</span><br><span class="line">    kubernetes.io/ingress.class: nginx</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">  - host: rollouts-demo.local</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /</span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          <span class="comment"># Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field</span></span><br><span class="line">          service:</span><br><span class="line">            name: rollouts-demo-stable</span><br><span class="line">            port:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Perform an update</span></span><br><span class="line">kubectl argo rollouts <span class="built_in">set</span> image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow</span><br></pre></td></tr></table></figure>
+<h3 id="Dashboard"><a href="#Dashboard" class="headerlink" title="Dashboard"></a>Dashboard</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#dashboard</span></span><br><span class="line">kubectl argo rollouts dashboard(url为启动这个命令的那台机器)</span><br><span class="line">http://192.168.102.82:3100/rollouts</span><br></pre></td></tr></table></figure>
+<p><img src="/images/2023-09-26-CD/image-20230926173551648.png" alt="image-20230926173551648"></p>
+<h3 id="bluegreen"><a href="#bluegreen" class="headerlink" title="bluegreen"></a>bluegreen</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#bluegreen</span></span><br><span class="line"><span class="comment">#https://github.com/argoproj/argo-rollouts/blob/master/examples/rollout-bluegreen.yaml</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#cat rollout-bluegreen.yaml</span></span><br><span class="line"><span class="comment"># This example demonstrates a Rollout using the blue-green update strategy, which contains a manual</span></span><br><span class="line"><span class="comment"># gate before promoting the new stack.</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">argoproj.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Rollout</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">revisionHistoryLimit:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">rollouts-demo</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">argoproj/rollouts-demo:blue</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">8080</span></span><br><span class="line">  <span class="attr">strategy:</span></span><br><span class="line">    <span class="attr">blueGreen:</span> </span><br><span class="line">      <span class="comment"># activeService specifies the service to update with the new template hash at time of promotion.</span></span><br><span class="line">      <span class="comment"># This field is mandatory for the blueGreen update strategy.</span></span><br><span class="line">      <span class="attr">activeService:</span> <span class="string">rollout-bluegreen-active</span></span><br><span class="line">      <span class="comment"># previewService specifies the service to update with the new template hash before promotion.</span></span><br><span class="line">      <span class="comment"># This allows the preview stack to be reachable without serving production traffic.</span></span><br><span class="line">      <span class="comment"># This field is optional.</span></span><br><span class="line">      <span class="attr">previewService:</span> <span class="string">rollout-bluegreen-preview</span></span><br><span class="line">      <span class="comment"># autoPromotionEnabled disables automated promotion of the new stack by pausing the rollout</span></span><br><span class="line">      <span class="comment"># immediately before the promotion. If omitted, the default behavior is to promote the new</span></span><br><span class="line">      <span class="comment"># stack as soon as the ReplicaSet are completely ready/available.</span></span><br><span class="line">      <span class="comment"># Rollouts can be resumed using: `kubectl argo rollouts promote ROLLOUT`</span></span><br><span class="line">      <span class="attr">autoPromotionEnabled:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollout-bluegreen-active</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollout-bluegreen-preview</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollouts-bluegreen-ingress</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">rollouts-bluegreen.local</span></span><br><span class="line">    <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">        <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">        <span class="attr">backend:</span></span><br><span class="line">          <span class="comment"># Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field</span></span><br><span class="line">          <span class="attr">service:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">rollout-bluegreen-active</span></span><br><span class="line">            <span class="attr">port:</span></span><br><span class="line">              <span class="attr">number:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p>Set image:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl argo rollouts <span class="built_in">set</span> image rollout-bluegreen \</span><br><span class="line">  rollouts-demo=argoproj/rollouts-demo:yellow</span><br><span class="line"></span><br><span class="line">  kubectl argo rollouts get rollout rollout-bluegreen -w</span><br></pre></td></tr></table></figure>
+<h3 id="Demo-3"><a href="#Demo-3" class="headerlink" title="Demo"></a>Demo</h3><h4 id="bluegreen-1"><a href="#bluegreen-1" class="headerlink" title="bluegreen"></a>bluegreen</h4><p>rollout-bluegreen.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This example demonstrates a Rollout using the blue-green update strategy, which contains a manual</span></span><br><span class="line"><span class="comment"># gate before promoting the new stack.</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">argoproj.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Rollout</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">revisionHistoryLimit:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">rollouts-demo</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">argoproj/rollouts-demo:blue</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">8080</span></span><br><span class="line">  <span class="attr">strategy:</span></span><br><span class="line">    <span class="attr">blueGreen:</span> </span><br><span class="line">      <span class="comment"># activeService specifies the service to update with the new template hash at time of promotion.</span></span><br><span class="line">      <span class="comment"># This field is mandatory for the blueGreen update strategy.</span></span><br><span class="line">      <span class="attr">activeService:</span> <span class="string">rollout-bluegreen-active</span></span><br><span class="line">      <span class="comment"># previewService specifies the service to update with the new template hash before promotion.</span></span><br><span class="line">      <span class="comment"># This allows the preview stack to be reachable without serving production traffic.</span></span><br><span class="line">      <span class="comment"># This field is optional.</span></span><br><span class="line">      <span class="attr">previewService:</span> <span class="string">rollout-bluegreen-preview</span></span><br><span class="line">      <span class="comment"># autoPromotionEnabled disables automated promotion of the new stack by pausing the rollout</span></span><br><span class="line">      <span class="comment"># immediately before the promotion. If omitted, the default behavior is to promote the new</span></span><br><span class="line">      <span class="comment"># stack as soon as the ReplicaSet are completely ready/available.</span></span><br><span class="line">      <span class="comment"># Rollouts can be resumed using: `kubectl argo rollouts promote ROLLOUT`</span></span><br><span class="line">      <span class="attr">autoPromotionEnabled:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollout-bluegreen-active</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollout-bluegreen-preview</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">rollout-bluegreen</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ---</span></span><br><span class="line"><span class="comment"># apiVersion: networking.k8s.io/v1</span></span><br><span class="line"><span class="comment"># kind: Ingress</span></span><br><span class="line"><span class="comment"># metadata:</span></span><br><span class="line"><span class="comment">#   name: rollouts-bluegreen-ingress</span></span><br><span class="line"><span class="comment">#   annotations:</span></span><br><span class="line"><span class="comment">#     kubernetes.io/ingress.class: nginx</span></span><br><span class="line"><span class="comment"># spec:</span></span><br><span class="line"><span class="comment">#   rules:</span></span><br><span class="line"><span class="comment">#   - host: rollouts-bluegreen.local</span></span><br><span class="line"><span class="comment">#     http:</span></span><br><span class="line"><span class="comment">#       paths:</span></span><br><span class="line"><span class="comment">#       - path: /</span></span><br><span class="line"><span class="comment">#         pathType: Prefix</span></span><br><span class="line"><span class="comment">#         backend:</span></span><br><span class="line"><span class="comment">#           # Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field</span></span><br><span class="line"><span class="comment">#           service:</span></span><br><span class="line"><span class="comment">#             name: rollout-bluegreen-active</span></span><br><span class="line"><span class="comment">#             port:</span></span><br><span class="line"><span class="comment">#               number: 80</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollouts-bluegreen-ingress</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">rollouts-bluegreen.local</span></span><br><span class="line">      <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">serviceName:</span> <span class="string">rollout-bluegreen-active</span></span><br><span class="line">              <span class="attr">servicePort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<h4 id="Canary"><a href="#Canary" class="headerlink" title="Canary"></a>Canary</h4><p>ingress.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apiVersion: networking.k8s.io/v1</span></span><br><span class="line"><span class="comment"># kind: Ingress</span></span><br><span class="line"><span class="comment"># metadata:</span></span><br><span class="line"><span class="comment">#   name: rollouts-canary-stable</span></span><br><span class="line"><span class="comment">#   annotations:</span></span><br><span class="line"><span class="comment">#     kubernetes.io/ingress.class: nginx</span></span><br><span class="line"><span class="comment"># spec:</span></span><br><span class="line"><span class="comment">#   rules:</span></span><br><span class="line"><span class="comment">#   - host: rollouts-canary.local</span></span><br><span class="line"><span class="comment">#     http:</span></span><br><span class="line"><span class="comment">#       paths:</span></span><br><span class="line"><span class="comment">#       - path: /</span></span><br><span class="line"><span class="comment">#         pathType: Prefix</span></span><br><span class="line"><span class="comment">#         backend:</span></span><br><span class="line"><span class="comment">#           # Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field</span></span><br><span class="line"><span class="comment">#           service:</span></span><br><span class="line"><span class="comment">#             name: rollouts-canary-stable</span></span><br><span class="line"><span class="comment">#             port:</span></span><br><span class="line"><span class="comment">#               number: 80</span></span><br><span class="line"></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollouts-canary-stable</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">nginx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">rollouts-canary.local</span></span><br><span class="line">      <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">serviceName:</span> <span class="string">rollouts-canary-stable</span></span><br><span class="line">              <span class="attr">servicePort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p>rollout.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">argoproj.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Rollout</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollouts-canary</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">strategy:</span></span><br><span class="line">    <span class="attr">canary:</span></span><br><span class="line">      <span class="attr">canaryService:</span> <span class="string">rollouts-canary-canary</span></span><br><span class="line">      <span class="attr">stableService:</span> <span class="string">rollouts-canary-stable</span></span><br><span class="line">      <span class="attr">trafficRouting:</span></span><br><span class="line">        <span class="attr">nginx:</span></span><br><span class="line">          <span class="attr">stableIngress:</span> <span class="string">rollouts-canary-stable</span></span><br><span class="line">      <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">setWeight:</span> <span class="number">5</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">pause:</span> <span class="string">&#123;&#125;</span></span><br><span class="line">  <span class="attr">revisionHistoryLimit:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">rollouts-canary</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">rollouts-canary</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">rollouts-canary</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">argoproj/rollouts-demo:blue</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">          <span class="attr">containerPort:</span> <span class="number">8080</span></span><br><span class="line">          <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">        <span class="attr">resources:</span></span><br><span class="line">          <span class="attr">requests:</span></span><br><span class="line">            <span class="attr">memory:</span> <span class="string">32Mi</span></span><br><span class="line">            <span class="attr">cpu:</span> <span class="string">5m</span></span><br></pre></td></tr></table></figure>
+<p>services.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollouts-canary-canary</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">rollouts-canary</span></span><br><span class="line">    <span class="comment"># This selector will be updated with the pod-template-hash of the canary ReplicaSet. e.g.:</span></span><br><span class="line">    <span class="comment"># rollouts-pod-template-hash: 7bf84f9696</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">rollouts-canary-stable</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">http</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">rollouts-canary</span></span><br><span class="line">    <span class="comment"># This selector will be updated with the pod-template-hash of the stable ReplicaSet. e.g.:</span></span><br><span class="line">    <span class="comment"># rollouts-pod-template-hash: 789746c88d</span></span><br></pre></td></tr></table></figure>
+<h2 id="Arago-workflow"><a href="#Arago-workflow" class="headerlink" title="Arago-workflow"></a>Arago-workflow</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#arago-workflow:</span></span><br><span class="line">Controller and Server</span><br><span class="line">kubectl create namespace argo</span><br><span class="line">kubectl apply -n argo -f https://github.com/argoproj/argo-workflows/releases/download/v3.3.9/install.yaml</span><br><span class="line"></span><br><span class="line">kubectl -n argo edit svc argo-server</span><br><span class="line">change argo-server to LoadBalancer</span><br><span class="line"></span><br><span class="line">https://192.168.64.6:2746/</span><br><span class="line"></span><br><span class="line"><span class="comment">#https://argoproj.github.io/argo-workflows/quick-start/</span></span><br><span class="line">kubectl patch deployment \</span><br><span class="line">  argo-server \</span><br><span class="line">  --namespace argo \</span><br><span class="line">  --<span class="built_in">type</span>=<span class="string">'json'</span> \</span><br><span class="line">  -p=<span class="string">'[&#123;"op": "replace", "path": "/spec/template/spec/containers/0/args", "value": [</span></span><br><span class="line"><span class="string">  "server",</span></span><br><span class="line"><span class="string">  "--auth-mode=server"</span></span><br><span class="line"><span class="string">]&#125;]'</span></span><br><span class="line"></span><br><span class="line">Get login password:</span><br><span class="line">k get secret  -n argo</span><br><span class="line">ARGO_TOKEN=<span class="string">"Bearer <span class="variable">$(kubectl get -n argo secret argo-server-token-vw8xf -o=jsonpath='&#123;.data.token&#125;' | base64 --decode)</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ARGO_TOKEN</span></span><br><span class="line"></span><br><span class="line">argo-windows-amd64.exe submit -n argo --watch https://raw.githubusercontent.com/argoproj/argo-workflows/v3.3.9/examples/hello-world.yaml</span><br></pre></td></tr></table></figure>
+<h2 id="Gitlab-Runner"><a href="#Gitlab-Runner" class="headerlink" title="Gitlab-Runner"></a>Gitlab-Runner</h2><h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://docs.gitlab.com/runner/install/docker.html</span></span><br><span class="line"><span class="comment">#https://docs.gitlab.com/runner/register/index.html#docker</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#cat /etc/gitlab-runner/config.toml</span></span><br><span class="line">concurrent = 1</span><br><span class="line">check_interval = 0</span><br><span class="line"></span><br><span class="line">[session_server]</span><br><span class="line">  session_timeout = 1800</span><br><span class="line"></span><br><span class="line">[[runners]]</span><br><span class="line">  name = <span class="string">"my-runner"</span></span><br><span class="line">  url = <span class="string">"http://gitlab.zerofinance.net/"</span></span><br><span class="line">  token = <span class="string">"111111"</span></span><br><span class="line">  executor = <span class="string">"docker"</span></span><br><span class="line">  [runners.custom_build_dir]</span><br><span class="line">  [runners.cache]</span><br><span class="line">    [runners.cache.s3]</span><br><span class="line">    [runners.cache.gcs]</span><br><span class="line">    [runners.cache.azure]</span><br><span class="line">  [runners.docker]</span><br><span class="line">    tls_verify = <span class="literal">false</span></span><br><span class="line">    image = <span class="string">"docker:latest"</span></span><br><span class="line">    privileged = <span class="literal">true</span></span><br><span class="line">    disable_entrypoint_overwrite = <span class="literal">false</span></span><br><span class="line">    oom_kill_disable = <span class="literal">false</span></span><br><span class="line">    disable_cache = <span class="literal">false</span></span><br><span class="line">    volumes = [<span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span>,<span class="string">"/cache"</span>,<span class="string">"/works/config/runner:/runner"</span>]</span><br><span class="line">    shm_size = 0</span><br><span class="line"></span><br><span class="line">docker run -d --name gitlab-runner --restart always \</span><br><span class="line">  -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">  -v /works/config/runner:/etc/gitlab-runner \</span><br><span class="line">  gitlab/gitlab-runner:latest</span><br><span class="line"></span><br><span class="line"><span class="comment">#Register runner</span></span><br><span class="line">docker run --rm -it -v /works/config/runner:/etc/gitlab-runner gitlab/gitlab-runner register</span><br></pre></td></tr></table></figure>
+<h3 id="Hosted-Machine"><a href="#Hosted-Machine" class="headerlink" title="Hosted-Machine"></a>Hosted-Machine</h3><p><strong><em>Recommend</em></strong></p>
+<p><strong><em>Notice: Running sudo as gitlab-runner to register</em></strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Installing on Linux:</span><br><span class="line"><span class="comment">#https://docs.gitlab.com/runner/install/linux-manually.html</span></span><br><span class="line">sudo curl -L --output /usr/<span class="built_in">local</span>/bin/gitlab-runner <span class="string">"https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64"</span></span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/gitlab-runner</span><br><span class="line">sudo useradd --comment <span class="string">'GitLab Runner'</span> --create-home gitlab-runner --shell /bin/bash</span><br><span class="line">sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner</span><br><span class="line">sudo gitlab-runner start</span><br><span class="line"><span class="comment">#Remember git password,login as gitlab-runner:</span></span><br><span class="line">git config --global credential.helper store</span><br><span class="line"><span class="comment">#Mocking cloning a certain repo, input username and password to store credential.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#https://docs.gitlab.com/runner/shells/index.html#shell-profile-loading</span></span><br><span class="line">To troubleshoot this error, check /home/gitlab-runner/.bash_logout. For example, <span class="keyword">if</span> the .bash_logout file has a script section like the following, comment it out and restart the pipeline:</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$SHLVL</span>"</span> = 1 ]; <span class="keyword">then</span></span><br><span class="line">    [ -x /usr/bin/clear_console ] &amp;&amp; /usr/bin/clear_console -q</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Running sudo as gitlab-runner:</span></span><br><span class="line"><span class="comment">#sudo gitlab-runner register --name native-runner --url http://gitlab-prod.zerofinance.net/ --registration-token 1111111111</span></span><br><span class="line"></span><br><span class="line">choice shell as a executor.</span><br><span class="line"></span><br><span class="line">sudo gitlab-runner register</span><br></pre></td></tr></table></figure>
+<h3 id="gitlab-ci-yml"><a href="#gitlab-ci-yml" class="headerlink" title=".gitlab-ci.yml"></a>.gitlab-ci.yml</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># default:</span></span><br><span class="line"><span class="comment">#   before_script:</span></span><br><span class="line"><span class="comment">#     - echo "This is a gloab before_script..."</span></span><br><span class="line"><span class="comment">#   after_script:</span></span><br><span class="line"><span class="comment">#     - echo "This is a gloab after_script..."</span></span><br><span class="line"></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line">  <span class="attr">RUN_PIPELINE:</span></span><br><span class="line">    <span class="attr">value:</span> <span class="string">"false"</span></span><br><span class="line">    <span class="attr">options:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"false"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"true"</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">"Runs pipeline immediately?"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">stage-导出数据</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">stage-分发数据</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">stage-导入数据</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">stage-数仓调度</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">stage-数据清理</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 前置检查:</span></span><br><span class="line"><span class="comment">#   #variables:</span></span><br><span class="line"><span class="comment">#   # CI_DEBUG_TRACE: "true"</span></span><br><span class="line"><span class="comment">#   stage: stage-前置检查</span></span><br><span class="line"><span class="comment">#   needs: []</span></span><br><span class="line"><span class="comment">#   tags:</span></span><br><span class="line"><span class="comment">#     - hkcos</span></span><br><span class="line"><span class="comment">#     - hkx8</span></span><br><span class="line"><span class="comment">#   script:</span></span><br><span class="line"><span class="comment">#     - echo "前置检查 started"</span></span><br><span class="line"><span class="comment">#     - sleep 5</span></span><br><span class="line"><span class="comment">#     - echo "前置检查 done"</span></span><br><span class="line"><span class="comment">#   rules:</span></span><br><span class="line"><span class="comment">#     - if: $RUN_PIPELINE == "true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKCASH-导出数据:</span></span><br><span class="line">  <span class="comment">#variables:</span></span><br><span class="line">  <span class="comment"># CI_DEBUG_TRACE: "true"</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-导出数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] HKCASH-导出数据(65.105) -&gt; 数仓(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./mysql_hkcash_dump.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] HKCASH-导出数据(65.105) -&gt; 数仓(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="comment"># Pass variables to next stage</span></span><br><span class="line">  <span class="comment">#   - echo "BUILD_VERSION1=hello1" &gt;&gt; build.env</span></span><br><span class="line">  <span class="comment">#   - echo "BUILD_VERSION2=hello2" &gt;&gt; build.env</span></span><br><span class="line">  <span class="comment"># artifacts:</span></span><br><span class="line">  <span class="comment">#   reports:</span></span><br><span class="line">  <span class="comment">#     dotenv: build.env</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKCASH-分发数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-分发数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[HKCASH-导出数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] HKCASH分发数据(65.105) -&gt; 数仓服务器(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./mysql_hkcash_dump.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] HKCASH分发数据(65.105) -&gt; 数仓服务器(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">dependencies:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">HKCASH-导出数据</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKCASH-导入数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-导入数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[HKCASH-分发数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"HKCASH数据导入:数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./datahouse_ods_hkcash.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"HKCASH数据导入:数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKCOS-导出数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-导出数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">slave-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] HKCOS-导出数据(65.106) -&gt; NAS - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./mysql_hkcos_dump.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] HKCOS-导出数据(65.106) -&gt; NAS - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKCOS-分发数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-分发数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[HKCOS-导出数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] HKCASH分发数据(65.105) -&gt; 数仓服务器(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./mysql_hkcos_dump.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] HKCASH分发数据(65.105) -&gt; 数仓服务器(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKCOS-导入数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-导入数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[HKCOS-分发数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"HKCOS数据导入:数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./datahouse_ods_hkcos.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"HKCOS数据导入:数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKX8-导出数据:</span></span><br><span class="line">  <span class="comment"># variables:</span></span><br><span class="line">  <span class="comment">#   CI_DEBUG_TRACE: "true"</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-导出数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] HKX8导出数据(65.105) -&gt; NAS - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sudo</span> <span class="string">/bin/bash</span> <span class="string">$&#123;CI_PROJECT_DIR&#125;/mysql_hkx8_dump.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] HKX8导出数据(65.105) -&gt; NAS - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKX8-分发数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-分发数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[HKX8-导出数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] HKX8分发数据(65.105) -&gt; 数仓服务器(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sudo</span> <span class="string">/bin/bash</span> <span class="string">$&#123;CI_PROJECT_DIR&#125;/mysql_hkx8_dump.sh</span> <span class="string">rsync</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] HKX8分发数据(65.105) -&gt; 数仓服务器(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">HKX8-导入数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-导入数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[HKX8-分发数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] HKX8数据导入:数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./datahouse_ods_hkx8.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] HKX8数据导入:数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">XPAY-导出数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-导出数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] HKX8-导出数据(65.105) -&gt; NAS - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./mysql_xpay_dump.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] HKX8-导出数据(65.105) -&gt; NAS - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">XPAY-分发数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-分发数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[XPAY-导出数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] XPAY分发数据(65.105) -&gt; 数仓服务器(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./mysql_hkx8_dump.sh rsync</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] XPAY分发数据(65.105) -&gt; 数仓服务器(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">XPAY-导入数据:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-导入数据</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[XPAY-分发数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] XPAY数据导入:数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - bash ./datahouse_ods_hkx8.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] XPAY数据导入:数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">Datahouse-ETL调度:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-数仓调度</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[HKCASH-导入数据,</span> <span class="string">HKCOS-导入数据,</span> <span class="string">XPAY-导入数据,</span> <span class="string">HKX8-导入数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">datahouse-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] 数仓ETL调度 - 数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment"># - ./datahouse_ods_etl.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] 数仓ETL调度 - 数仓服务器(84.101) -&gt; ETL(84.101) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="comment">#There are any variables can be showed:</span></span><br><span class="line">    <span class="comment"># - echo "BUILD_VERSION1=$BUILD_VERSION1"</span></span><br><span class="line">    <span class="comment"># - echo "BUILD_VERSION2=$BUILD_VERSION2"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br><span class="line"></span><br><span class="line"><span class="string">Analyst-数据导入:</span></span><br><span class="line">  <span class="attr">stage:</span> <span class="string">stage-数仓调度</span></span><br><span class="line">  <span class="attr">needs:</span> <span class="string">[HKCASH-导入数据,</span> <span class="string">HKCOS-导入数据,</span> <span class="string">XPAY-导入数据,</span> <span class="string">HKX8-导入数据]</span></span><br><span class="line">  <span class="attr">tags:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master-runner</span></span><br><span class="line">  <span class="attr">script:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[start] Analyst数据导入 - 数据服务器(63.17) -&gt; 阿里云RDS(rm-3nslo2652x449k4oa) - [$(date '+%F %T')]"</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">sleep</span> <span class="number">5</span></span><br><span class="line">    <span class="comment"># - bash ./mysql_analyst_masking_report.sh</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">echo</span> <span class="string">"[ end ] Analyst数据导入 - 数据服务器(63.17) -&gt; 阿里云RDS(rm-3nslo2652x449k4oa) - [$(date '+%F %T')]"</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">if:</span> <span class="string">$RUN_PIPELINE</span> <span class="string">==</span> <span class="string">"true"</span></span><br></pre></td></tr></table></figure>
+<p>Pipeline UI</p>
+<p><img src="/images/2023-09-26-CD/image-20230926162504964.png" alt="image-20230926162504964"></p>
+<p>Trigger with remote URL</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://blog.csdn.net/lenkty/article/details/124668164</span></span><br><span class="line"><span class="comment">#https://blog.csdn.net/boling_cavalry/article/details/106991691</span></span><br><span class="line"><span class="comment">#https://blog.csdn.net/sandaawa/article/details/112897733</span></span><br><span class="line"><span class="comment">#https://github.com/lonly197/docs/blob/master/src/operation/GitLab%20CI%20%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.md</span></span><br><span class="line">curl -X POST \</span><br><span class="line">     -F token=111222 \</span><br><span class="line">     -F ref=1.0.x \</span><br><span class="line">     -F variables[project]=dwh-pipeline \</span><br><span class="line">     http://gitlab.zerofinance.net/api/v4/projects/575/trigger/pipeline</span><br></pre></td></tr></table></figure>
+<h2 id="AutoK3s"><a href="#AutoK3s" class="headerlink" title="AutoK3s"></a>AutoK3s</h2><p><strong><em>Not Recommend, recommend using k3s.</em></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#AutoK3s:(Not Recommend)</span><br><span class="line">##https://docs.rancher.cn/docs/k3s/autok3s/_index/</span><br><span class="line">##https://jasonkayzk.github.io/2022/10/22/%E5%8D%95%E6%9C%BA%E9%83%A8%E7%BD%B2autok3s/</span><br><span class="line"></span><br><span class="line">#For docker:(Recommend)</span><br><span class="line">##docker run -itd --restart=unless-stopped --net host -v /var/run/docker.sock:/var/run/docker.sock cnrancher/autok3s:v0.6.0</span><br><span class="line">docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:stable</span><br><span class="line"></span><br><span class="line">##Installing on hosted machine:(optional)</span><br><span class="line">#curl -sS https://rancher-mirror.rancher.cn/autok3s/install.sh  | INSTALL_AUTOK3S_MIRROR=cn sh</span><br><span class="line">##Starting</span><br><span class="line">#autok3s serve --bind-address 192.168.101.82 --bind-port 8080</span><br><span class="line">##Uninstalling:</span><br><span class="line">#/usr/local/bin/autok3s-uninstall.sh</span><br><span class="line"></span><br><span class="line">##Install instance:</span><br><span class="line">#Put &quot;--disable traefik&quot; param into &quot;Master Extra Args&quot;</span><br><span class="line">##execute once:</span><br><span class="line">#k get ns --insecure-skip-tls-verify</span><br><span class="line">#k get ns</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/08/hadoop-Ecosystem.html" rel="next" title="hadoop Ecosystem">
+                <i class="fa fa-chevron-left"></i> hadoop Ecosystem
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/10/Prometheus.html" rel="prev" title="Prometheus">
+                Prometheus <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
+              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#K3s"><span class="nav-number">2.</span> <span class="nav-text">K3s</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install"><span class="nav-number">2.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uninstall"><span class="nav-number">2.2.</span> <span class="nav-text">Uninstall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo"><span class="nav-number">2.3.</span> <span class="nav-text">Demo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kustomize"><span class="nav-number">3.</span> <span class="nav-text">Kustomize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Argocd"><span class="nav-number">4.</span> <span class="nav-text">Argocd</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-1"><span class="nav-number">4.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo-1"><span class="nav-number">4.2.</span> <span class="nav-text">Demo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Demo1"><span class="nav-number">4.2.1.</span> <span class="nav-text">Demo1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Demo2"><span class="nav-number">4.2.2.</span> <span class="nav-text">Demo2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#argo-rollouts"><span class="nav-number">5.</span> <span class="nav-text">argo-rollouts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-2"><span class="nav-number">5.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo-2"><span class="nav-number">5.2.</span> <span class="nav-text">Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dashboard"><span class="nav-number">5.3.</span> <span class="nav-text">Dashboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bluegreen"><span class="nav-number">5.4.</span> <span class="nav-text">bluegreen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo-3"><span class="nav-number">5.5.</span> <span class="nav-text">Demo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bluegreen-1"><span class="nav-number">5.5.1.</span> <span class="nav-text">bluegreen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Canary"><span class="nav-number">5.5.2.</span> <span class="nav-text">Canary</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Arago-workflow"><span class="nav-number">6.</span> <span class="nav-text">Arago-workflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gitlab-Runner"><span class="nav-number">7.</span> <span class="nav-text">Gitlab-Runner</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker"><span class="nav-number">7.1.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hosted-Machine"><span class="nav-number">7.2.</span> <span class="nav-text">Hosted-Machine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gitlab-ci-yml"><span class="nav-number">7.3.</span> <span class="nav-text">.gitlab-ci.yml</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AutoK3s"><span class="nav-number">8.</span> <span class="nav-text">AutoK3s</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

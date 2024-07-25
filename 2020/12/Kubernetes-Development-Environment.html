@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="This article will teach us how to set up a development environment in you local machine, including java/k8s/spring cloud kubernetes, etc.">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes Development Environment">
+<meta property="og:url" content="http://blog.gcalls.cn/2020/12/Kubernetes-Development-Environment.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="This article will teach us how to set up a development environment in you local machine, including java/k8s/spring cloud kubernetes, etc.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2024-07-25T07:36:00.053Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes Development Environment">
+<meta name="twitter:description" content="This article will teach us how to set up a development environment in you local machine, including java/k8s/spring cloud kubernetes, etc.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.gcalls.cn/2020/12/Kubernetes-Development-Environment.html">
+
+
+
+
+
+  <title>Kubernetes Development Environment | Just do it</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2020/12/Kubernetes-Development-Environment.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaoxunyong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kubernetes Development Environment</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-19T09:27:52+08:00">
+                2020-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/12/Kubernetes-Development-Environment.html" class="leancloud_visitors" data-flag-title="Kubernetes Development Environment">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This article will teach us how to set up a development environment in you local machine, including java/k8s/spring cloud kubernetes, etc.</p>
+<a id="more"></a>
+<h2 id="OS"><a href="#OS" class="headerlink" title="OS"></a>OS</h2><p>reference: <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="_blank" rel="noopener">https://docs.microsoft.com/en-us/windows/wsl/install-win10</a></p>
+<p>I’d recommend you base on WSL system to develop, if you don’t know what’s the wsl, look at <a href="http://blog.gcalls.cn/blog/2020/12/WSL.html">this article</a></p>
+<p>Installing WSL as below:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Step 1 - Enable WSL</span></span><br><span class="line"><span class="comment">#Openning PowerShell as administrotor：</span></span><br><span class="line">dism.exe /online /<span class="built_in">enable</span>-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</span><br><span class="line"><span class="comment">#Step 2 - Enable Virtual Machine </span></span><br><span class="line"><span class="comment">#Openning PowerShell as administrotor：</span></span><br><span class="line">dism.exe /online /<span class="built_in">enable</span>-feature /featurename:VirtualMachinePlatform /all /norestart</span><br><span class="line"><span class="comment">#Step 3 - Downloading Linux Kernel</span></span><br><span class="line">wget http://aka.ms/wsl2kernelmsix64</span><br><span class="line"><span class="comment">#Step 4 - Setting WSL 2 as default</span></span><br><span class="line">wsl --<span class="built_in">set</span>-default-version 2</span><br><span class="line"><span class="comment">#Step 5 - Installing linux </span></span><br><span class="line">Searching proper linux version <span class="keyword">in</span> Microsoft Store</span><br></pre></td></tr></table></figure>
+<h2 id="Windows-Terminal"><a href="#Windows-Terminal" class="headerlink" title="Windows Terminal"></a>Windows Terminal</h2><p>I’d highly recommend using Windows terminal in Windows 10, it’s pretty handly.</p>
+<p>Reference: <a href="https://docs.microsoft.com/en-us/windows/terminal/get-started" target="_blank" rel="noopener">https://docs.microsoft.com/en-us/windows/terminal/get-started</a></p>
+<p>Adding git-bash support：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"closeOnExit"</span> : <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"commandline"</span> : <span class="string">"D:\\Developer\\Git\\bin\\bash.exe --login -i"</span>,</span><br><span class="line">    <span class="string">"guid"</span> : <span class="string">"&#123;1d4e097e-fe87-4164-97d7-3ca794c316fd&#125;"</span>,</span><br><span class="line">    <span class="string">"icon"</span> : <span class="string">"D:\\Developer\\Git\\git-bash.png"</span>,</span><br><span class="line">    <span class="string">"name"</span> : <span class="string">"Bash"</span>,</span><br><span class="line">    <span class="string">"startingDirectory"</span> : <span class="string">"%USERPROFILE%"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Install-Local-Docker-Optional"><a href="#Install-Local-Docker-Optional" class="headerlink" title="Install Local Docker(Optional)"></a>Install Local Docker(Optional)</h2><p>If you want to use the remote development environment, don’t need it. </p>
+<p>Reference:</p>
+<ul>
+<li><a href="https://docs.docker.com/docker-for-windows/wsl/" target="_blank" rel="noopener">https://docs.docker.com/docker-for-windows/wsl/</a></li>
+<li><a href="https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/" target="_blank" rel="noopener">https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/</a></li>
+</ul>
+<p>Just need to install Docker-Desktop for Windows, and select the ubuntu at “Setting-&gt;Resources/WSL Integration”, that’s all.</p>
+<h2 id="Install-Local-Kubernetes-Optional"><a href="#Install-Local-Kubernetes-Optional" class="headerlink" title="Install Local Kubernetes(Optional)"></a>Install Local Kubernetes(Optional)</h2><p>If you want to use the remote development environment, don’t need it. </p>
+<p>Just need to enable kubernetes in “Docker-Desktop Settings”, that’s all. But you need to set the proxy in the Docker Setting, or you will get the failure by Downloading google’s containers.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.101.175:1082</span><br><span class="line">127.0.0.1,localhost,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16,*.zerofinance.net,*.aliyun.com,*.163.com,*.docker-cn.com,registry.gcalls.cn</span><br></pre></td></tr></table></figure>
+<p>Enable Ingress Addon:</p>
+<p>Reference：<a href="https://github.com/docker/for-win/issues/7094" target="_blank" rel="noopener">https://github.com/docker/for-win/issues/7094</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac</span></span><br><span class="line"> <span class="comment">#kubectl.exe create -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/cloud/deploy.yaml</span></span><br><span class="line"> <span class="comment">#Resolved: Unable to connect to the server</span></span><br><span class="line"> proxy_on</span><br><span class="line">wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.41.2/deploy/static/provider/cloud/deploy.yaml</span><br><span class="line">proxy_off</span><br><span class="line"> kubectl apply -f deploy.yaml</span><br></pre></td></tr></table></figure>
+<p>demo.yaml</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">kind: Service</span><br><span class="line">apiVersion: v1</span><br><span class="line">metadata:</span><br><span class="line">  name: hello</span><br><span class="line">  labels:</span><br><span class="line">    app: hello</span><br><span class="line">spec:</span><br><span class="line">  <span class="comment">#type: NodePort</span></span><br><span class="line">  ports:</span><br><span class="line">  - protocol: TCP</span><br><span class="line">    name: http</span><br><span class="line">    port: 8080</span><br><span class="line">    targetPort: 8080</span><br><span class="line">  selector:</span><br><span class="line">    app: hello</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">kind: Deployment</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">metadata:</span><br><span class="line">  name: hello</span><br><span class="line">  labels:</span><br><span class="line">    app: hello</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: hello</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: hello</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: hello</span><br><span class="line">        <span class="comment"># image: paulbouwer/hello-kubernetes:1.8</span></span><br><span class="line">        image: gcr.io/google-samples/hello-app:1.0</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8080</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">apiVersion: networking.k8s.io/v1 <span class="comment"># for versions before 1.14 use extensions/v1beta1</span></span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  name: hello</span><br><span class="line">  <span class="comment"># annotations:</span></span><br><span class="line">  <span class="comment">#   nginx.ingress.kubernetes.io/rewrite-target: /$1</span></span><br><span class="line">    <span class="comment"># nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.147.174/32</span></span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">  - host: hello.info</span><br><span class="line">    http:</span><br><span class="line">      paths:</span><br><span class="line">      - path: /</span><br><span class="line">        pathType: Prefix</span><br><span class="line">        backend:</span><br><span class="line">          service: </span><br><span class="line">            name: hello</span><br><span class="line">            port:</span><br><span class="line">              number: 8080</span><br></pre></td></tr></table></figure>
+<h2 id="Remote-Kubernetes-Environment"><a href="#Remote-Kubernetes-Environment" class="headerlink" title="Remote Kubernetes Environment"></a>Remote Kubernetes Environment</h2><p>I’d recommend installing docker and kubernetes on the remote machine, and all of developers can share it and save some of local resources.</p>
+<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><p>Ubuntu Reference: <a href="http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html#Docker">http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html#Docker</a></p>
+<p>For CentOS:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://www.cnblogs.com/763977251-sg/p/11837130.html</span></span><br><span class="line"><span class="comment">#Docker installation</span></span><br><span class="line"><span class="comment">#https://aka.ms/vscode-remote/samples/docker-from-docker</span></span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br></pre></td></tr></table></figure>
+<h3 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h3><h4 id="Kubectl"><a href="#Kubectl" class="headerlink" title="Kubectl"></a>Kubectl</h4><p>Following the instructions to install the k8s client tools:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#For MAC</span></span><br><span class="line"><span class="comment">#https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-macos/</span></span><br><span class="line"><span class="comment">#curl -LO "https://dl.k8s.io/release/v1.18.18/bin/darwin/amd64/kubectl"</span></span><br><span class="line"><span class="comment">#chmod +x ./kubectl</span></span><br><span class="line"><span class="comment">#sudo mv ./kubectl /usr/local/bin/kubectl</span></span><br><span class="line"><span class="comment">#sudo chown root: /usr/local/bin/kubectl</span></span><br><span class="line">brew install kubectl</span><br><span class="line">mkdir .kube</span><br><span class="line"><span class="comment">#the "config" file located in the root of project</span></span><br><span class="line">cp config ~/.kube/</span><br><span class="line">kubectl config use microk8s-0</span><br><span class="line"></span><br><span class="line"><span class="comment">#For Windows</span></span><br><span class="line">Step 1:</span><br><span class="line">Downloading https://dl.k8s.io/release/v1.18.18/bin/windows/amd64/kubectl.exe, and put it to a executable environment path(I<span class="string">'d recommend putting it to the folder of GIT_HOME/bin), and make sure $GIT_HOME is in the PATH of your environment.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Step 2: </span></span><br><span class="line"><span class="string">Open the terminal of CMD, executing the following command(Press Win+R, and input "cmd"):</span></span><br><span class="line"><span class="string">cd %HOMEPATH%</span></span><br><span class="line"><span class="string">mkdir .kube</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Step 3: </span></span><br><span class="line"><span class="string">Copying the "config" file located in the root folder of project to the ".kube" folder located in current user home(like: C:\Users\YourName\.kube).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Step 4:</span></span><br><span class="line"><span class="string">Open the terminal of CMD again, executing the following command:</span></span><br><span class="line"><span class="string">kubectl config use microk8s-0</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Congratulations, That'</span>s all <span class="keyword">done</span>.</span><br><span class="line"></span><br><span class="line"><span class="comment">#For Linux</span></span><br><span class="line"><span class="comment">#https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-linux/</span></span><br><span class="line">curl -LO <span class="string">"https://dl.k8s.io/release/<span class="variable">$(curl -L -s https://dl.k8s.io/release/stable.txt)</span>/bin/linux/amd64/kubectl"</span></span><br><span class="line">sudo install -o root -g root -m 0755 kubectl /usr/<span class="built_in">local</span>/bin/kubectl</span><br><span class="line">kubectl version --client</span><br><span class="line">mkdir ~/.kube</span><br><span class="line"><span class="comment">#the "config" file located in the root of project</span></span><br><span class="line">cp config ~/.kube/</span><br><span class="line">kubectl config use microk8s-0</span><br></pre></td></tr></table></figure>
+<h4 id="microk8s"><a href="#microk8s" class="headerlink" title="microk8s"></a>microk8s</h4><p>Recommend using microk8s on Linux. It’s the best performance.</p>
+<p>Reference：</p>
+<p><a href="https://jiajunhuang.com/articles/2019_11_17-microk8s.md.html" target="_blank" rel="noopener">https://jiajunhuang.com/articles/2019_11_17-microk8s.md.html</a><br><a href="https://microk8s.io/#quick-start" target="_blank" rel="noopener">https://microk8s.io/#quick-start</a><br><a href="https://microk8s.io/docs" target="_blank" rel="noopener">https://microk8s.io/docs</a><br><a href="https://www.cnblogs.com/xiao987334176/p/10931290.html" target="_blank" rel="noopener">https://www.cnblogs.com/xiao987334176/p/10931290.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#For ubuntu:</span></span><br><span class="line"><span class="comment">#https://blog.flyfox.top/2020/04/03/microk8s%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/</span></span><br><span class="line"><span class="comment">#https://microk8s.io/#install-microk8s</span></span><br><span class="line"><span class="comment">#Ubuntu 20.04 has been installed with snap pre-installed</span></span><br><span class="line">sudo snap install microk8s --classic</span><br><span class="line">apt install bash-completion -y</span><br><span class="line"><span class="built_in">source</span> /usr/share/bash-completion/bash_completion</span><br><span class="line"></span><br><span class="line"><span class="comment">#For centos7:</span></span><br><span class="line"><span class="comment">#sudo yum install epel-release</span></span><br><span class="line">sudo su - dev</span><br><span class="line">sudo yum install snapd</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> --now snapd.socket</span><br><span class="line">sudo ln -s /var/lib/snapd/snap /snap</span><br><span class="line">sudo snap install microk8s --classic</span><br><span class="line">yum install bash-completion -y</span><br><span class="line"><span class="built_in">source</span> /usr/share/bash-completion/bash_completion</span><br><span class="line"></span><br><span class="line"><span class="comment">#Notice: microk8s is using containerd, not docker any more.</span></span><br><span class="line"><span class="comment">#Either log out and back in again or restart your system to ensure </span></span><br><span class="line">sudo vim /var/snap/microk8s/current/args/containerd-env</span><br><span class="line">HTTP_PROXY=<span class="string">"http://192.168.101.175:1082"</span></span><br><span class="line">HTTPS_PROXY=<span class="string">"http://192.168.101.175:1082"</span></span><br><span class="line">NO_PROXY=<span class="string">"127.0.0.1,localhost,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16,*.zerofinance.net,*.aliyun.com,*.163.com,*.docker-cn.com,registry.gcalls.cn"</span></span><br><span class="line">sudo systemctl list-unit-files |grep -i microk8s</span><br><span class="line">sudo systemctl restart snap.microk8s.daemon-containerd.service</span><br><span class="line">microk8s.start</span><br><span class="line"><span class="comment">#Addons: https://microk8s.io/docs/addons#heading--list</span></span><br><span class="line"><span class="comment">#microk8s.enable dashboard dns ingress istio registry storage rbac</span></span><br><span class="line">microk8s.enable dashboard dns ingress hostpath-storage</span><br><span class="line">microk8s status --<span class="built_in">wait</span>-ready</span><br><span class="line"><span class="comment">#list all of enabled addons</span></span><br><span class="line">microk8s status</span><br><span class="line">microk8s.kubectl describe pods -A</span><br><span class="line">microk8s.inspect</span><br><span class="line"></span><br><span class="line">kubectl cluster-info</span><br><span class="line">Kubernetes master is running at https://192.168.95.234:16443</span><br><span class="line">Metrics-server is running at https://192.168.95.234:16443/api/v1/namespaces/kube-system/services/https:metrics-server:/proxy</span><br><span class="line"></span><br><span class="line">CoreDNS is running at https://192.168.95.234:16443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy</span><br><span class="line"></span><br><span class="line">To further debug and diagnose cluster problems, use <span class="string">'kubectl cluster-info dump'</span>.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#bashboard:</span></span><br><span class="line"><span class="comment">#https://medium.com/@junya.kaneko/quick-way-of-using-kubernetes-dashboard-on-microk8s-9c7b0e26be02</span></span><br><span class="line"><span class="comment">#Skip login</span></span><br><span class="line">microk8s kubectl edit deployment/kubernetes-dashboard -n kube-system</span><br><span class="line">spec:</span><br><span class="line">    containers:</span><br><span class="line">    - args:</span><br><span class="line">    - --auto-generate-certificates</span><br><span class="line">    - --namespace=kube-system</span><br><span class="line">    - --<span class="built_in">enable</span>-skip-login</span><br><span class="line"></span><br><span class="line">microk8s kubectl create clusterrolebinding kubernertes-dashboard-admin --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard</span><br><span class="line">microk8s kubectl proxy --accept-hosts=.* --address=0.0.0.0</span><br><span class="line">http://192.168.80.98:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/<span class="comment">#/login</span></span><br><span class="line">token=$(microk8s kubectl -n kube-system get secret | grep default-token | cut -d <span class="string">" "</span> -f1)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$token</span></span><br><span class="line">microk8s kubectl -n kube-system describe secret <span class="variable">$token</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#uninstall microk8s</span></span><br><span class="line">sudo snap remove microk8s</span><br><span class="line">rm -fr /root/snap/microk8s /home/dev/snap/microk8s</span><br><span class="line"></span><br><span class="line"><span class="comment">#https://microk8s.io/docs/working-with-kubectl</span></span><br><span class="line"><span class="comment">#Export the config for clients</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$HOME</span></span><br><span class="line">mkdir .kube</span><br><span class="line"><span class="built_in">cd</span> .kube</span><br><span class="line">microk8s config &gt; config</span><br><span class="line"></span><br><span class="line"><span class="comment">#https://kubernetes.io/zh/docs/reference/kubectl/cheatsheet/</span></span><br><span class="line"><span class="comment">#kubectl context config</span></span><br><span class="line">kubectl config get-contexts</span><br><span class="line"><span class="comment">#current context config</span></span><br><span class="line">kubectl config current-context</span><br><span class="line"><span class="comment">#switch config as alik8s-0</span></span><br><span class="line">kubectl config use-context alik8s-0</span><br><span class="line"></span><br><span class="line"><span class="comment">#~/.bash_profile</span></span><br><span class="line"><span class="comment">#yum install bash-completion -y </span></span><br><span class="line">~/.bash_profile</span><br><span class="line"><span class="built_in">alias</span> k=kubectl</span><br><span class="line"><span class="built_in">source</span> &lt;(kubectl completion bash | sed s/kubectl/k/g)</span><br><span class="line"><span class="comment">#source /usr/share/bash-completion/bash_completion</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Kubectl installation:</span></span><br><span class="line">curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.19.4/bin/linux/amd64/kubectl</span><br><span class="line">chmod +x kubectl &amp;&amp; sudo mv kubectl /usr/<span class="built_in">local</span>/bin/</span><br><span class="line"></span><br><span class="line"><span class="comment">#OR</span></span><br><span class="line"><span class="comment">#Kubectl For CentOS</span></span><br><span class="line"><span class="comment">#https://blog.csdn.net/nklinsirui/article/details/80581286</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line">yum install -y kubectl</span><br><span class="line"><span class="comment">#Kubectl For Ubuntu</span></span><br><span class="line"><span class="comment">#https://blog.csdn.net/nklinsirui/article/details/80581286</span></span><br><span class="line">curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main"</span> &gt;&gt; /etc/apt/sources.list</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install -y kubectl</span><br></pre></td></tr></table></figure>
+<h4 id="Harbor"><a href="#Harbor" class="headerlink" title="Harbor"></a>Harbor</h4><p>Harbor is an open source trusted cloud native registry project that stores, signs, and scans content. Harbor extends the open source Docker Distribution by adding the functionalities usually required by users such as security, identity and management. Having a registry closer to the build and run environment can improve the image transfer efficiency. Harbor supports replication of images between registries, and also offers advanced security features such as user management, access control and activity auditing.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Habor:</span></span><br><span class="line"><span class="comment">#Using root enviroment:</span></span><br><span class="line">sudo yum install python3-pip</span><br><span class="line"><span class="comment">#root</span></span><br><span class="line">pip3 install -U docker-compose</span><br><span class="line"><span class="comment">#non-root</span></span><br><span class="line"><span class="comment">#pip3 install --user docker-compose</span></span><br><span class="line"><span class="comment">#https://goharbor.io/docs/2.1.0/install-config/configure-https/</span></span><br><span class="line"><span class="comment">#Generating the certificate:</span></span><br><span class="line"><span class="comment">#Using dev enviroment:</span></span><br><span class="line">sudo su - dev</span><br><span class="line"><span class="built_in">export</span> DP_Id=<span class="string">""</span></span><br><span class="line"><span class="built_in">export</span> DP_Key=<span class="string">""</span></span><br><span class="line">acme.sh --issue --dns dns_dp -d gcalls.cn -d *.gcalls.cn</span><br><span class="line"><span class="comment">#acme.sh --issue --dns dns_dp -d registry.gcalls.cn --keylength ec-256</span></span><br><span class="line">Your cert is <span class="keyword">in</span>  /home/dev/.acme.sh/gcalls.cn/gcalls.cn.cer </span><br><span class="line">Your cert key is <span class="keyword">in</span>  /home/dev/.acme.sh/gcalls.cn/gcalls.cn.key </span><br><span class="line">The intermediate CA cert is <span class="keyword">in</span>  /home/dev/.acme.sh/gcalls.cn/ca.cer </span><br><span class="line">The full chain certs is there:  /home/dev/.acme.sh/gcalls.cn/fullchain.cer</span><br><span class="line"></span><br><span class="line">sudo mkdir -p /etc/docker/certs.d/registry.gcalls.cn</span><br><span class="line">sudo cp /home/dev/.acme.sh/gcalls.cn/gcalls.cn.cer /etc/docker/certs.d/registry.gcalls.cn/</span><br><span class="line"><span class="comment">#must be gcalls.cn.cert</span></span><br><span class="line">sudo cp /home/dev/.acme.sh/gcalls.cn/fullchain.cer /etc/docker/certs.d/registry.gcalls.cn/gcalls.cn.cert</span><br><span class="line">sudo cp /home/dev/.acme.sh/gcalls.cn/gcalls.cn.key /etc/docker/certs.d/registry.gcalls.cn/</span><br><span class="line">sudo cp /home/dev/.acme.sh/gcalls.cn/ca.cer /etc/docker/certs.d/registry.gcalls.cn/</span><br><span class="line">cp -a harbor-offline-installer-v2.1.2.tgz /works/k8s/</span><br><span class="line"><span class="built_in">cd</span> /works/k8s/</span><br><span class="line">tar zxvf harbor-offline-installer-v2.1.2.tgz</span><br><span class="line">sudo chown -R dev.dev /works/k8s/harbor</span><br><span class="line"><span class="comment">#https://goharbor.io/docs/2.1.0/install-config/configure-yml-file/</span></span><br><span class="line"><span class="comment">#Modifying the harbor.yml</span></span><br><span class="line"><span class="built_in">cd</span> /works/k8s/harbor</span><br><span class="line">cp -a harbor.yml.tmpl harbor.yml</span><br><span class="line">vim harbor.yml:</span><br><span class="line">hostname: registry.gcalls.cn</span><br><span class="line">https:</span><br><span class="line">  <span class="comment"># The path of cert and key files for nginx</span></span><br><span class="line">  <span class="comment">#certificate: /home/dev/.acme.sh/gcalls.cn/gcalls.cn.cer</span></span><br><span class="line">  certificate: /etc/docker/certs.d/registry.gcalls.cn/gcalls.cn.cert</span><br><span class="line">  private_key: /home/dev/.acme.sh/gcalls.cn/gcalls.cn.key</span><br><span class="line"> <span class="comment">#Execting the script </span></span><br><span class="line">./prepare</span><br><span class="line">sudo su - root</span><br><span class="line"><span class="built_in">cd</span> /works/k8s/harbor</span><br><span class="line"><span class="comment">#https://goharbor.io/docs/2.1.0/install-config/run-installer-script/</span></span><br><span class="line">./install.sh  </span><br><span class="line"><span class="comment">#If Harbor is running, stop and remove the existing instance.Your image data remains in the file system, so no data is lost.</span></span><br><span class="line"><span class="comment">#docker-compose down -v</span></span><br><span class="line"><span class="comment">#Restarting</span></span><br><span class="line">docker-compose stop</span><br><span class="line">docker-compose up -d</span><br><span class="line"><span class="comment">#Open a browser and enter https://yourdomain.com. It should display the Harbor interface</span></span><br><span class="line">https://registry.gcalls.cn</span><br><span class="line">admin/Harbor12345</span><br><span class="line">docker login registry.gcalls.cn</span><br><span class="line"><span class="comment">#troubleshooting</span></span><br><span class="line">Get https://registry.gcalls.cn/v2/: net/http: TLS handshake timeout</span><br><span class="line">If you got the error above, it seems you are using the proxy, try to exclude <span class="string">"registry.gcalls.cn"</span> <span class="keyword">in</span> the <span class="string">"NO_PROXY"</span>, the file is located:</span><br><span class="line">/etc/systemd/system/docker.service.d/http-proxy.conf</span><br><span class="line">Environment=<span class="string">"HTTP_PROXY=http://192.168.101.175:1082"</span></span><br><span class="line">Environment=<span class="string">"HTTPS_PROXY=http://192.168.101.175:1082"</span></span><br><span class="line">Environment=<span class="string">"NO_PROXY=127.0.0.1,localhost,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16,*.zerofinance.net,*.aliyun.com,*.163.com,*.docker-cn.com,registry.gcalls.cn"</span></span><br><span class="line">systemctl daemon-reload &amp;&amp; systemctl restart docker</span><br><span class="line"><span class="comment">#Test</span></span><br><span class="line">docker pull hello-world</span><br><span class="line"><span class="comment">#must include the project name, like xwallet, and created the project beforehand:</span></span><br><span class="line">docker tag hello-world registry.gcalls.cn/xwallet/hello-world</span><br><span class="line">docker push registry.gcalls.cn/xwallet/hello-world</span><br><span class="line"></span><br><span class="line"><span class="comment">#If the registry work without http, need to add the following(https don't do it):</span></span><br><span class="line"><span class="comment">#server-side</span></span><br><span class="line"><span class="comment">#vim /etc/docker/daemon.json</span></span><br><span class="line"><span class="comment">#"insecure-registries" : ["localhost:32000", "192.168.95.233:32000"]</span></span><br><span class="line"><span class="comment">#client-side</span></span><br><span class="line"><span class="comment">#"insecure-registries" : ["192.168.95.233:32000"]</span></span><br><span class="line"><span class="comment">#Don't forget rebooting docker</span></span><br></pre></td></tr></table></figure>
+<h4 id="docker-registry2"><a href="#docker-registry2" class="headerlink" title="docker registry2"></a>docker registry2</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">sudo su - dev</span><br><span class="line"><span class="comment">#ssl</span></span><br><span class="line">acme.sh --issue --dns dns_dp -d registry.gcalls.cn</span><br><span class="line"></span><br><span class="line"><span class="comment">#install</span></span><br><span class="line">mkdir -p /works/docker/registry</span><br><span class="line"></span><br><span class="line">docker run -d \</span><br><span class="line">    --name private_registry  --restart=always \</span><br><span class="line">    -e SETTINGS_FLAVOUR=dev \</span><br><span class="line">    -e STORAGE_PATH=/registry-storage \</span><br><span class="line">    -v /works/docker/registry:/var/lib/registry \</span><br><span class="line">    -u root \</span><br><span class="line">    -p 5000:5000 \</span><br><span class="line">    -v /home/dev/.acme.sh/registry.gcalls.cn:/certs \</span><br><span class="line">    -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/fullchain.cer \</span><br><span class="line">    -e REGISTRY_HTTP_TLS_KEY=/certs/registry.gcalls.cn.key \</span><br><span class="line">    registry:2</span><br><span class="line"></span><br><span class="line"><span class="comment">#test</span></span><br><span class="line">docker pull hello-world</span><br><span class="line">docker tag hello-world registry.gcalls.cn:5000/hello-world</span><br><span class="line">docker push registry.gcalls.cn:5000/hello-world</span><br></pre></td></tr></table></figure>
+<h4 id="kind"><a href="#kind" class="headerlink" title="kind"></a>kind</h4><p>Not Recommend.</p>
+<p>Reference：<a href="https://kind.sigs.k8s.io/docs/user/quick-start/" target="_blank" rel="noopener">https://kind.sigs.k8s.io/docs/user/quick-start/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Download the latest version of Kind</span></span><br><span class="line">curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.9.0/kind-$(uname)-amd64</span><br><span class="line"><span class="comment"># Make the binary executable</span></span><br><span class="line">chmod +x ./kind</span><br><span class="line"><span class="comment"># Move the binary to your executable path</span></span><br><span class="line">sudo mv ./kind /usr/<span class="built_in">local</span>/bin/</span><br><span class="line"></span><br><span class="line"><span class="comment"># Check if the KUBECONFIG is not set</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$KUBECONFIG</span></span><br><span class="line"><span class="comment"># Check if the .kube directory is created &gt; if not, no need to create it</span></span><br><span class="line">ls <span class="variable">$HOME</span>/.kube</span><br><span class="line"><span class="comment"># Create the cluster and give it a name (optional)</span></span><br><span class="line"><span class="built_in">export</span> http_proxy=<span class="string">"http://192.168.101.175:1082"</span></span><br><span class="line"><span class="built_in">export</span> https_proxy=<span class="variable">$http_proxy</span></span><br><span class="line"><span class="built_in">export</span> no_proxy=<span class="string">"127.0.0.1,localhost,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16,*.zerofinance.net,*.aliyun.com,*.163.com,*.docker-cn.com,registry.gcalls.cn"</span></span><br><span class="line">kind create cluster --name wslkind</span><br><span class="line">kind delete cluster --name wslkind</span><br><span class="line">kind get clusters</span><br><span class="line"><span class="comment"># Check if the .kube has been created and populated with files</span></span><br><span class="line">ls <span class="variable">$HOME</span>/.kube</span><br><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<p>Notice: Kind clusters based on docker, cannot communicate with the internal docker container. Adding the extraPortMappings:</p>
+<p>Reference：<a href="https://kind.sigs.k8s.io/docs/user/using-wsl2/" target="_blank" rel="noopener">https://kind.sigs.k8s.io/docs/user/using-wsl2/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cluster-config.yml</span></span><br><span class="line">kind: Cluster</span><br><span class="line">apiVersion: kind.x-k8s.io/v1alpha4</span><br><span class="line">nodes:</span><br><span class="line">- role: control-plane</span><br><span class="line">  extraPortMappings:</span><br><span class="line">  - containerPort: 8080</span><br><span class="line">    hostPort: 8080</span><br><span class="line">    protocol: TCP</span><br><span class="line">  - containerPort: 30000</span><br><span class="line">    hostPort: 30000</span><br><span class="line">    protocol: TCP</span><br><span class="line"></span><br><span class="line">kind create cluster --config=cluster-config.yml</span><br><span class="line"><span class="comment">#kubectl run nginx --image=nginx --port=3000 --targetPort=80 --expose</span></span><br><span class="line">kubectl create deployment nginx --image=nginx</span><br><span class="line"><span class="comment">#kubectl create service nodeport nginx --tcp=81:80 --node-port=30000</span></span><br><span class="line">kubectl expose deployment nginx --<span class="built_in">type</span>=NodePort --name nginx --port=80 --target-port=80</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#access service </span></span><br><span class="line">curl localhost:30000</span><br></pre></td></tr></table></figure>
+<h2 id="Local-development"><a href="#Local-development" class="headerlink" title="Local development"></a>Local development</h2><p>Reference：</p>
+<ul>
+<li><a href="https://www.telepresence.io/discussion/overview" target="_blank" rel="noopener">https://www.telepresence.io/discussion/overview</a></li>
+<li><a href="https://github.com/cesartl/telepresence-k8s" target="_blank" rel="noopener">https://github.com/cesartl/telepresence-k8s</a></li>
+<li><a href="https://kubernetes.io/zh/docs/tasks/debug-application-cluster/local-debugging/" target="_blank" rel="noopener">https://kubernetes.io/zh/docs/tasks/debug-application-cluster/local-debugging/</a></li>
+<li><a href="https://cloud.google.com/community/tutorials/developing-services-with-k8s" target="_blank" rel="noopener">https://cloud.google.com/community/tutorials/developing-services-with-k8s</a></li>
+</ul>
+<h3 id="telepresence"><a href="#telepresence" class="headerlink" title="telepresence"></a>telepresence</h3><p><a href="https://www.telepresence.io/reference/windows" target="_blank" rel="noopener">https://www.telepresence.io/reference/windows</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#For Windows:</span></span><br><span class="line">1. Install Windows Subsystem <span class="keyword">for</span> Linux.</span><br><span class="line">2. Start the BASH.exe program.</span><br><span class="line">3. Install Telepresence by following the Ubuntu instructions above.</span><br><span class="line"></span><br><span class="line"><span class="comment">#For ubuntu:</span></span><br><span class="line">curl -s https://packagecloud.io/install/repositories/datawireio/telepresence/script.deb.sh | sudo bash</span><br><span class="line">sudo apt install --no-install-recommends telepresence</span><br><span class="line"></span><br><span class="line"><span class="comment">#For CentOS:</span></span><br><span class="line">sudo yum install torsocks sshfs conntrack python3 -y</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/telepresenceio/telepresence.git /Developer/telepresence \</span><br><span class="line"> &amp;&amp; <span class="built_in">cd</span> /Developer/telepresence \</span><br><span class="line"> &amp;&amp; sudo env PREFIX=/usr/<span class="built_in">local</span> ./install.sh</span><br></pre></td></tr></table></figure>
+<h3 id="Develop"><a href="#Develop" class="headerlink" title="Develop"></a>Develop</h3><ul>
+<li><a href="https://anjia0532.github.io/2019/01/21/debug-cloud-native/" target="_blank" rel="noopener">https://anjia0532.github.io/2019/01/21/debug-cloud-native/</a></li>
+<li><a href="https://www.telepresence.io/tutorials/docker" target="_blank" rel="noopener">https://www.telepresence.io/tutorials/docker</a></li>
+<li><a href="https://www.telepresence.io/tutorials/kubernetes" target="_blank" rel="noopener">https://www.telepresence.io/tutorials/kubernetes</a></li>
+<li><a href="https://github.com/telepresenceio/telepresence/tree/master/examples/guestbook" target="_blank" rel="noopener">https://github.com/telepresenceio/telepresence/tree/master/examples/guestbook</a></li>
+<li><a href="https://github.com/cesartl/telepresence-k8s" target="_blank" rel="noopener">https://github.com/cesartl/telepresence-k8s</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://www.telepresence.io/tutorials/java</span></span><br><span class="line"><span class="comment">#kubectl apply -f https://raw.githubusercontent.com/telepresenceio/telepresence/master/docs/tutorials/hello-world.yaml</span></span><br><span class="line"><span class="comment">#kubectl create deployment hello-world --image=datawire/hello-world</span></span><br><span class="line"><span class="comment">#kubectl expose deployment hello-world --type=LoadBalancer --port=8000</span></span><br><span class="line"><span class="comment">#$ curl 127.0.0.1:8000</span></span><br><span class="line"><span class="comment">#Hello, world!</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/cesartl/telepresence-k8s</span><br><span class="line"><span class="built_in">cd</span> telepresence-k8s</span><br><span class="line"><span class="comment">#Setting up Quote Of the Moment Service</span></span><br><span class="line">kubectl run qotm --image=datawire/qotm:1.3 --port=5000 --expose</span><br><span class="line"><span class="comment">#Basic profile</span></span><br><span class="line"><span class="comment">#Using the basic profile, service disovery using K8S API is disable; The Ribbon client use the service #host name directly:</span></span><br><span class="line">qotm:</span><br><span class="line">    ribbon:</span><br><span class="line">        listOfServers: qotm:5000</span><br><span class="line"></span><br><span class="line"><span class="comment">#telepresence --docker-run --rm -it pstauffer/curl -- curl http://hello-world:8000/</span></span><br><span class="line"><span class="comment">#telepresence --new-deployment telepresence-k8s --expose 8080:8080 --run-shell</span></span><br><span class="line"><span class="comment">#telepresence --new-deployment telepresence-k8s --expose 8080 --expose 8081 --run-shell</span></span><br><span class="line"><span class="comment">#telepresence --swap-deployment telepresence-k8s --docker-run --rm -it --name mynginx -p 8080:80 nginx</span></span><br><span class="line"><span class="comment">#telepresence --new-deployment telepresence-k8s --docker-run --rm -it --name mynginx -p 8081:80 nginx</span></span><br><span class="line"><span class="comment">#telepresence --swap-deployment hello-world --expose 8000 --run python3 -m http.server 8000 &amp;</span></span><br><span class="line">telepresence --new-deployment telepresence-k8s --run-shell</span><br><span class="line"></span><br><span class="line"><span class="comment">#Notice: Some of spring-boot versions don't support remote debug through mvnDebug or MAVEN_DEBUG_OPTS:</span></span><br><span class="line"><span class="comment">#cat /Developer/apache-maven-3.3.9/bin/mvnDebug</span></span><br><span class="line"><span class="comment">#MAVEN_DEBUG_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"</span></span><br><span class="line">&gt;<span class="built_in">cd</span> /mnt/d/Developer/workspace/telepresence-k8s/</span><br><span class="line">&gt;<span class="built_in">export</span> KUBERNETES_NAMESPACE=default</span><br><span class="line">&gt;<span class="built_in">export</span> PROFILES=basic</span><br><span class="line">&gt;mvn spring-boot:run -Dspring-boot.run.jvmArguments=<span class="string">"-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"</span></span><br><span class="line"><span class="comment">#Preparing to Execute Maven in Debug Mode</span></span><br><span class="line"><span class="comment">#It'll pause until the client is connected, you can set suspend=n to against it.</span></span><br><span class="line"><span class="comment">#Listening for transport dt_socket at address: 8000</span></span><br><span class="line"><span class="comment">#Notice：pom.xml musn't add the section，or you cannot remote debug:</span></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;</span><br><span class="line">    &lt;optional&gt;<span class="literal">true</span>&lt;/optional&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"><span class="comment">#Testing:</span></span><br><span class="line">curl localhost:8080/rest/quote/cesar</span><br></pre></td></tr></table></figure>
+<p>Notice: </p>
+<p>Making sure “KUBERNETES_NAMESPACE” is set in the OS environment. You can set it of “remoteEnv” of devcontainer.json file if you develop with VSCODE.</p>
+<h3 id="JRebel"><a href="#JRebel" class="headerlink" title="JRebel"></a>JRebel</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://www.jrebel.com/success/products/jrebel/free-trial</span></span><br><span class="line"><span class="comment">#https://www.jrebel.com/products/jrebel/quickstart/eclipse/</span></span><br><span class="line"><span class="comment">#https://www.jrebel.com/products/jrebel/download/prev-releases</span></span><br><span class="line"><span class="comment">#https://manuals.jrebel.com/jrebel/standalone/activate.html</span></span><br><span class="line"><span class="comment">#Plugin for eclipse:</span></span><br><span class="line"><span class="comment">#update site: </span></span><br><span class="line">http://update.zeroturnaround.com/update-site</span><br><span class="line"><span class="comment">#Download ZIP</span></span><br><span class="line">http://update.zeroturnaround.com/update-site/update-site.zip</span><br><span class="line"></span><br><span class="line"><span class="comment">#Crack</span></span><br><span class="line"><span class="comment">#https://www.cnblogs.com/flyrock/archive/2019/09/23/11574617.html</span></span><br><span class="line"><span class="comment">#Generating GUID  from: </span></span><br><span class="line">https://www.guidgen.com/</span><br><span class="line"><span class="comment">#Activation Server URL： Pasting the following url on the "Licensing service"</span></span><br><span class="line">https://jrebel.qekang.com/&#123;GUID&#125;</span><br><span class="line">https://jrebel.qekang.com/d1b8919f-e1e9-4a8d-84da-0c43d75aa970</span><br><span class="line">aaa@bbb.com</span><br><span class="line"><span class="comment">#Activation for standalone:</span></span><br><span class="line">wget https://www.jrebel.com/download/jrebel/496</span><br><span class="line"><span class="built_in">cd</span> /Developer/jrebel/bin</span><br><span class="line">./activate.sh https://jrebel.qekang.com/d1b8919f-e1e9-4a8d-84da-0c43d75aa970 aaa@bbb.com</span><br><span class="line"></span><br><span class="line"><span class="comment">#https://manuals.jrebel.com/jrebel/standalone/springboot.html#spring-boot-2-x-using-maven</span></span><br><span class="line"><span class="comment">#https://manuals.jrebel.com/jrebel/standalone/config.html#rebel-xml</span></span><br><span class="line"><span class="comment">#https://www.javazhiyin.com/22460.html</span></span><br><span class="line">mvn spring-boot:run -Dspring-boot.run.jvmArguments=<span class="string">"-agentpath:/Developer/jrebel/lib/libjrebel64.so"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#!!!Important!!!: Project must be located at linux folder, a windows folder located won't take affect by JRebel.</span></span><br><span class="line"><span class="comment">#If you see the following message, it works.</span></span><br><span class="line">2020-12-14 12:26:33 JRebel: Reloading class <span class="string">'com.ctl.telepresencek8s.DummyRestController'</span>.</span><br><span class="line">2020-12-14 12:26:38 JRebel: Reconfiguring bean <span class="string">'dummyRestController'</span> [com.ctl.telepresencek8s.DummyRestController]</span><br></pre></td></tr></table></figure>
+<p>demo:</p>
+<ul>
+<li><a href="https://github.com/zq2599/blog_demos" target="_blank" rel="noopener">https://github.com/zq2599/blog_demos</a></li>
+<li><a href="https://xinchen.blog.csdn.net/article/details/92394559" target="_blank" rel="noopener">https://xinchen.blog.csdn.net/article/details/92394559</a></li>
+<li><a href="http://www.mydlq.club/article/31" target="_blank" rel="noopener">http://www.mydlq.club/article/31</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#account-service</span></span><br><span class="line"><span class="built_in">cd</span> /mnt/d/Developer/workspace/java-k8s/spring-cloud-k8s-account-service</span><br><span class="line">mvn clean install -Pk8s</span><br><span class="line"><span class="comment">#cd /mnt/d/Developer/workspace/java-k8s/spring-cloud-k8s-web-service</span></span><br><span class="line"><span class="comment">#mvn clean install -Pk8s</span></span><br><span class="line"><span class="comment">#telepresence --swap-deployment web-service --run-shell</span></span><br><span class="line">telepresence --new-deployment web-service --run-shell</span><br><span class="line"><span class="comment">#new-deployment will get the error message： </span></span><br><span class="line"><span class="comment">#Did not find any endpoints in ribbon in namespace [null] for name [account-service] and portName [null]</span></span><br><span class="line"><span class="comment">#https://github.com/telepresenceio/telepresence/issues/947</span></span><br><span class="line"><span class="comment">#You can fix this with:</span></span><br><span class="line"><span class="built_in">export</span> KUBERNETES_NAMESPACE=default</span><br><span class="line"><span class="built_in">cd</span> /mnt/d/Developer/workspace/java-k8s/spring-cloud-k8s-web-service</span><br><span class="line">mvn spring-boot:run -Dspring-boot.run.jvmArguments=<span class="string">"-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"</span></span><br><span class="line">curl 127.0.0.1:8080/account</span><br><span class="line">kubectl scale --replicas=0 deployment account-service</span><br></pre></td></tr></table></figure>
+<p>Notice: Some of spring-boot versions don’t support remote debug through mvnDebug or MAVEN_DEBUG_OPTS:</p>
+<p><a href="https://docs.spring.io/spring-boot/docs/2.3.4.RELEASE/maven-plugin/reference/html/" target="_blank" rel="noopener">https://docs.spring.io/spring-boot/docs/2.3.4.RELEASE/maven-plugin/reference/html/</a></p>
+<p>Fixed this by:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">      &lt;jvmArguments&gt;</span><br><span class="line">        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,<span class="built_in">suspend</span>=n,address=8000</span><br><span class="line">      &lt;/jvmArguments&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;repackage&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<p>Or：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn spring-boot:run -Dspring-boot.run.jvmArguments=<span class="string">"-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"</span></span><br></pre></td></tr></table></figure>
+<h3 id="kubernetes-maven-plugin"><a href="#kubernetes-maven-plugin" class="headerlink" title="kubernetes-maven-plugin"></a>kubernetes-maven-plugin</h3><p><a href="https://www.eclipse.org/jkube/docs/kubernetes-maven-plugin" target="_blank" rel="noopener">https://www.eclipse.org/jkube/docs/kubernetes-maven-plugin</a></p>
+<p>Building Kubernetes, strongly recommended.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Copying remote config into "~/.kube/config" of local</span></span><br><span class="line"><span class="comment">#https://github.com/eclipse/jkube/tree/master/quickstarts/maven/</span></span><br><span class="line"><span class="built_in">cd</span> /mnt/d/Developer/workspace/java-k8s/spring-cloud-k8s-account-service</span><br><span class="line"><span class="comment">#For private docker registry, the most mavenish way is to add a server to the Maven settings file /Developer/apache-maven-3.3.9/conf/settings.xml</span></span><br><span class="line">&lt;server&gt;</span><br><span class="line">    &lt;id&gt;registry.gcalls.cn&lt;/id&gt;</span><br><span class="line">    &lt;username&gt;dave.zhao&lt;/username&gt;</span><br><span class="line">    &lt;password&gt;******&lt;/password&gt;</span><br><span class="line">&lt;/server&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#Generating the configuration automatically, remember don't adding "dockerHost" and "images" selection,</span></span><br><span class="line"><span class="comment">#Or will be generated two image section in the deployment yaml file:</span></span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.eclipse.jkube&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;kubernetes-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.1.0&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;id&gt;fmp&lt;/id&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;resource&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;build&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;push&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;apply&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;   </span><br><span class="line">        &lt;resources&gt;</span><br><span class="line">            &lt;imagePullPolicy&gt;Always&lt;/imagePullPolicy&gt;</span><br><span class="line">        &lt;/resources&gt;</span><br><span class="line">        &lt;enricher&gt;</span><br><span class="line">            &lt;config&gt;</span><br><span class="line">                &lt;fmp-service&gt;</span><br><span class="line">                    &lt;<span class="built_in">type</span>&gt;NodePort&lt;/<span class="built_in">type</span>&gt;</span><br><span class="line">                &lt;/fmp-service&gt;</span><br><span class="line">            &lt;/config&gt;</span><br><span class="line">        &lt;/enricher&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#Using the external Dockerfile and deployment.yaml/service.yaml：</span></span><br><span class="line"><span class="comment">#https://www.eclipse.org/jkube/docs/kubernetes-maven-plugin#external-dockerfile</span></span><br><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.eclipse.jkube&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;kubernetes-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.1.0&lt;/version&gt;</span><br><span class="line">    &lt;executions&gt;</span><br><span class="line">        &lt;execution&gt;</span><br><span class="line">            &lt;id&gt;fmp&lt;/id&gt;</span><br><span class="line">            &lt;goals&gt;</span><br><span class="line">                &lt;goal&gt;build&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;push&lt;/goal&gt;</span><br><span class="line">                &lt;goal&gt;resource&lt;/goal&gt;</span><br><span class="line">                <span class="comment">#&lt;!-- Don't use deploy, or twice build was triggered --&gt;</span></span><br><span class="line">                &lt;goal&gt;apply&lt;/goal&gt;</span><br><span class="line">            &lt;/goals&gt;</span><br><span class="line">        &lt;/execution&gt;</span><br><span class="line">    &lt;/executions&gt;</span><br><span class="line">    &lt;configuration&gt;   </span><br><span class="line">        &lt;!-- &lt;dockerHost&gt;tcp://registry.gcalls.cn:2375&lt;/dockerHost&gt; --&gt;</span><br><span class="line">        &lt;dockerHost&gt;tcp://localhost:2375&lt;/dockerHost&gt;</span><br><span class="line">        &lt;images&gt;</span><br><span class="line">            &lt;image&gt;</span><br><span class="line">            &lt;name&gt;registry.gcalls.cn/xwallet/<span class="variable">$&#123;project.name&#125;</span>:<span class="variable">$&#123;project.version&#125;</span>&lt;/name&gt;</span><br><span class="line">            &lt;build&gt;</span><br><span class="line">                &lt;!-- https://github.com/eclipse/jkube/issues/149 --&gt;</span><br><span class="line">                &lt;assembly&gt;</span><br><span class="line">                    &lt;name&gt;target&lt;/name&gt;</span><br><span class="line">                &lt;/assembly&gt;</span><br><span class="line">                &lt;dockerFile&gt;<span class="variable">$&#123;project.basedir&#125;</span>/src/main/docker/Dockerfile&lt;/dockerFile&gt; </span><br><span class="line">                &lt;!-- &lt;contextDir&gt;<span class="variable">$&#123;project.basedir&#125;</span>&lt;/contextDir&gt;  --&gt;</span><br><span class="line">                &lt;filter&gt;@&lt;/filter&gt;</span><br><span class="line">            &lt;/build&gt;</span><br><span class="line">            &lt;/image&gt;</span><br><span class="line">        &lt;/images&gt;</span><br><span class="line">        &lt;enricher&gt;</span><br><span class="line">            &lt;config&gt;</span><br><span class="line">                &lt;fmp-service&gt;</span><br><span class="line">                    &lt;<span class="built_in">type</span>&gt;NodePort&lt;/<span class="built_in">type</span>&gt;</span><br><span class="line">                &lt;/fmp-service&gt;</span><br><span class="line">            &lt;/config&gt;</span><br><span class="line">        &lt;/enricher&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#Only include the jar file</span></span><br><span class="line">.maven-dockerinclude:</span><br><span class="line">target/*.jar</span><br><span class="line"></span><br><span class="line"><span class="comment">#src/man/docker/Dockerfile</span></span><br><span class="line">FROM java:8-jdk</span><br><span class="line">RUN mkdir /app</span><br><span class="line">WORKDIR /app</span><br><span class="line">ENV APPNAME=account-service \</span><br><span class="line">    VERSION=0.0.1-SNAPSHOT \</span><br><span class="line">    CONFIG=/config/</span><br><span class="line">RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp; <span class="built_in">echo</span> Asia/Shanghai &gt; /etc/timezone</span><br><span class="line">COPY target/<span class="variable">$&#123;APPNAME&#125;</span>-<span class="variable">$&#123;VERSION&#125;</span>.jar /app/</span><br><span class="line">ENTRYPOINT [<span class="string">"sh"</span>, <span class="string">"-c"</span>, <span class="string">"java -Djava.security.egd=file:/dev/./urandom -jar /app/<span class="variable">$&#123;APPNAME&#125;</span>-<span class="variable">$&#123;VERSION&#125;</span>.jar --spring.config.location=<span class="variable">$&#123;CONFIG&#125;</span> --spring.profiles.active=@spring.profile@"</span>]</span><br><span class="line">EXPOSE 8100</span><br><span class="line"></span><br><span class="line"><span class="comment">#src/man/jkube/account-service-deployment.yml</span></span><br><span class="line">kind: Deployment</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">metadata:</span><br><span class="line">  name: account-service</span><br><span class="line">  namespace: default</span><br><span class="line">  labels:</span><br><span class="line">    app: account-service</span><br><span class="line">    group: com.xwallet</span><br><span class="line">    version: 0.0.1-SNAPSHOT</span><br><span class="line">    provider: jkube</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: account-service</span><br><span class="line">      group: com.xwallet</span><br><span class="line">      version: 0.0.1-SNAPSHOT</span><br><span class="line">      provider: jkube</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: account-service</span><br><span class="line">        group: com.xwallet</span><br><span class="line">        version: 0.0.1-SNAPSHOT</span><br><span class="line">        provider: jkube</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: account-service</span><br><span class="line">        <span class="comment">#image: registry.gcalls.cn/xwallet/account-service:0.0.1-SNAPSHOT</span></span><br><span class="line">        imagePullPolicy: Always</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8089</span><br><span class="line"></span><br><span class="line"><span class="comment">#src/man/jkube/account-service-service.yml</span></span><br><span class="line">kind: Service</span><br><span class="line">apiVersion: v1</span><br><span class="line">metadata:</span><br><span class="line">  name: account-service</span><br><span class="line">  namespace: default</span><br><span class="line">  labels:</span><br><span class="line">    app: account-service</span><br><span class="line">    group: com.xwallet</span><br><span class="line">    version: 0.0.1-SNAPSHOT</span><br><span class="line">    provider: jkube</span><br><span class="line">spec:</span><br><span class="line">  <span class="built_in">type</span>: NodePort</span><br><span class="line">  ports:</span><br><span class="line">  - protocol: TCP</span><br><span class="line">    name: http</span><br><span class="line">    port: 8080</span><br><span class="line">    targetPort: 8080</span><br><span class="line">  selector:</span><br><span class="line">    app: account-service</span><br><span class="line">    group: com.xwallet</span><br><span class="line">    version: 0.0.1-SNAPSHOT</span><br><span class="line">    provider: jkube</span><br><span class="line"></span><br><span class="line"><span class="comment">#Running:</span></span><br><span class="line"><span class="comment">#If don't define the dockerHost or private registry parameter, using the following command:</span></span><br><span class="line"><span class="comment">#export DOCKER_HOST="tcp://registry.gcalls.cn:2375"</span></span><br><span class="line"><span class="comment">#mvn clean install k8s:push k8s:deploy -Pk8s -Ddocker.registry=registry.gcalls.cn</span></span><br><span class="line"><span class="comment">#mvn clean install k8s:build k8s:push k8s:resource k8s:apply -Dmaven.test.skip=true -Dspring.profile=dev -Pk8s</span></span><br><span class="line">mvn clean install -Pk8s</span><br><span class="line"></span><br><span class="line"><span class="comment">#Building by parameters</span></span><br><span class="line"><span class="comment">#Dockerfile</span></span><br><span class="line"><span class="comment">#ENTRYPOINT ["sh", "-c", "java -Djava.security.egd=file:/dev/./urandom -jar /app/$&#123;APPNAME&#125;-$&#123;VERSION&#125;.jar --spring.profiles.active=@spring.profile@"]</span></span><br><span class="line"><span class="comment">#OR</span></span><br><span class="line">&lt;profiles&gt;</span><br><span class="line">  &lt;profile&gt;</span><br><span class="line">      &lt;id&gt;k8s&lt;/id&gt;</span><br><span class="line">        &lt;properties&gt;</span><br><span class="line">            &lt;spring.profile&gt;default&lt;/spring.profile&gt;</span><br><span class="line">        &lt;/properties&gt;</span><br><span class="line"><span class="comment">#OR</span></span><br><span class="line">mvn clean install -Pk8s -Dspring.profile=dev</span><br><span class="line"></span><br><span class="line"><span class="comment">#Exposing extra port of existing docker container </span></span><br><span class="line"><span class="comment">#https://blog.csdn.net/lsziri/article/details/69396990</span></span><br><span class="line"><span class="comment">#Assuming docker container's name is: asset-app</span></span><br><span class="line">docker inspect asset-app | grep IPAddress</span><br><span class="line">docker port asset-app</span><br><span class="line">sudo iptables -t nat -nvL --line-number</span><br><span class="line"><span class="comment">#Exposing 5100 of host -&gt; 5100 of container </span></span><br><span class="line">sudo iptables -t nat -A PREROUTING  -p tcp -m tcp --dport 5100 -j DNAT --to-destination  10.244.47.4:5100 </span><br><span class="line">sudo iptables-save</span><br><span class="line"><span class="comment">#docker port asset-app couldn't show the 5100, do this to view:</span></span><br><span class="line">sudo iptables -t nat -nvL | grep 10.244.47.4</span><br><span class="line"></span><br><span class="line"><span class="comment">#Push images to aliyun</span></span><br><span class="line">docker login --username=zhaoxunyong@139.com registry.cn-shenzhen.aliyuncs.com</span><br><span class="line">docker tag [ImageId] registry.cn-shenzhen.aliyuncs.com/zerofinance/fisco:[镜像版本号]</span><br><span class="line">docker push registry.cn-shenzhen.aliyuncs.com/zerofinance/fisco:[镜像版本号]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/WSL.html" rel="next" title="WSL">
+                <i class="fa fa-chevron-left"></i> WSL
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/03/iptables.html" rel="prev" title="iptables">
+                iptables <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
+              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#OS"><span class="nav-number">1.</span> <span class="nav-text">OS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-Terminal"><span class="nav-number">2.</span> <span class="nav-text">Windows Terminal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Local-Docker-Optional"><span class="nav-number">3.</span> <span class="nav-text">Install Local Docker(Optional)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Local-Kubernetes-Optional"><span class="nav-number">4.</span> <span class="nav-text">Install Local Kubernetes(Optional)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remote-Kubernetes-Environment"><span class="nav-number">5.</span> <span class="nav-text">Remote Kubernetes Environment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker"><span class="nav-number">5.1.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kubernetes"><span class="nav-number">5.2.</span> <span class="nav-text">Kubernetes</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubectl"><span class="nav-number">5.2.1.</span> <span class="nav-text">Kubectl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#microk8s"><span class="nav-number">5.2.2.</span> <span class="nav-text">microk8s</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Harbor"><span class="nav-number">5.2.3.</span> <span class="nav-text">Harbor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-registry2"><span class="nav-number">5.2.4.</span> <span class="nav-text">docker registry2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kind"><span class="nav-number">5.2.5.</span> <span class="nav-text">kind</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-development"><span class="nav-number">6.</span> <span class="nav-text">Local development</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#telepresence"><span class="nav-number">6.1.</span> <span class="nav-text">telepresence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Develop"><span class="nav-number">6.2.</span> <span class="nav-text">Develop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JRebel"><span class="nav-number">6.3.</span> <span class="nav-text">JRebel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kubernetes-maven-plugin"><span class="nav-number">6.4.</span> <span class="nav-text">kubernetes-maven-plugin</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="docker,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="docker是个好东西，虽然年轻，但很有前途。一些大的公司(包括谷歌、IBM、惠普、微软等)都有在使用。有些人不太愿意使用新的技术，怕不稳定，但我个人认为好的东西主要勇于使用，大公司都在使用，怕什么呢，新技术不敢于使用，怎么能进步呢^_^docker相关的概念请大家自行谷歌，还是谷歌好…">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker学习总结">
+<meta property="og:url" content="http://blog.gcalls.cn/2017/01/Docker学习总结.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="docker是个好东西，虽然年轻，但很有前途。一些大的公司(包括谷歌、IBM、惠普、微软等)都有在使用。有些人不太愿意使用新的技术，怕不稳定，但我个人认为好的东西主要勇于使用，大公司都在使用，怕什么呢，新技术不敢于使用，怎么能进步呢^_^docker相关的概念请大家自行谷歌，还是谷歌好…">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2024-07-25T07:36:00.049Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker学习总结">
+<meta name="twitter:description" content="docker是个好东西，虽然年轻，但很有前途。一些大的公司(包括谷歌、IBM、惠普、微软等)都有在使用。有些人不太愿意使用新的技术，怕不稳定，但我个人认为好的东西主要勇于使用，大公司都在使用，怕什么呢，新技术不敢于使用，怎么能进步呢^_^docker相关的概念请大家自行谷歌，还是谷歌好…">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.gcalls.cn/2017/01/Docker学习总结.html">
+
+
+
+
+
+  <title>Docker学习总结 | Just do it</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2017/01/Docker学习总结.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaoxunyong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker学习总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-03T11:28:07+08:00">
+                2017-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/01/Docker学习总结.html" class="leancloud_visitors" data-flag-title="Docker学习总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>docker是个好东西，虽然年轻，但很有前途。一些大的公司(包括谷歌、IBM、惠普、微软等)都有在使用。有些人不太愿意使用新的技术，怕不稳定，但我个人认为好的东西主要勇于使用，大公司都在使用，怕什么呢，新技术不敢于使用，怎么能进步呢^_^<br>docker相关的概念请大家自行谷歌，还是谷歌好…</p>
+<a id="more"></a>
+<p>如果是没有docker基础的话，建议买一本&lt;&lt;第一本docker书 修订版&gt;&gt;，入门不错。<br>docker正式环境只能在linux中使用，所以本文以vagrant+centos7为例介绍。具体环境请参考<a href="Vagrant环境搭建.html">Vagrant环境搭建</a></p>
+<h2 id="操作系统要求"><a href="#操作系统要求" class="headerlink" title="操作系统要求"></a>操作系统要求</h2><p>Docker只能运行在64位Linux中，并且内核需要3.8以上，建议使用centos 7版本。以下是我本机的环境，请参考：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@www ~] cat /etc/redhat-release </span><br><span class="line">CentOS Linux release 7.2.1511 (Core) </span><br><span class="line">[root@www ~] uname -a</span><br><span class="line">Linux www.mymydocker.com 3.10.0-327.4.5.el7.x86_64 <span class="comment">#1 SMP Mon Jan 25 22:07:14 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></span><br><span class="line">[root@www ~] ll /sys/class/misc/device-mapper</span><br><span class="line">lrwxrwxrwx 1 root root 0 Dec 13 08:19 /sys/class/misc/device-mapper -&gt; ../../devices/virtual/misc/device-mapper</span><br><span class="line">[root@www ~] grep device-mapper /proc/devices </span><br><span class="line">253 device-mapper</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><h3 id="卸载旧的docker版本"><a href="#卸载旧的docker版本" class="headerlink" title="卸载旧的docker版本"></a>卸载旧的docker版本</h3><p>当前docker最新版本为1.12，请先卸载旧的docker版本：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -e docker-1.10.3-59.el7.centos.x86_64 \</span><br><span class="line"> docker-common-1.10.3-59.el7.centos.x86_64 \</span><br><span class="line"> container-selinux-1.10.3-59.el7.centos.x86_64</span><br></pre></td></tr></table></figure></p>
+<p>修改配置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#修改dns配置</span></span><br><span class="line">cat /etc/NetworkManager/NetworkManager.conf|grep <span class="string">"dns=none"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"dns=none"</span> &gt;&gt; /etc/NetworkManager/NetworkManager.conf</span><br><span class="line">  systemctl restart NetworkManager.service</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#修改时区</span></span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Chongqing /etc/localtime</span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭内核安全</span></span><br><span class="line">sed -i <span class="string">'s;SELINUX=.*;SELINUX=disabled;'</span> /etc/selinux/config</span><br><span class="line">setenforce 0</span><br><span class="line">getenforce</span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭防火墙</span></span><br><span class="line">systemctl <span class="built_in">disable</span> iptables</span><br><span class="line">systemctl stop iptables</span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line"><span class="comment">#优化内核</span></span><br><span class="line">cat /etc/security/limits.conf|grep 65535 &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">cat &gt;&gt; /etc/security/limits.conf  &lt;&lt; EOF</span><br><span class="line">*               soft    nofile             65535</span><br><span class="line">*               hard    nofile             65535</span><br><span class="line">*               soft    nproc              65535</span><br><span class="line">*               hard    nproc              65535</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#打开端口转发</span></span><br><span class="line"><span class="comment">#永久修改：/etc/sysctl.conf中的net.ipv4.ip_forward=1，生效：sysctl -p</span></span><br><span class="line"><span class="comment">#临时修改：echo 1 &gt; /proc/sys/net/ipv4/ip_forward，重启后失效</span></span><br><span class="line"></span><br><span class="line">cat /etc/sysctl.conf|grep <span class="string">"net.ipv4.ip_forward"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">cat &gt;&gt; /etc/sysctl.conf  &lt;&lt; EOF</span><br><span class="line">net.ipv4.tcp_fin_timeout = 30</span><br><span class="line">net.ipv4.tcp_keepalive_time = 300</span><br><span class="line">net.ipv4.tcp_tw_reuse = 1</span><br><span class="line">net.ipv4.tcp_tw_recycle = 1</span><br><span class="line">net.ipv4.ip_local_port_range = 1024 65535</span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line">EOF</span><br><span class="line">sysctl -p</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="添加docker用户组"><a href="#添加docker用户组" class="headerlink" title="添加docker用户组"></a>添加docker用户组</h3><p>注意：rpm安装已经自动创建了该组，无需再创建。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">groupadd -g 2016 docker</span><br><span class="line"><span class="comment">#useradd docker -u 2016 -g 2016</span></span><br></pre></td></tr></table></figure></p>
+<p>当发现有docker组时，会自动以docker组启动。</p>
+<h3 id="添加yum源："><a href="#添加yum源：" class="headerlink" title="添加yum源："></a>添加yum源：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tee /etc/yum.repos.d/docker.repo &lt;&lt;-<span class="string">'EOF'</span></span><br><span class="line">[docker]</span><br><span class="line">name=Docker Repository</span><br><span class="line">baseurl=http://mirrors.aliyun.com/docker-engine/yum/repo/main/centos/7/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/docker-engine/yum/gpg</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install docker-engine</span><br></pre></td></tr></table></figure>
+<h3 id="手动启动"><a href="#手动启动" class="headerlink" title="手动启动"></a>手动启动</h3><p>rpm安装的通过systemctl start docker启动。如果是二进制文件的话，通过以下方式启动：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#默认以/var/run/docker.sock文件监听</span></span><br><span class="line"><span class="comment">#手动启动：</span></span><br><span class="line"><span class="comment">#-D为debug</span></span><br><span class="line">docker daemon -D -H tcp://0.0.0.0:2375 \</span><br><span class="line"> -H unix://var/run/docker.sock</span><br></pre></td></tr></table></figure></p>
+<p>如出现Devices cgroup isn’t mounted的错误，请执行以下操作：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/tianon/cgroupfs-mount/raw/master/cgroupfs-mount</span><br><span class="line">sh cgroupfs-mount</span><br></pre></td></tr></table></figure></p>
+<h3 id="docker加速"><a href="#docker加速" class="headerlink" title="docker加速"></a>docker加速</h3><p>官网的速度太慢了，可以使用daocloud加速。请参考<a href="http://docs.daocloud.io/faq/what-is-daocloud-accelerator" target="_blank" rel="noopener">what-is-daocloud-accelerator</a><br>具体操作如下：</p>
+<blockquote>
+<p>注册<a href="https://www.daocloud.io/" target="_blank" rel="noopener">https://www.daocloud.io/</a>账户<br>点击加速器，获取地址<br>修改/usr/lib/systemd/system/docker.service文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#ExecStart=/usr/bin/dockerd --bip=10.1.10.1/24 --insecure-registry=192.168.10.6:5000 --registry-mirror=http://3fecfd09.m.daocloud.io</span></span><br><span class="line">sed -i <span class="string">"s;^ExecStart=/usr/bin/dockerd$;ExecStart=/usr/bin/dockerd \</span></span><br><span class="line"><span class="string">--registry-mirror=http://3fecfd09.m.daocloud.io;"</span> \</span><br><span class="line"> /usr/lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="添加代理"><a href="#添加代理" class="headerlink" title="添加代理"></a>添加代理</h3><p>国内网站无法访问google的一些资源，可以通过docker代理方式访问：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /etc/systemd/system/docker.service.d</span><br><span class="line">cat &gt;&gt; /etc/systemd/system/docker.service.d/http-proxy.conf  &lt;&lt; EOF</span><br><span class="line">[Service]</span><br><span class="line">Environment=<span class="string">"HTTP_PROXY=http://xxxx:xxxx"</span></span><br><span class="line">Environment=<span class="string">"HTTPS_PROXY=http://xxxx:xxxx"</span></span><br><span class="line">Environment=<span class="string">"NO_PROXY=127.0.0.1,localhost,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16,*.zerofinance.net"</span></span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl show --property=Environment docker</span><br><span class="line"></span><br><span class="line">systemctl restart docker</span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure></p>
+<p>如执行docker info后出现：<br>WARNING: bridge-nf-call-iptables is disabled<br>WARNING: bridge-nf-call-ip6tables is disabled<br>按照以下办法解决：<br>修改/etc/sysctl.conf文件，添加：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">net.bridge.bridge-nf-call-arptables = 1</span><br></pre></td></tr></table></figure></p>
+<p>执行sysctl -p后生效。</p>
+<p>然后 ps aux | grep docker 然后你就会发现带有镜像的启动参数了。</p>
+<p>由于我这边的HTTP_PROXY与HTTPS_PROXY是付费购买的，同时只能几个client访问，需要的话请自行搜索或者购买。</p>
+<h3 id="Windows安装"><a href="#Windows安装" class="headerlink" title="Windows安装"></a>Windows安装</h3><p>win10可以通过InstallDocker.msi直接安装，但win10以下的话，只能通过DockerToolbox安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create -d virtualbox \</span><br><span class="line">--engine-registry-mirror http://3fecfd09.m.daocloud.io \</span><br><span class="line">--engine-registry-mirror https://3gbbfq7n.mirror.aliyuncs.com \</span><br><span class="line">--engine-registry-mirror http://zhaoxunyong.m.alauda.cn \</span><br><span class="line">default</span><br></pre></td></tr></table></figure>
+<h2 id="Docker-Registry"><a href="#Docker-Registry" class="headerlink" title="Docker Registry"></a>Docker Registry</h2><p>参考</p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/lienhua34/p/4922130.html" target="_blank" rel="noopener">http://www.cnblogs.com/lienhua34/p/4922130.html</a><br><a href="https://docs.docker.com/registry/deploying/" target="_blank" rel="noopener">https://docs.docker.com/registry/deploying/</a></p>
+</blockquote>
+<h3 id="安装registry-2"><a href="#安装registry-2" class="headerlink" title="安装registry:2"></a>安装registry:2</h3><h4 id="普通安装方式"><a href="#普通安装方式" class="headerlink" title="普通安装方式"></a>普通安装方式</h4><p>安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker create -p 5000:5000 --restart=always --name private_registry \</span><br><span class="line"> -v /docker/registry:/var/lib/registry registry:2</span><br></pre></td></tr></table></figure></p>
+<p>映射主机的/docker/registry目录到容器的/var/lib/registry</p>
+<p>异常解决：<br>当出现Get <a href="https://192.168.10.6:5000/v1/_ping" target="_blank" rel="noopener">https://192.168.10.6:5000/v1/_ping</a>: Connection failed错误时，由于改为http方式，需要修改以下配置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/lib/systemd/system/docker.service</span><br><span class="line"><span class="comment">#添加--insecure-registry参数</span></span><br><span class="line">ExecStart=/usr/bin/dockerd --insecure-registry=192.168.10.6:5000</span><br><span class="line"><span class="comment">#重启</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></p>
+<h4 id="证书安装方式"><a href="#证书安装方式" class="headerlink" title="证书安装方式"></a>证书安装方式</h4><blockquote>
+<p>参考: <a href="https://www.tianmaying.com/tutorial/docker-registry" target="_blank" rel="noopener">https://www.tianmaying.com/tutorial/docker-registry</a><br>先/etc/pki/tls/openssl.cnf配置，在该文件中找到[ v3_ca ]，在它下面添加如下内容：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[ v3_ca ]</span><br><span class="line"><span class="comment"># Extensions for a typical CA</span></span><br><span class="line">subjectAltName = IP:192.168.10.6</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>以上也可以不配置，在openssl加上reqexts SAN参数设置。</p>
+<p>安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">openssl req \</span><br><span class="line">  -subj <span class="string">"/C=CN/ST=GuangDong/L=ShenZhen/CN=registry.gcalls.cn"</span> \</span><br><span class="line">  -reqexts SAN -config &lt;(cat /etc/pki/tls/openssl.cnf &lt;(<span class="built_in">printf</span> <span class="string">"[SAN]\nsubjectAltName=DNS:www.abc.com,IP:192.168.10.6"</span>)) \</span><br><span class="line">  -newkey rsa:4096 -nodes -sha256 -keyout domain.key \</span><br><span class="line">  -x509 -days 365 -out domain.crt </span><br><span class="line"></span><br><span class="line">mkdir -p /etc/docker/certs.d/192.168.10.6:5000</span><br><span class="line">cp domain.crt /etc/docker/certs.d/192.168.10.6:5000/ca.crt</span><br><span class="line">mkdir -p /root/certs/</span><br><span class="line">cp domain.crt domain.key /root/certs/</span><br><span class="line"></span><br><span class="line">docker run \</span><br><span class="line">    -d \</span><br><span class="line">    --name private_registry  --restart=always \</span><br><span class="line">    -e SETTINGS_FLAVOUR=dev \</span><br><span class="line">    -e STORAGE_PATH=/registry-storage \</span><br><span class="line">    -v /docker/registry:/var/lib/registry \</span><br><span class="line">    -u root \</span><br><span class="line">    -p 5000:5000 \</span><br><span class="line">    -v /root/certs:/certs \</span><br><span class="line">    -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \</span><br><span class="line">    -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \</span><br><span class="line">    registry:2</span><br></pre></td></tr></table></figure></p>
+<p>注意：如果采用证书方式，需要去掉/usr/lib/systemd/system/docker.service中的–insecure-registry参数，然后再重启：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></p>
+<p>如果要用docker pull或者docker push的客户端，都需要执行以下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /etc/docker/certs.d/192.168.10.6:5000</span><br><span class="line">cp domain.crt /etc/docker/certs.d/192.168.10.6:5000/ca.crt</span><br></pre></td></tr></table></figure></p>
+<p>否则，会报以下错误：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error response from daemon: Get https://192.168.10.6:5000/v1/_ping: x509: certificate signed by unknown authority</span><br></pre></td></tr></table></figure></p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull hello-world</span><br><span class="line">docker tag hello-world 192.168.10.6:5000/hello-world</span><br><span class="line">docker push 192.168.10.6:5000/hello-world</span><br></pre></td></tr></table></figure>
+<p>如测试出现：<br>Get <a href="https://192.168.10.6:5000/v1/_ping" target="_blank" rel="noopener">https://192.168.10.6:5000/v1/_ping</a>: net/http: TLS handshake timeout<br>有可以本地与docker开启了代理，需要关闭docker代理或者将ip添加到NO_PROXY中，文件位于：<br>/etc/systemd/system/docker.service.d/http-proxy.conf</p>
+<p>Get <a href="https://192.168.10.6:5000/v1/_ping" target="_blank" rel="noopener">https://192.168.10.6:5000/v1/_ping</a>: x509: cannot validate certificate for 192.168.10.6 because it doesn’t contain any IP SANs<br>这个是由于CN为registry.gcalls.cn，但通过ip，需要添加SAN信息：<br>先/etc/pki/tls/openssl.cnf配置，在该文件中找到[ v3_ca ]，在它下面添加如下内容：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[ v3_ca ]</span><br><span class="line"><span class="comment"># Extensions for a typical CA</span></span><br><span class="line">subjectAltName = IP:192.168.10.6</span><br></pre></td></tr></table></figure></p>
+<p>也可以直接在创建crt时，传-reqexts SAN。</p>
+<h4 id="删除镜像文件"><a href="#删除镜像文件" class="headerlink" title="删除镜像文件"></a>删除镜像文件</h4><p>删除private registry中的镜像：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it private_registry /bin/sh</span><br><span class="line"><span class="comment">#删除/var/lib/registry/docker/registry/v2/repositories目录下对应的目录</span></span><br><span class="line">rm /var/lib/registry/docker/registry/v2/repositories/*</span><br></pre></td></tr></table></figure></p>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start private_registry</span><br></pre></td></tr></table></figure>
+<h3 id="查看ip"><a href="#查看ip" class="headerlink" title="查看ip"></a>查看ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> private_registry ip addr</span><br></pre></td></tr></table></figure>
+<h2 id="Docker-mirror-Registry"><a href="#Docker-mirror-Registry" class="headerlink" title="Docker mirror Registry"></a>Docker mirror Registry</h2><blockquote>
+<p>参考：<a href="https://mritd.me/2016/09/24/Docker-mirror-Registry/" target="_blank" rel="noopener">https://mritd.me/2016/09/24/Docker-mirror-Registry/</a></p>
+</blockquote>
+<h3 id="导出registry配置"><a href="#导出registry配置" class="headerlink" title="导出registry配置"></a>导出registry配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --entrypoint cat registry:2 /etc/docker/registry/config.yml &gt; config.yml</span><br></pre></td></tr></table></figure>
+<h3 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h3><p>如果想要使用mirror功能只需在下面增加proxy选项即可：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">version: 0.1</span><br><span class="line"><span class="built_in">log</span>:</span><br><span class="line">  fields:</span><br><span class="line">    service: registry</span><br><span class="line">storage:</span><br><span class="line">  cache:</span><br><span class="line">    blobdescriptor: inmemory</span><br><span class="line">  filesystem:</span><br><span class="line">    rootdirectory: /var/lib/registry</span><br><span class="line">http:</span><br><span class="line">  addr: :5000</span><br><span class="line">  headers:</span><br><span class="line">    X-Content-Type-Options: [nosniff]</span><br><span class="line">health:</span><br><span class="line">  storagedriver:</span><br><span class="line">    enabled: <span class="literal">true</span></span><br><span class="line">    interval: 10s</span><br><span class="line">    threshold: 3</span><br><span class="line">proxy:</span><br><span class="line">  remoteurl: https://registry-1.docker.io</span><br><span class="line">  username: [username]</span><br><span class="line">  password: [password]</span><br></pre></td></tr></table></figure></p>
+<p>username与password是可选项，当填写username与password以后就可以从hub pull私有镜像了。</p>
+<h3 id="启动mirror-registry"><a href="#启动mirror-registry" class="headerlink" title="启动mirror registry"></a>启动mirror registry</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -dt --name docker-registry-mirror \</span><br><span class="line">-v /docker/registry:/var/lib/registry \</span><br><span class="line">-v <span class="variable">$PWD</span>/config.yml:/etc/docker/registry/config.yml \</span><br><span class="line">-p 5000:5000 registry:2</span><br></pre></td></tr></table></figure>
+<h2 id="导入本地的images到私服中"><a href="#导入本地的images到私服中" class="headerlink" title="导入本地的images到私服中"></a>导入本地的images到私服中</h2><p>push.sh:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">imgs=$(docker images|awk <span class="string">'&#123;print $1":"$2&#125;'</span>)</span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> <span class="variable">$imgs</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker tag <span class="variable">$img</span> 192.168.10.6:5000/<span class="variable">$img</span></span><br><span class="line">  docker push 192.168.10.6:5000/<span class="variable">$img</span></span><br><span class="line">  docker rmi 192.168.10.6:5000/<span class="variable">$img</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="安装shipyard"><a href="#安装shipyard" class="headerlink" title="安装shipyard"></a>安装shipyard</h2><p>shipyard可以通过web的方式操作本地的镜像，还可以浏览指定的private registry，具体安装方式如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#dockerui:</span></span><br><span class="line"><span class="comment">#docker run -d -p 9000:9000 --name dockerui -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker</span></span><br><span class="line"><span class="comment">#docker start dockerui</span></span><br><span class="line">wget -O shipyard.sh https://shipyard-project.com/deploy</span><br></pre></td></tr></table></figure></p>
+<p>安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#curl -s https://shipyard-project.com/deploy | bash -s</span></span><br><span class="line"><span class="built_in">export</span> ACTION=deploy;<span class="built_in">export</span> PORT=9001;sh shipyard.sh</span><br></pre></td></tr></table></figure></p>
+<p>更新：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#curl -s https://shipyard-project.com/deploy | ACTION=upgrade bash -s</span></span><br><span class="line"><span class="built_in">export</span> ACTION=upgrade;<span class="built_in">export</span> PORT=9001;sh shipyard.sh</span><br></pre></td></tr></table></figure></p>
+<p>移除：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#curl -s https://shipyard-project.com/deploy | ACTION=remove bash -s</span></span><br><span class="line"><span class="built_in">export</span> ACTION=remove;sh shipyard.sh</span><br></pre></td></tr></table></figure></p>
+<p>更多查看：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh shipyard.sh -h</span><br></pre></td></tr></table></figure></p>
+<p>访问地址：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.10.6:9001/</span><br></pre></td></tr></table></figure></p>
+<p>注意：</p>
+<blockquote>
+<p>防火墙要放行2375端口，否则看不到container<br>添加registry时，需要指定https的地址，如：<a href="https://192.168.10.6:5000" target="_blank" rel="noopener">https://192.168.10.6:5000</a><br>login: admin/shipyard</p>
+</blockquote>
+<h2 id="安装registry-ui"><a href="#安装registry-ui" class="headerlink" title="安装registry ui"></a>安装registry ui</h2><p>registry ui有很多，包括：</p>
+<h3 id="docker-registry-frontend"><a href="#docker-registry-frontend" class="headerlink" title="docker-registry-frontend"></a>docker-registry-frontend</h3><p>可以使用docker-registry-frontend，具体安装方式如下：</p>
+<h4 id="普通安装方式-1"><a href="#普通安装方式-1" class="headerlink" title="普通安装方式"></a>普通安装方式</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#docker run -d -p 8080:8080 atcol/docker-registry-ui(不支持V2，不能使用)</span></span><br><span class="line">sudo docker run \</span><br><span class="line">  -d \</span><br><span class="line">  -e ENV_DOCKER_REGISTRY_HOST=192.168.10.6 \</span><br><span class="line">  -e ENV_DOCKER_REGISTRY_PORT=5000 \</span><br><span class="line">  -p 9002:80 \</span><br><span class="line">  konradkleine/docker-registry-frontend:v2</span><br><span class="line"><span class="comment">#重启：</span></span><br><span class="line">docker stop $(docker ps -a |grep docker-registry-frontend|awk <span class="string">'&#123;print $1&#125;'</span>)</span><br><span class="line">docker start $(docker ps -a |grep docker-registry-frontend|awk <span class="string">'&#123;print $1&#125;'</span>)</span><br></pre></td></tr></table></figure>
+<p>访问：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.10.6:9002</span><br></pre></td></tr></table></figure></p>
+<h4 id="证书安装方式-1"><a href="#证书安装方式-1" class="headerlink" title="证书安装方式"></a>证书安装方式</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run \</span><br><span class="line">  -d \</span><br><span class="line">  -e ENV_DOCKER_REGISTRY_HOST=192.168.10.6 \</span><br><span class="line">  -e ENV_DOCKER_REGISTRY_PORT=5000 \</span><br><span class="line">  -e ENV_DOCKER_REGISTRY_USE_SSL=1 \</span><br><span class="line">  -e ENV_USE_SSL=yes \</span><br><span class="line">  -v /root/certs/domain.crt:/etc/apache2/server.crt:ro \</span><br><span class="line">  -v /root/certs/domain.key:/etc/apache2/server.key:ro \</span><br><span class="line">  -p 9002:443 \</span><br><span class="line">  konradkleine/docker-registry-frontend:v2</span><br></pre></td></tr></table></figure>
+<p>异常解决：<br>如果出现The proxy server could not handle the request GET /v2/_catalog的错误，需要添加：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-e ENV_DOCKER_REGISTRY_USE_SSL=1</span><br></pre></td></tr></table></figure></p>
+<p>访问：<br><a href="https://192.168.10.6:9002" target="_blank" rel="noopener">https://192.168.10.6:9002</a></p>
+<h3 id="Nexus"><a href="#Nexus" class="headerlink" title="Nexus"></a>Nexus</h3><blockquote>
+<p>参考：<a href="https://mritd.me/2017/01/08/set-up-docker-registry-by-nexus/" target="_blank" rel="noopener">https://mritd.me/2017/01/08/set-up-docker-registry-by-nexus/</a><br>安装稍后补充。</p>
+</blockquote>
+<h3 id="harbor"><a href="#harbor" class="headerlink" title="harbor"></a>harbor</h3><blockquote>
+<p>参考：<a href="https://vmware.github.io/harbor/index_cn.html" target="_blank" rel="noopener">https://vmware.github.io/harbor/index_cn.html</a><br><a href="https://mritd.me/2016/09/15/Harbor-%E4%BC%81%E4%B8%9A%E7%BA%A7-Docker-Registry-%E7%AC%AC%E4%BA%8C%E5%BC%B9/" target="_blank" rel="noopener">https://mritd.me/2016/09/15/Harbor-%E4%BC%81%E4%B8%9A%E7%BA%A7-Docker-Registry-%E7%AC%AC%E4%BA%8C%E5%BC%B9/</a><br>注意：harbor不需要事先安装docker registry。</p>
+</blockquote>
+<h4 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/vmware/harbor/releases/download/0.5.0/harbor-offline-installer-0.5.0.tgz</span><br><span class="line">tar zxvf harbor-offline-installer-0.5.0.tgz</span><br><span class="line"><span class="built_in">cd</span> harbor</span><br></pre></td></tr></table></figure>
+<h4 id="修改配置-1"><a href="#修改配置-1" class="headerlink" title="修改配置"></a>修改配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[root@zhaoxy harbor]<span class="comment"># grep -v ^# harbor.cfg </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#修改hostname</span></span><br><span class="line">hostname = registry.gcalls.cn</span><br><span class="line">ui_url_protocol = https</span><br><span class="line"></span><br><span class="line"><span class="comment">#修改email</span></span><br><span class="line">email_identity = </span><br><span class="line">email_server = smtp.exmail.qq.com</span><br><span class="line">email_server_port = 25</span><br><span class="line">email_username = xxx@xxx.com</span><br><span class="line">email_password = xxx</span><br><span class="line">email_from = xxx@xxx.com</span><br><span class="line">email_ssl = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">harbor_admin_password = Harbor12345</span><br><span class="line">auth_mode = db_auth</span><br><span class="line">ldap_url = ldaps://ldap.mydomain.com</span><br><span class="line">ldap_basedn = ou=people,dc=mydomain,dc=com</span><br><span class="line">ldap_uid = uid </span><br><span class="line">ldap_scope = 3 </span><br><span class="line">db_password = root123</span><br><span class="line"></span><br><span class="line"><span class="comment">#开放用户注册</span></span><br><span class="line">self_registration = on</span><br><span class="line"></span><br><span class="line">use_compressed_js = on</span><br><span class="line">max_job_workers = 3 </span><br><span class="line">token_expiration = 30</span><br><span class="line">verify_remote_cert = on</span><br><span class="line"></span><br><span class="line">customize_crt = on</span><br><span class="line"></span><br><span class="line"><span class="comment">#证书信息</span></span><br><span class="line">crt_country = CN</span><br><span class="line">crt_state = guangdong</span><br><span class="line">crt_location = shenzhen</span><br><span class="line">crt_organization = Gcalls.cn</span><br><span class="line">crt_organizationalunit = Gcalls.cn</span><br><span class="line">crt_commonname = registry.gcalls.cn</span><br><span class="line">crt_email = zhaoxunyong@qq.com</span><br><span class="line"></span><br><span class="line">project_creation_restriction = everyone</span><br><span class="line"></span><br><span class="line"><span class="comment">#nginx的证书路径</span></span><br><span class="line">ssl_cert = /docker/works/harbor/ca/registry.gcalls.cn.crt</span><br><span class="line">ssl_cert_key = /docker/works/harbor/ca/registry.gcalls.cn.key</span><br></pre></td></tr></table></figure>
+<h4 id="证书生成"><a href="#证书生成" class="headerlink" title="证书生成"></a>证书生成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建CA</span></span><br><span class="line">mkdir ca</span><br><span class="line"><span class="built_in">cd</span> ca</span><br><span class="line">openssl req \</span><br><span class="line">    -subj <span class="string">"/C=CN/ST=guangdong/L=shenzhen/CN=*.gcalls.cn"</span> \</span><br><span class="line">    -newkey rsa:4096 -nodes -sha256 -keyout ca.key \</span><br><span class="line">    -x509 -days 365 -out ca.crt</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建签名请求</span></span><br><span class="line">openssl req \</span><br><span class="line">    -subj <span class="string">"/C=CN/ST=guangdong/L=shenzhen/CN=registry.gcalls.cn"</span> \</span><br><span class="line">    -newkey rsa:4096 -nodes -sha256 -keyout registry.gcalls.cn.key \</span><br><span class="line">    -out registry.gcalls.cn.csr</span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化，不然下面的操作会报错</span></span><br><span class="line"><span class="built_in">cd</span> /etc/pki/CA/</span><br><span class="line">touch index.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'01'</span> &gt; serial</span><br><span class="line"><span class="built_in">cd</span> -</span><br><span class="line"></span><br><span class="line"><span class="comment">#签署证书</span></span><br><span class="line"><span class="comment">#openssl x509 -req -days 365 -in /csr/abc.req.csr -signkey /csr/abc.key.pem.encrypted -out /csr/abc.cert.crt</span></span><br><span class="line">openssl ca -<span class="keyword">in</span> registry.gcalls.cn.csr -out registry.gcalls.cn.crt -cert ca.crt -keyfile ca.key -outdir .</span><br></pre></td></tr></table></figure>
+<h4 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#先安装docker-compose</span></span><br><span class="line">yum install epel-release</span><br><span class="line">yum install python2-pip</span><br><span class="line">pip install -U docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装harbor</span></span><br><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
+<h4 id="访问地址"><a href="#访问地址" class="headerlink" title="访问地址"></a>访问地址</h4><p>登录密码默认为：admin/Harbor12345<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://registry.gcalls.cn</span><br></pre></td></tr></table></figure></p>
+<h4 id="push测试"><a href="#push测试" class="headerlink" title="push测试"></a>push测试</h4><p>注意：需要push的客户端要先把ca.crt文件复制到/etc/docker/certs.d/registry.gcalls.cn/目录下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#init</span></span><br><span class="line">mkdir -p /etc/docker/certs.d/registry.gcalls.cn</span><br><span class="line">cp ca/ca.crt /etc/docker/certs.d/registry.gcalls.cn/</span><br><span class="line"></span><br><span class="line"><span class="comment">#login</span></span><br><span class="line">docker login registry.gcalls.cn</span><br><span class="line">docker tag nginx:1.11.5 registry.gcalls.cn/harbor/nginx:1.11.5</span><br><span class="line"><span class="comment">#需要先通过访问https://registry.gcalls.cn登录后创建harbor项目</span></span><br><span class="line">docker push registry.gcalls.cn/harbor/nginx:1.11.5</span><br></pre></td></tr></table></figure></p>
+<h4 id="Harbor镜像仓库"><a href="#Harbor镜像仓库" class="headerlink" title="Harbor镜像仓库"></a>Harbor镜像仓库</h4><p>注意：镜像仓库不允许 push 操作，只作为官方仓库缓存。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vim common/templates/registry/config.yml</span><br><span class="line"><span class="comment"># 增加以下内容</span></span><br><span class="line">proxy:</span><br><span class="line">  remoteurl: https://registry-1.docker.io</span><br><span class="line"><span class="comment"># 然后重新部署即可</span></span><br><span class="line">docker-compose down</span><br><span class="line">rm /data/database /data/job_logs /data/registry /data/secretkey</span><br><span class="line">docker up -d</span><br></pre></td></tr></table></figure></p>
+<h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><p>创建容器交互式容器：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run --name web -i -t docker.io/centos /bin/bash</span><br><span class="line">docker run -it -e TZ=Asia/Shanghai ubuntu bash</span><br><span class="line">--name：容器命名</span><br><span class="line">--rm: 创建并运行一次后自动删除</span><br><span class="line">-d: 守护式容器，不加-d的话，会直接进入docker命令行，<span class="built_in">exit</span>后容器也退出了。</span><br><span class="line">--restart=on-failure:5 当容器退出代码为非0时，自动尝试重启5次</span><br><span class="line">--restart=always 容器退出时，总会自动启动</span><br><span class="line">-v <span class="variable">$PWD</span>/website:/var/www/html/website:ro 挂载目录到容器，挂载website目录到容器的var/www/htmlwebsite，权限为ro, rw为可读写(默认) ro为只读</span><br><span class="line">--volumes-from containername 把containername所有的VOLUME挂载到新容器中。</span><br></pre></td></tr></table></figure></p>
+<p>显示正在运行的容器：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure></p>
+<p>显示所有的容器：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br></pre></td></tr></table></figure></p>
+<p>显示所有的容器的id：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a -q</span><br></pre></td></tr></table></figure></p>
+<p>显示最近一个运行的容器：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -l</span><br></pre></td></tr></table></figure></p>
+<p>删除：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm &lt;CONTAINER ID&gt;</span><br></pre></td></tr></table></figure></p>
+<p>删除数据卷：<br>数据卷是被设计用来持久化数据的，它的生命周期独立于容器，Docker不会在容器被删除后自动删除数据卷，并且也不存在垃圾回收这样的机制来处理没有任何容器引用的数据卷。如果需要在删除容器的同时移除数据卷。可以在删除容器的时候使用 docker rm -v这个命令。无主的数据卷可能会占据很多空间，要清理会很麻烦。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm -vf &lt;CONTAINER ID&gt;</span><br></pre></td></tr></table></figure></p>
+<p>-f：表示强制删除运行中的容器。</p>
+<p>停止所有的docker容器：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop $(docker ps -q -a)</span><br></pre></td></tr></table></figure></p>
+<p>启动与停止：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker start &lt;NAME&gt;</span><br><span class="line">docker stop &lt;NAME&gt;</span><br></pre></td></tr></table></figure></p>
+<p>特权运行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#true：Docker将拥有访问host所有设备的权限</span></span><br><span class="line">docker run --privileged=<span class="literal">true</span> ......</span><br></pre></td></tr></table></figure></p>
+<p>进入已启动的容器:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker attach &lt;NAME&gt;</span><br></pre></td></tr></table></figure></p>
+<p>注意：进入容器后，执行exit后，容器会关掉。要：CTRL+P+Q才不会退出容器<br>docker rm后，再创建容器会恢复到原始内容。</p>
+<p>查看已运行的容器日志：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run --name daemon_dave -d docker.io/centos /bin/sh -c <span class="string">"while true;do echo hello world;sleep 1;done"</span></span><br><span class="line">docker run --<span class="built_in">log</span>-driver=<span class="string">"syslog"</span> --name dave -d docker.io/centos /bin/sh -c <span class="string">"while true;do echo hello world;sleep 1;done"</span></span><br><span class="line"><span class="comment">#显示最近100条的记录：</span></span><br><span class="line">docker logs --tail 100 web</span><br><span class="line"><span class="comment">#捕捉最新的日志：</span></span><br><span class="line">docker logs -f web</span><br><span class="line"></span><br><span class="line"><span class="comment">#将日志输出到/var/log/message中，通过docker logs会禁用</span></span><br><span class="line">--<span class="built_in">log</span>-driver=<span class="string">"syslog"</span></span><br></pre></td></tr></table></figure></p>
+<p>容器内进程：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker top|stats &lt;NAME1&gt; &lt;NAME2&gt;</span><br></pre></td></tr></table></figure></p>
+<p>在容器外部执行容器内的命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -d web touch /etc/new_config_file</span><br><span class="line">docker <span class="built_in">exec</span> -it web /bin/bash</span><br><span class="line"><span class="comment">#类似于docker attach web，但容器不会自动退出</span></span><br></pre></td></tr></table></figure></p>
+<p>docker的目录：<br>/var/lib/docker，包括了镜像、配置。</p>
+<p>显示本机中的docker镜像：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure></p>
+<p>虚悬镜像:<br>镜像列表中，还可以看到一个特殊的镜像，这个镜像既没有仓库名，也没有标签，均为 <none>，这类无标签镜像也被称为 虚悬镜像(dangling image) ，可<br>以用下面的命令专门删除这类镜像：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#列出虚悬镜像：</span></span><br><span class="line">docker images -f dangling=<span class="literal">true</span></span><br><span class="line"><span class="comment">#删除虚悬镜像：</span></span><br><span class="line">docker rmi $(docker images -q -f dangling=<span class="literal">true</span>)</span><br><span class="line"><span class="comment">#删除所有在 mongo:3.2 之前的镜像：</span></span><br><span class="line">docker rmi $(docker images -q -f before=mongo:3.2)</span><br></pre></td></tr></table></figure></none></p>
+<p>搜索：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search redis</span><br></pre></td></tr></table></figure></p>
+<p>checkout：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker login</span><br><span class="line">docker pull docker.io/redis</span><br></pre></td></tr></table></figure></p>
+<p>commit到hub.docker.com：<br>commit本机：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit -m <span class="string">"A newcustom image"</span> -a <span class="string">"zhaoxunyong"</span> redis zhaoxunyong/redis:1.0.0-SNAPSHOT</span><br></pre></td></tr></table></figure></p>
+<p>commit到hub.docker.com:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push zhaoxunyong/redis:1.0.0-SNAPSHOT</span><br></pre></td></tr></table></figure></p>
+<p>指定端口：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 80 --name nginx zhaoxunyong/mycentos nginx -g <span class="string">"daemon off;"</span></span><br><span class="line">docker run -d -p 8080:80 --name nginx zhaoxunyong/mycentos nginx -g <span class="string">"daemon off;"</span></span><br></pre></td></tr></table></figure></p>
+<p>-p 8080:80: 表示把容器中的80端口映射到宿主机的8080端口<br>run -d -P –name nginx zhaoxunyong/mycentos nginx -g “daemon off;”<br>-P：表示将Dockerfile中的EXPOSE端口对外分布</p>
+<p>查看映射的端口：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker port nginx 80</span><br></pre></td></tr></table></figure></p>
+<h2 id="导入或导出"><a href="#导入或导出" class="headerlink" title="导入或导出"></a>导入或导出</h2><h3 id="镜像导出"><a href="#镜像导出" class="headerlink" title="镜像导出"></a>镜像导出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save -o centos.tar centos:latest</span><br></pre></td></tr></table></figure>
+<h3 id="导入到images-repo"><a href="#导入到images-repo" class="headerlink" title="导入到images repo"></a>导入到images repo</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load -i centos.tar</span><br></pre></td></tr></table></figure>
+<h3 id="容器导出"><a href="#容器导出" class="headerlink" title="容器导出"></a>容器导出</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#找到容器id</span></span><br><span class="line">docker ps</span><br><span class="line"><span class="comment">#导出：</span></span><br><span class="line">docker <span class="built_in">export</span> 19cb419ceb15 &gt; mycentos.tar</span><br></pre></td></tr></table></figure>
+<p>注意：<br>导出的为运行中的容器内容，包括已经在容器中安装的软件都会一并导出。</p>
+<h3 id="导入到images-repo-1"><a href="#导入到images-repo-1" class="headerlink" title="导入到images repo"></a>导入到images repo</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker import mycentos.tar mycentos</span><br></pre></td></tr></table></figure>
+<p>注意：<br>import命令是将tar导入到images中，而不是创建一个运行的容器。可以通过docker images查看。</p>
+<h2 id="数据卷容器"><a href="#数据卷容器" class="headerlink" title="数据卷容器"></a>数据卷容器</h2><p>如果你有一些持续更新的数据需要在容器之间共享，最好创建数据卷容器。数据卷容器，其实就是一个正常的容器，专门用来提供数据卷供其它容器挂载的。<br>首先，创建一个名为 dbdata 的数据卷容器：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v /dbdata --name dbdata training/postgres <span class="built_in">echo</span> Data-only container <span class="keyword">for</span> postgres</span><br></pre></td></tr></table></figure></p>
+<p>然后，在其他容器中使用 –volumes-from 来挂载 dbdata 容器中的数据卷。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --volumes-from dbdata --name db1 training/postgres</span><br><span class="line">docker run -d --volumes-from dbdata --name db2 training/postgres</span><br></pre></td></tr></table></figure></p>
+<p>可以使用超过一个的 –volumes-from 参数来指定从多个容器挂载不同的数据卷。 也可以从其他已经挂载了数据卷的容器来级联挂载数据卷。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name db3 --volumes-from db1 training/postgres</span><br></pre></td></tr></table></figure></p>
+<p>注意：<br>使用 –volumes-from 参数所挂载数据卷的容器自己并不需要保持在运行状态。<br>如果删除了挂载的容器（包括 dbdata、db1 和 db2），数据卷并不会被自动删除。如果要删除一个数据卷，必须在删除最后一个还挂载着它的容器时使用 docker rm -v 命令来指定同时删除关联的容器。 这可以让用户在容器之间升级和移动数据卷。</p>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><h3 id="基本指令"><a href="#基本指令" class="headerlink" title="基本指令"></a>基本指令</h3><h4 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h4><p>exec形式：RUN [“executable”, “param1”, “param2”]<br>shell形式：RUN command param1 param2<br>在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。</p>
+<h4 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h4><p>exec形式：CMD [“executable”, “param1”, “param2”]<br>shell形式：CMD command param1 param2<br>注意：CMD只能指定一条。如果docker run有传cmd的话，Dockerfile中的CMD无效</p>
+<h4 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h4><p>exec形式：ENTRYPOINT [“executable”, “param1”, “param2”]<br>shell形式：ENTRYPOINT command param1 param2<br>不会被外面的参数覆盖，同时CMD或者外面传的参数会作为ENTRYPOINT的参数<br>也可以在外面：docker run –entrypoint覆盖ENTRYPOINT指令<br>ENTRYPOINT和CMD在容器运行(run、start)时运行。</p>
+<p>exec与shell的区别：<br>shell形式和exec的形式的本质区别在于shell形式提供了默认的指令/bin/sh -c，所以其指定的command将在shell的环境下运行。因此指定command的pid将不会是1，因为pid为1的是shell，command进程是shell的子进程。<br>由于shell的pid不为1，因此我们无法直接向其发送信号，敲Ctrl+C是没有任何反应的。通过docker stop强制退出，退出状态为137，137=128 + 9，表明最后是被kill -9杀掉的。<br>shell形式还有一个严重的问题：由于其默认使用/bin/sh来运行命令，如果镜像中不包含/bin/sh，容器会无法启动。<br>exec形式则不然，其直接运行指定的指令，由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如$HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD [ “sh”, “-c”, “echo”, “$HOME” ]。<br>注意：<br>CMD与ENTRYPOINT要使用env变量的话，都要使用”sh”, “-c”，并且命令要在一个引号中，如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CMD [<span class="string">"sh"</span>, <span class="string">"-c"</span>, <span class="string">"java -Djava.security.egd=file:/dev/./urandom -jar /app/<span class="variable">$&#123;APPNAME&#125;</span>-<span class="variable">$&#123;VERSION&#125;</span>.jar"</span>]</span><br><span class="line">ENTRYPOINT [<span class="string">"sh"</span>, <span class="string">"-c"</span>, <span class="string">"java -Djava.security.egd=file:/dev/./urandom -jar /app/<span class="variable">$&#123;APPNAME&#125;</span>-<span class="variable">$&#123;VERSION&#125;</span>.jar --spring.profiles.active=docker"</span>]</span><br></pre></td></tr></table></figure></p>
+<h4 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a>WORKDIR</h4><p>脚本运行的工作目录,目录会自动创建。<br>也可以在外面： -w覆盖WORKDIR指令</p>
+<h4 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a>ENV</h4><p>设置环境变更：<br>ENV WORK_HOME /zxy<br>WORKDIR $WORK_HOME<br>进入容器可以通过env查看<br>也可以通过外面：-e “WORK_HOME=/zxy”指定</p>
+<h4 id="USER"><a href="#USER" class="headerlink" title="USER"></a>USER</h4><p>USER nginx<br>指定运行的用户，不指定默认root</p>
+<h4 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a>VOLUME</h4><p>VOLUME [“/data”]<br>创建一个可以从本地主机或其他容器挂载的挂载点</p>
+<h4 id="LABEL"><a href="#LABEL" class="headerlink" title="LABEL"></a>LABEL</h4><p>LABEL location=”New York” type=”Data Center” role=”Web Server”</p>
+<h4 id="COPY-ADD"><a href="#COPY-ADD" class="headerlink" title="COPY/ADD"></a>COPY/ADD</h4><p>添加文件，ADD与COPY不同之处在于如果文件是压缩文件，ADD到容器中会自动解压。<br>支持http方式。</p>
+<h4 id="ARG"><a href="#ARG" class="headerlink" title="ARG"></a>ARG</h4><p>构建时，传递参数给构建：<br>ARG build<br>ARG webapp_user=user(user为默认值)<br>传递参数：–build-arg build=1234<br>如：docker build –build-arg build=1234 -t zhaoxunyong/mycentos ./</p>
+<h4 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a>ONBUILD</h4><p>触发器：在另外有构建基于这个构建时触发，只能继承一次<br>如：ONBUILD ADD test.sh /software/</p>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --no-cache -t=<span class="string">"zhaoxunyong/mycentos:latest"</span> .</span><br></pre></td></tr></table></figure>
+<p>–no-ache表示每次都会从头到尾构建，通过docker images就可以看到已经构建的镜像。<br>还可以查看历史记录：docker history zhaoxunyong/mycentos</p>
+<h2 id="网络连接"><a href="#网络连接" class="headerlink" title="网络连接"></a>网络连接</h2><h3 id="Networking"><a href="#Networking" class="headerlink" title="Networking"></a>Networking</h3><p>版本&gt;=1.9推荐使用：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker network create app</span><br><span class="line">docker network inspect app</span><br><span class="line">docker network ls</span><br></pre></td></tr></table></figure></p>
+<p>创建：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --net=app --name db docker.io/redis</span><br><span class="line">docker run -it --net=app --name centos docker.io/centos /bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>测试：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#ping db就可以ping通</span></span><br><span class="line">进入docker <span class="built_in">exec</span> -it centos /bin/bash</span><br><span class="line"><span class="comment">#ping centos也可以ping通</span></span><br><span class="line">进入docker <span class="built_in">exec</span> -it db /bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>加入到app网络：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8088:80 --name nginx docker.io/nginx</span><br><span class="line">docker network connect app nginx</span><br></pre></td></tr></table></figure></p>
+<p>进入docker exec -it nginx /bin/bash，ping db或centos就能ping通</p>
+<p>断开：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network disconnect app nginx</span><br></pre></td></tr></table></figure></p>
+<h3 id="Link"><a href="#Link" class="headerlink" title="Link"></a>Link</h3><p>link:1.9之前版本使用：<br>–link 原containername:别名<br>只支持在相同的宿主机中。<br>可以多次使用–link：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name db docker.io/redis </span><br><span class="line">docker run -d -p 8088:80 --name nginx --link db:redis_db docker.io/nginx</span><br></pre></td></tr></table></figure></p>
+<p>进入docker exec -it nginx /bin/bash，ping redis_db就能ping通, /etc/hosts可以看到对应的记录。<br>可以在容器中通过env查看环境变量<br>–icc=false:关闭所有没有链接的容器间的通信</p>
+<h2 id="Docker-compose"><a href="#Docker-compose" class="headerlink" title="Docker compose"></a>Docker compose</h2><blockquote>
+<p>参考：<br><a href="http://debugo.com/docker-compose/" target="_blank" rel="noopener">http://debugo.com/docker-compose/</a><br><a href="http://www.cnblogs.com/freefei/p/5311294.html" target="_blank" rel="noopener">http://www.cnblogs.com/freefei/p/5311294.html</a></p>
+</blockquote>
+<p>在开发环境、临时服务器、CI中使用Compose是非常合适的。但是，我们目前不建议你在生产环境中使用。</p>
+<h3 id="安装pip"><a href="#安装pip" class="headerlink" title="安装pip"></a>安装pip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install python2-pip</span><br></pre></td></tr></table></figure>
+<h3 id="安装compose"><a href="#安装compose" class="headerlink" title="安装compose"></a>安装compose</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install -U docker-compose</span><br><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><p>编写Dockerfile:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">vim redis/Dockerfile</span><br><span class="line"><span class="comment"># Version: 1.0.0</span></span><br><span class="line">FROM centos</span><br><span class="line">MAINTAINER zhaoxunyong@qq.com</span><br><span class="line"></span><br><span class="line">RUN [<span class="string">"yum"</span>, <span class="string">"-y"</span>, <span class="string">"install"</span>, <span class="string">"epel-release"</span>]</span><br><span class="line">RUN yum -y install redis</span><br><span class="line"></span><br><span class="line">VOLUME [ <span class="string">"/var/lib/redis"</span>, <span class="string">"/var/log/redis"</span> ]</span><br><span class="line"></span><br><span class="line"><span class="comment">#ENTRYPOINT [ "redis-server", "--protected-mode", "no", "--logfile", "/var/log/redis/redis-server.log" ]</span></span><br><span class="line">ENTRYPOINT [ <span class="string">"redis-server"</span> ]</span><br><span class="line">CMD [<span class="string">"--protected-mode"</span>, <span class="string">"no"</span>, <span class="string">"--logfile"</span>, <span class="string">"/var/log/redis/redis-server.log"</span>]</span><br><span class="line"></span><br><span class="line">EXPOSE 6379</span><br></pre></td></tr></table></figure></p>
+<p>编译：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t zhaoxunyong/redis ./</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vim nginx/Dockerfile</span><br><span class="line"><span class="comment"># Version: 1.0.0</span></span><br><span class="line">FROM docker.io/centos</span><br><span class="line"></span><br><span class="line">RUN [<span class="string">"yum"</span>, <span class="string">"-y"</span>, <span class="string">"install"</span>, <span class="string">"epel-release"</span>]</span><br><span class="line">RUN yum -y install nginx</span><br><span class="line"></span><br><span class="line">EXPOSE 80</span><br><span class="line"></span><br><span class="line"><span class="comment">#CMD [ "nginx", "-g", "daemon off;"]</span></span><br><span class="line"></span><br><span class="line">docker build -t zhaoxunyong/nginx ./</span><br></pre></td></tr></table></figure>
+<p>编译：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t zhaoxunyong/nginx ./</span><br></pre></td></tr></table></figure></p>
+<p>compose:<br>vim docker-compose.yml<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">web:</span><br><span class="line">  <span class="comment">#container_name: web</span></span><br><span class="line">  <span class="comment">#image: zhaoxunyong/nginx</span></span><br><span class="line">  build: ./nginx</span><br><span class="line">  <span class="built_in">command</span>: nginx -g <span class="string">'daemon off;'</span></span><br><span class="line">  ports:</span><br><span class="line">    - <span class="string">"8081:80"</span></span><br><span class="line">  volumes:</span><br><span class="line">    - <span class="variable">$PWD</span>:/<span class="built_in">pwd</span></span><br><span class="line">    - /webapp:/webapp</span><br><span class="line">  links:</span><br><span class="line">    - redis:db</span><br><span class="line">  <span class="comment">#net: app</span></span><br><span class="line">  <span class="comment">#hostname: web</span></span><br><span class="line">  <span class="comment">#dns:</span></span><br><span class="line">  <span class="comment">#  - 8.8.8.8</span></span><br><span class="line">  <span class="comment">#  - 9.9.9.9</span></span><br><span class="line">  <span class="comment">#dns_search:</span></span><br><span class="line">  <span class="comment">#  - domain1.example.com</span></span><br><span class="line">  <span class="comment">#mem_limit: 1000000000</span></span><br><span class="line">  <span class="comment">#privileged: true</span></span><br><span class="line">  <span class="comment">#restart: always</span></span><br><span class="line">  <span class="comment">#volumes_from:</span></span><br><span class="line">  <span class="comment">#  - service_name</span></span><br><span class="line">  <span class="comment">#  - container_name</span></span><br><span class="line">  <span class="comment">#expose:</span></span><br><span class="line">  <span class="comment">#  - "3000"</span></span><br><span class="line">  <span class="comment">#  - "8000"</span></span><br><span class="line">  <span class="comment">#environment:</span></span><br><span class="line">  <span class="comment">#  - DEBUG=false</span></span><br><span class="line">  <span class="comment">#  - SEND_EMAILS=false</span></span><br><span class="line">  <span class="comment">#env_file:</span></span><br><span class="line">  <span class="comment">#  - ./common.env</span></span><br><span class="line">  <span class="comment">#  - ./apps/web.env</span></span><br><span class="line">  <span class="comment">#  - /opt/secrets.env</span></span><br><span class="line"></span><br><span class="line">redis:</span><br><span class="line">  <span class="comment">#container_name: redis</span></span><br><span class="line">  <span class="comment">#image: zhaoxunyong/redis</span></span><br><span class="line">  build: ./redis</span><br><span class="line">  ports:</span><br><span class="line">    - <span class="string">"6379:6379"</span></span><br></pre></td></tr></table></figure></p>
+<p>启动：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#docker run --name redis --rm -p 6379:6379 --rm zhaoxunyong/redis --protected-mode no --logfile /var/log/redis/redis-server.log</span></span><br><span class="line"><span class="comment">#docker run --name nginx -p 8081:80 --rm --link redis:db zhaoxunyong/nginx nginx -g "daemon off;"</span></span><br><span class="line">docker-compose up</span><br><span class="line">docker-compose up -d</span><br><span class="line">docker-compose ps</span><br><span class="line">docker-compose logs</span><br><span class="line">docker-compose logs -f</span><br><span class="line">docker-compose stop</span><br></pre></td></tr></table></figure></p>
+<p>使用-f指定代替的compose文件。<br>使用-p指定代替compose文件所在的目录。</p>
+<h2 id="查看已存在images的Dockfile"><a href="#查看已存在images的Dockfile" class="headerlink" title="查看已存在images的Dockfile"></a>查看已存在images的Dockfile</h2><blockquote>
+<p>参考：<a href="https://github.com/lukapeschke/dockerfile-from-image" target="_blank" rel="noopener">https://github.com/lukapeschke/dockerfile-from-image</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-node1 ~]<span class="comment"># git clone https://github.com/lukapeschke/dockerfile-from-image.git</span></span><br><span class="line"><span class="built_in">cd</span> dockerfile-from-image</span><br><span class="line">docker build -t lukapeschke/dfa .</span><br><span class="line"></span><br><span class="line">[root@k8s-node1 ~]<span class="comment"># docker run --rm -v '/var/run/docker.sock:/var/run/docker.sock' lukapeschke/dfa &lt;IMAGE_ID&gt;</span></span><br><span class="line"></span><br><span class="line">[root@k8s-node1 ~]<span class="comment"># docker run --rm -v '/var/run/docker.sock:/var/run/docker.sock' lukapeschke/dfa 405a0b586f7e</span></span><br><span class="line">FROM kubeguide/redis-master:latest</span><br><span class="line">RUN</span><br><span class="line">ADD file:62400a49cced0d7521560b501f6c52227c60f5e2fecd0fef20e4d0e1558f7301 <span class="keyword">in</span> /</span><br><span class="line">RUN /bin/sh -c <span class="built_in">echo</span> <span class="string">'#!/bin/sh'</span> &gt; /usr/sbin/policy-rc.d         \</span><br><span class="line">    &amp;&amp; <span class="built_in">echo</span> <span class="string">'exit 101'</span> &gt;&gt; /usr/sbin/policy-rc.d         \</span><br><span class="line">    &amp;&amp; chmod +x /usr/sbin/policy-rc.d           \</span><br><span class="line">    &amp;&amp; dpkg-divert --<span class="built_in">local</span> --rename --add /sbin/initctl         \</span><br><span class="line">    &amp;&amp; cp -a /usr/sbin/policy-rc.d /sbin/initctl        \</span><br><span class="line">    &amp;&amp; sed -i <span class="string">'s/^exit.*/exit 0/'</span> /sbin/initctl                 \</span><br><span class="line">    &amp;&amp; <span class="built_in">echo</span> <span class="string">'force-unsafe-io'</span> &gt; /etc/dpkg/dpkg.cfg.d/docker-apt-speedup                 \</span><br><span class="line">    &amp;&amp; <span class="built_in">echo</span> <span class="string">'DPkg::Post-Invoke &#123; "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; &#125;;'</span> &gt; /etc/apt/apt.conf.d/docker-clean  \</span><br><span class="line">    &amp;&amp; <span class="built_in">echo</span> <span class="string">'APT::Update::Post-Invoke &#123; "rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true"; &#125;;'</span> &gt;&gt; /etc/apt/apt.conf.d/docker-clean  \</span><br><span class="line">    &amp;&amp; <span class="built_in">echo</span> <span class="string">'Dir::Cache::pkgcache ""; Dir::Cache::srcpkgcache "";'</span> &gt;&gt; /etc/apt/apt.conf.d/docker-clean          \</span><br><span class="line">    &amp;&amp; <span class="built_in">echo</span> <span class="string">'Acquire::Languages "none";'</span> &gt; /etc/apt/apt.conf.d/docker-no-languages              \</span><br><span class="line">    &amp;&amp; <span class="built_in">echo</span> <span class="string">'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";'</span> &gt; /etc/apt/apt.conf.d/docker-gzip-indexes</span><br><span class="line">RUN /bin/sh -c sed -i <span class="string">'s/^#\s*\(deb.*universe\)$/\1/g'</span> /etc/apt/sources.list</span><br><span class="line">CMD [/bin/bash]</span><br><span class="line">RUN /bin/sh -c sed -i <span class="string">'s/# \(.*multiverse$\)/\1/g'</span> /etc/apt/sources.list \</span><br><span class="line">    &amp;&amp;   apt-get update \</span><br><span class="line">    &amp;&amp;   apt-get -y upgrade \</span><br><span class="line">    &amp;&amp;   apt-get install -y build-essential \</span><br><span class="line">    &amp;&amp;   apt-get install -y software-properties-common \</span><br><span class="line">    &amp;&amp;   apt-get install -y byobu curl git htop man unzip vim wget \</span><br><span class="line">    &amp;&amp;   rm -rf /var/lib/apt/lists/*</span><br><span class="line">ADD file:1b7d66a2e6558a749e3bb8462c04292d941ca6456e4a0d27575774591c677768 <span class="keyword">in</span> /root/.bashrc</span><br><span class="line">ADD file:f21c0663779541419bb4a70154751df046dc27d6bfb93362b1d42ea1e4dceb37 <span class="keyword">in</span> /root/.gitconfig</span><br><span class="line">ADD dir:217b39958cc7efb346372d54c10f32da1230945a6041e9ca98ebb4fe18eb3c07 <span class="keyword">in</span> /root/.scripts</span><br><span class="line">ENV HOME=/root</span><br><span class="line">WORKDIR /root</span><br><span class="line">CMD [bash]</span><br><span class="line">RUN /bin/sh -c <span class="built_in">cd</span> /tmp \</span><br><span class="line">    &amp;&amp;   wget http://download.redis.io/redis-stable.tar.gz \</span><br><span class="line">    &amp;&amp;   tar xvzf redis-stable.tar.gz \</span><br><span class="line">    &amp;&amp;   <span class="built_in">cd</span> redis-stable \</span><br><span class="line">    &amp;&amp;   make \</span><br><span class="line">    &amp;&amp;   make install \</span><br><span class="line">    &amp;&amp;   cp -f src/redis-sentinel /usr/<span class="built_in">local</span>/bin \</span><br><span class="line">    &amp;&amp;   mkdir -p /etc/redis \</span><br><span class="line">    &amp;&amp;   cp -f *.conf /etc/redis \</span><br><span class="line">    &amp;&amp;   rm -rf /tmp/redis-stable* \</span><br><span class="line">    &amp;&amp;   sed -i <span class="string">'s/^\(bind .*\)$/# \1/'</span> /etc/redis/redis.conf \</span><br><span class="line">    &amp;&amp;   sed -i <span class="string">'s/^\(daemonize .*\)$/# \1/'</span> /etc/redis/redis.conf \</span><br><span class="line">    &amp;&amp;   sed -i <span class="string">'s/^\(dir .*\)$/# \1\ndir \/data/'</span> /etc/redis/redis.conf \</span><br><span class="line">    &amp;&amp;   sed -i <span class="string">'s/^\(logfile .*\)$/# \1/'</span> /etc/redis/redis.conf</span><br><span class="line">VOLUME [/data]</span><br><span class="line">WORKDIR /data</span><br><span class="line">ADD file:eb94b1ca7cdb7ea1553bfd01686f66b9e5dd9893a4749ce291a8071e40113465 <span class="keyword">in</span> /etc/redis/redis.conf</span><br><span class="line">EXPOSE map[6379/tcp:&#123;&#125;]</span><br><span class="line">ADD file:58911657b64982dea712ca78ee8811c96e522d06585d29d40a79b2d4f6e935c6 <span class="keyword">in</span> /etc/redis/redis.conf</span><br><span class="line">CMD [redis-server /etc/redis/redis.conf]</span><br><span class="line">EXPOSE map[6379/tcp:&#123;&#125;]</span><br><span class="line">MAINTAINER kubeguide</span><br><span class="line">ADD multi:0a8d9f4785c98c51ae6f30026e81df4b38fcbda87d73fe189656bdedfe016d32 <span class="keyword">in</span> /data/</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="http://c.isme.pub/2016/11/21/learn-docker-install/" target="_blank" rel="noopener">http://c.isme.pub/2016/11/21/learn-docker-install/</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/使用packer制作vagrant-box.html" rel="next" title="使用packer制作vagrant box">
+                <i class="fa fa-chevron-left"></i> 使用packer制作vagrant box
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/Centos-yum源搭建.html" rel="prev" title="Centos yum源搭建">
+                Centos yum源搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
+              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统要求"><span class="nav-number">1.</span> <span class="nav-text">操作系统要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker"><span class="nav-number">2.</span> <span class="nav-text">安装docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#卸载旧的docker版本"><span class="nav-number">2.1.</span> <span class="nav-text">卸载旧的docker版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加docker用户组"><span class="nav-number">2.2.</span> <span class="nav-text">添加docker用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加yum源："><span class="nav-number">2.3.</span> <span class="nav-text">添加yum源：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.4.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动启动"><span class="nav-number">2.5.</span> <span class="nav-text">手动启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker加速"><span class="nav-number">2.6.</span> <span class="nav-text">docker加速</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加代理"><span class="nav-number">2.7.</span> <span class="nav-text">添加代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows安装"><span class="nav-number">2.8.</span> <span class="nav-text">Windows安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Registry"><span class="nav-number">3.</span> <span class="nav-text">Docker Registry</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装registry-2"><span class="nav-number">3.1.</span> <span class="nav-text">安装registry:2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通安装方式"><span class="nav-number">3.1.1.</span> <span class="nav-text">普通安装方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书安装方式"><span class="nav-number">3.1.2.</span> <span class="nav-text">证书安装方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-number">3.1.3.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除镜像文件"><span class="nav-number">3.1.4.</span> <span class="nav-text">删除镜像文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动"><span class="nav-number">3.2.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看ip"><span class="nav-number">3.3.</span> <span class="nav-text">查看ip</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-mirror-Registry"><span class="nav-number">4.</span> <span class="nav-text">Docker mirror Registry</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导出registry配置"><span class="nav-number">4.1.</span> <span class="nav-text">导出registry配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置"><span class="nav-number">4.2.</span> <span class="nav-text">修改配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动mirror-registry"><span class="nav-number">4.3.</span> <span class="nav-text">启动mirror registry</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入本地的images到私服中"><span class="nav-number">5.</span> <span class="nav-text">导入本地的images到私服中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装shipyard"><span class="nav-number">6.</span> <span class="nav-text">安装shipyard</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装registry-ui"><span class="nav-number">7.</span> <span class="nav-text">安装registry ui</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-registry-frontend"><span class="nav-number">7.1.</span> <span class="nav-text">docker-registry-frontend</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通安装方式-1"><span class="nav-number">7.1.1.</span> <span class="nav-text">普通安装方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书安装方式-1"><span class="nav-number">7.1.2.</span> <span class="nav-text">证书安装方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nexus"><span class="nav-number">7.2.</span> <span class="nav-text">Nexus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#harbor"><span class="nav-number">7.3.</span> <span class="nav-text">harbor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-1"><span class="nav-number">7.3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改配置-1"><span class="nav-number">7.3.2.</span> <span class="nav-text">修改配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书生成"><span class="nav-number">7.3.3.</span> <span class="nav-text">证书生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-2"><span class="nav-number">7.3.4.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问地址"><span class="nav-number">7.3.5.</span> <span class="nav-text">访问地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#push测试"><span class="nav-number">7.3.6.</span> <span class="nav-text">push测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Harbor镜像仓库"><span class="nav-number">7.3.7.</span> <span class="nav-text">Harbor镜像仓库</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本命令"><span class="nav-number">8.</span> <span class="nav-text">基本命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入或导出"><span class="nav-number">9.</span> <span class="nav-text">导入或导出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像导出"><span class="nav-number">9.1.</span> <span class="nav-text">镜像导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入到images-repo"><span class="nav-number">9.2.</span> <span class="nav-text">导入到images repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器导出"><span class="nav-number">9.3.</span> <span class="nav-text">容器导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入到images-repo-1"><span class="nav-number">9.4.</span> <span class="nav-text">导入到images repo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据卷容器"><span class="nav-number">10.</span> <span class="nav-text">数据卷容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dockerfile"><span class="nav-number">11.</span> <span class="nav-text">Dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本指令"><span class="nav-number">11.1.</span> <span class="nav-text">基本指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RUN"><span class="nav-number">11.1.1.</span> <span class="nav-text">RUN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CMD"><span class="nav-number">11.1.2.</span> <span class="nav-text">CMD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ENTRYPOINT"><span class="nav-number">11.1.3.</span> <span class="nav-text">ENTRYPOINT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WORKDIR"><span class="nav-number">11.1.4.</span> <span class="nav-text">WORKDIR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ENV"><span class="nav-number">11.1.5.</span> <span class="nav-text">ENV</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#USER"><span class="nav-number">11.1.6.</span> <span class="nav-text">USER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VOLUME"><span class="nav-number">11.1.7.</span> <span class="nav-text">VOLUME</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LABEL"><span class="nav-number">11.1.8.</span> <span class="nav-text">LABEL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#COPY-ADD"><span class="nav-number">11.1.9.</span> <span class="nav-text">COPY/ADD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ARG"><span class="nav-number">11.1.10.</span> <span class="nav-text">ARG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ONBUILD"><span class="nav-number">11.1.11.</span> <span class="nav-text">ONBUILD</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建"><span class="nav-number">11.2.</span> <span class="nav-text">构建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络连接"><span class="nav-number">12.</span> <span class="nav-text">网络连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Networking"><span class="nav-number">12.1.</span> <span class="nav-text">Networking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Link"><span class="nav-number">12.2.</span> <span class="nav-text">Link</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-compose"><span class="nav-number">13.</span> <span class="nav-text">Docker compose</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装pip"><span class="nav-number">13.1.</span> <span class="nav-text">安装pip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装compose"><span class="nav-number">13.2.</span> <span class="nav-text">安装compose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo"><span class="nav-number">13.3.</span> <span class="nav-text">Demo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看已存在images的Dockfile"><span class="nav-number">14.</span> <span class="nav-text">查看已存在images的Dockfile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">15.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

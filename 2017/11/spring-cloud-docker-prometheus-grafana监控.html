@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="docker,spring cloud,prometheus,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="最近公司上线一套基于docker的spring cloud微服务系统，记录一下相关的监控技术。">
+<meta name="keywords" content="docker,spring cloud,prometheus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring cloud+docker+prometheus grafana监控">
+<meta property="og:url" content="http://blog.gcalls.cn/2017/11/spring-cloud-docker-prometheus-grafana监控.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="最近公司上线一套基于docker的spring cloud微服务系统，记录一下相关的监控技术。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/admin-dashboard.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/prometheus-customer.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/prometheus.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/prometheus-ui.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/grafana-config.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/templating.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/templating-job.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/templating-instance.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/templating-apis.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/templating1.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel1.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel2.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel3.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel4.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel5.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/grafana-ui.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/prometheus-cadvisor.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard-import1.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard-import2.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard-import3.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard1.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/hystrix.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/zipkin-server-ui.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/zipkin-dependencies.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/jaeger_construnction.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/jaeger_process.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/jaeger_opentracing.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/skywalking-architecture.png">
+<meta property="og:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/skywalking-screenshot.png">
+<meta property="og:updated_time" content="2024-07-25T07:36:00.049Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring cloud+docker+prometheus grafana监控">
+<meta name="twitter:description" content="最近公司上线一套基于docker的spring cloud微服务系统，记录一下相关的监控技术。">
+<meta name="twitter:image" content="http://blog.gcalls.cn/images/spring-cloud-docker-prometheus-grafana监控/admin-dashboard.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.gcalls.cn/2017/11/spring-cloud-docker-prometheus-grafana监控.html">
+
+
+
+
+
+  <title>spring cloud+docker+prometheus grafana监控 | Just do it</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2017/11/spring-cloud-docker-prometheus-grafana监控.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaoxunyong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring cloud+docker+prometheus grafana监控</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-17T15:28:48+08:00">
+                2017-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring-cloud/" itemprop="url" rel="index">
+                    <span itemprop="name">spring cloud</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring-cloud/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring-cloud/docker/prometheus/" itemprop="url" rel="index">
+                    <span itemprop="name">prometheus</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/spring-cloud-docker-prometheus-grafana监控.html" class="leancloud_visitors" data-flag-title="spring cloud+docker+prometheus grafana监控">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近公司上线一套基于docker的spring cloud微服务系统，记录一下相关的监控技术。</p>
+<a id="more"></a>
+<h2 id="spring-boot监控"><a href="#spring-boot监控" class="headerlink" title="spring boot监控"></a>spring boot监控</h2><h3 id="actuator"><a href="#actuator" class="headerlink" title="actuator"></a>actuator</h3><p>Spring Boot 包含了一系列的附加特性，来帮助你监控和管理生产环境下运行时的应用程序。你可以通过HTTP endpoints、JMX或者SSH来监控和管理应用——健康状况、系统指标、参数信息、内存状况等等。</p>
+<p>添加依赖:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="admin-dashboard"><a href="#admin-dashboard" class="headerlink" title="admin-dashboard"></a>admin-dashboard</h3><p>Spring Boot Admin是一个管理和监控Spring Boot应用的项目。我们可以通过Spring Boot Admin的客户端运行，也可以Spring Cloud中注册为一个服务（比如：注册到Eureka中）。Spring Boot Amin仅仅是一个建立在Spring Boot Actuator端点上的AngularJS的应用。</p>
+<p>只好不要集成在业务系统中，可以单独建立一个project。只需要进行以下添加：</p>
+<p>添加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-eureka<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>de.codecentric<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-admin-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>de.codecentric<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-admin-server-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>启动类添加：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableAdminServer</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure>
+<p>配置:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8040</span></span><br><span class="line">  </span><br><span class="line"><span class="attr">management:</span></span><br><span class="line">  <span class="attr">context-path:</span> <span class="string">/ops</span></span><br><span class="line">  <span class="attr">security:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">false</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">admin-dashboard</span></span><br><span class="line">  <span class="attr">boot:</span></span><br><span class="line">    <span class="attr">admin:</span></span><br><span class="line">      <span class="attr">monitor:</span></span><br><span class="line">        <span class="attr">connect-timeout:</span> <span class="number">10000</span></span><br><span class="line">        <span class="attr">read-timeout:</span> <span class="number">60000</span></span><br><span class="line"></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">instance:</span></span><br><span class="line">    <span class="attr">preferIpAddress:</span> <span class="literal">true</span></span><br><span class="line">      <span class="comment"># eureka的ip，如果有多个ip地址时，需要在此处指定</span></span><br><span class="line"><span class="comment">#      ipAddress: 127.0.0.1</span></span><br><span class="line">      <span class="comment"># 续约到期时间（默认90秒）</span></span><br><span class="line">    <span class="attr">leaseExpirationDurationInSeconds:</span> <span class="number">30</span></span><br><span class="line">      <span class="comment">#续约更新时间间隔（默认30秒），在生产中，最好坚持使用默认值，因为在服务器内部有一些计算，他们对续约做出假设。</span></span><br><span class="line">    <span class="attr">leaseRenewalIntervalInSeconds:</span> <span class="number">10</span></span><br><span class="line"><span class="comment">#    instance-id: $&#123;spring.application.name&#125;:$&#123;eureka.instance.ipAddress&#125;:$&#123;server.port&#125;</span></span><br><span class="line">    <span class="attr">statusPageUrlPath:</span> <span class="string">$&#123;management.context-path&#125;/info</span></span><br><span class="line">    <span class="attr">healthCheckUrlPath:</span> <span class="string">$&#123;management.context-path&#125;/health</span></span><br><span class="line">    <span class="attr">metadata-map:</span></span><br><span class="line">      <span class="attr">management.context-path:</span> <span class="string">$&#123;management.context-path&#125;</span></span><br><span class="line">    </span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">registerWithEureka:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">serviceUrl:</span></span><br><span class="line">      <span class="attr">defaultZone:</span> <span class="string">http://localhost:8761/eureka/</span></span><br></pre></td></tr></table></figure>
+<p>效果：<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/admin-dashboard.png" alt="admin-dashboard.png"></p>
+<h3 id="prometheus日志收集"><a href="#prometheus日志收集" class="headerlink" title="prometheus日志收集"></a>prometheus日志收集</h3><p>Prometheus用于收集actuator的信息，再在grafana中进行显示。</p>
+<p>添加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.prometheus<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>simpleclient_spring_boot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>启动类添加：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnablePrometheusEndpoint</span></span><br><span class="line"><span class="meta">@EnableSpringBootMetricsCollector</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure>
+<p>配置:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># prometheus endpoint, enabled default false    </span></span><br><span class="line"><span class="attr">endpoints:</span></span><br><span class="line">  <span class="attr">prometheus:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># prometheus endpoint, enabled default false    </span></span><br><span class="line"><span class="attr">endpoints:</span></span><br><span class="line">  <span class="attr">prometheus:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>也可以对某个接口作数据收集：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Gauge getErrorTaskListRequests = Gauge.build()</span><br><span class="line">  .labelNames(<span class="string">"api"</span>,<span class="string">"desc"</span>).name(<span class="string">"boc_getErrorTaskList"</span>)</span><br><span class="line">  help(<span class="string">"Boc getErrorTaskList failure."</span>).register();</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;TaskDto&gt; <span class="title">getErrorTaskList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  getErrorTaskListRequests.clear();</span><br><span class="line">  <span class="keyword">if</span>(taskDtoList!=<span class="keyword">null</span> &amp;&amp; !taskDtoList.isEmpty()) &#123;</span><br><span class="line">      getErrorTaskListRequests.labels(<span class="string">"getErrorTaskList"</span>,<span class="string">"定时任务监控"</span>).inc(taskDtoList.size());</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> taskDtoList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/prometheus-customer.png" alt="prometheus-customer"></p>
+<p>访问：<br><a href="http://ip:port/ops/prometheus" target="_blank" rel="noopener">http://ip:port/ops/prometheus</a><br><img src="/images/spring-cloud-docker-prometheus-grafana监控/prometheus.png" alt="prometheus.png"></p>
+<h2 id="prometheus"><a href="#prometheus" class="headerlink" title="prometheus"></a>prometheus</h2><p>参考：<a href="https://segmentfault.com/a/1190000008629939" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008629939</a></p>
+<p>Prometheus 是使用 Golang 开发的开源监控系统，被人称为下一代监控系统，是为数不多的适合 Docker、Mesos 、Kubernetes 环境的监控系统之一 。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name prometheus -p 9090:9090 -v \</span><br><span class="line">/works/conf/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus</span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>prometheus.yml相关配置如下：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">global:</span></span><br><span class="line">  <span class="attr">scrape_interval:</span> <span class="string">10s</span></span><br><span class="line">  <span class="attr">scrape_timeout:</span> <span class="string">10s</span></span><br><span class="line">  <span class="attr">evaluation_interval:</span> <span class="string">10m</span></span><br><span class="line"></span><br><span class="line"><span class="attr">scrape_configs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">config_server</span></span><br><span class="line">    <span class="comment">#scrape_interval: 5s</span></span><br><span class="line">    <span class="comment">#scrape_timeout: 5s</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="comment">#basic_auth:</span></span><br><span class="line">    <span class="comment">#  username: admin</span></span><br><span class="line">    <span class="comment">#  password: 123456</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.21:8100']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.21</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.21:8100']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.21</span></span><br><span class="line"></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">employee_server</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.31:8078']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.31</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.31:8078']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.31</span></span><br><span class="line">        </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">hkcash_server</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.21:8085']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.21</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.21:8085']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.21</span></span><br><span class="line">        </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">eureka_server</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.31:8761']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.31</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.31:8761']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.31</span></span><br><span class="line">        </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">notify_server</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.31:8086']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.31</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.31:8086']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.31</span></span><br><span class="line">        </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">tu_server</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.11:45678']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.11</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.11:45678']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.11</span></span><br><span class="line">        </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">app_gateway</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.11:8062']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.11</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.11:8062']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.11</span></span><br><span class="line">        </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">lms_webapp</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.101:8079']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.101</span></span><br><span class="line">        </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">los_webapp</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">/ops/prometheus</span></span><br><span class="line">    <span class="attr">scheme:</span> <span class="string">http</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.101:8080']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">instance:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.101</span></span><br><span class="line"></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">cAdvisor</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.21:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.21</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.21:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.21</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.31:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.31</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.31:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.31</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.11:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.11</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.11:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.11</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.101:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.101</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.178:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.178</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.179:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.179</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h3><p>访问：<br><a href="http://ip:9090/graph" target="_blank" rel="noopener">http://ip:9090/graph</a></p>
+<p>效果：<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/prometheus-ui.png" alt="prometheus-ui"></p>
+<h2 id="grafna"><a href="#grafna" class="headerlink" title="grafna"></a>grafna</h2><p>Grafana 是一个开源的图表可视化系统，简言之，其特点在于图表配置比较方便、生成的图表漂亮。<br>Prometheus + Grafana 监控系统的组合中，前者负责采样数据并存储这些数据；后者则侧重于形象生动的展示数据。</p>
+<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name grafana -p 3000:3000 grafana/grafana</span><br></pre></td></tr></table></figure>
+<h3 id="访问-1"><a href="#访问-1" class="headerlink" title="访问"></a>访问</h3><p><a href="http://192.168.64.178:3000" target="_blank" rel="noopener">http://192.168.64.178:3000</a></p>
+<p>默认登录账户密码都为admin</p>
+<h3 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h3><h4 id="添加数据源"><a href="#添加数据源" class="headerlink" title="添加数据源"></a>添加数据源</h4><p><img src="/images/spring-cloud-docker-prometheus-grafana监控/grafana-config.png" alt="grafana-config"></p>
+<h4 id="添加Templating"><a href="#添加Templating" class="headerlink" title="添加Templating"></a>添加Templating</h4><p><img src="/images/spring-cloud-docker-prometheus-grafana监控/templating.png" alt="templating"></p>
+<p>job:<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/templating-job.png" alt="templating-job"></p>
+<p>instance:<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/templating-instance.png" alt="templating-instance"></p>
+<p>apis:<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/templating-apis.png" alt="templating-apis"></p>
+<p>效果<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/templating1.png" alt="templating1"></p>
+<h4 id="添加panel"><a href="#添加panel" class="headerlink" title="添加panel"></a>添加panel</h4><h5 id="mem"><a href="#mem" class="headerlink" title="mem"></a>mem</h5><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">mem&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br><span class="line"><span class="string">mem_free&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel1.png" alt="grafana-panel1"></p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel2.png" alt="grafana-panel2"></p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel3.png" alt="grafana-panel3"></p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel4.png" alt="grafana-panel4"></p>
+<p>效果<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/grafana-panel5.png" alt="grafana-panel5"></p>
+<h5 id="Heap"><a href="#Heap" class="headerlink" title="Heap"></a>Heap</h5><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">heap&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br><span class="line"><span class="string">heap_committed&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br><span class="line"><span class="string">heap_used&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br><span class="line"><span class="string">nonheap&#123;job="~[[job]]",instance="~[[instance]]"&#125;</span></span><br><span class="line"><span class="string">nonheap_committed&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br><span class="line"><span class="string">nonheap_used&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br></pre></td></tr></table></figure>
+<h5 id="Threads"><a href="#Threads" class="headerlink" title="Threads"></a>Threads</h5><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">threads&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br><span class="line"><span class="string">threads_peak&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br><span class="line"><span class="string">threads_daemon&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br></pre></td></tr></table></figure>
+<h5 id="systemload-average"><a href="#systemload-average" class="headerlink" title="systemload_average"></a>systemload_average</h5><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">systemload_average&#123;job=~"[[job]]",instance=~"[[instance]]"&#125;</span></span><br></pre></td></tr></table></figure>
+<h5 id="Gauge-servo-response-api"><a href="#Gauge-servo-response-api" class="headerlink" title="Gauge_servo_response_api"></a>Gauge_servo_response_api</h5><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;job=~"[[job]]",instance=~"[[instance]]",__name__=~"gauge_servo_response_api_.*"&#125;</span></span><br></pre></td></tr></table></figure>
+<p>具体的配置文件参考<a href="/files/spring-cloud-docker-prometheus-grafana监控/prometheus.json">prometheus.json</a></p>
+<h3 id="整体效果"><a href="#整体效果" class="headerlink" title="整体效果"></a>整体效果</h3><p><img src="/images/spring-cloud-docker-prometheus-grafana监控/grafana-ui.png" alt="grafana-ui"></p>
+<h2 id="容器监控"><a href="#容器监控" class="headerlink" title="容器监控"></a>容器监控</h2><p>通过cAdvisor收集docker日志，再通过prometheus在grafana中显示。</p>
+<h3 id="cAdvisor"><a href="#cAdvisor" class="headerlink" title="cAdvisor"></a>cAdvisor</h3><p>每台容器安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run --restart=always \</span><br><span class="line">  --volume=/:/rootfs:ro \</span><br><span class="line">  --volume=/var/run:/var/run:rw \</span><br><span class="line">  --volume=/sys:/sys:ro \</span><br><span class="line">  --volume=/var/lib/docker/:/var/lib/docker:ro \</span><br><span class="line">  --volume=/dev/disk/:/dev/disk:ro \</span><br><span class="line">  --publish=4194:8080 \</span><br><span class="line">  --detach=<span class="literal">true</span> \</span><br><span class="line">  --name=cadvisor \</span><br><span class="line">  google/cadvisor:latest</span><br></pre></td></tr></table></figure></p>
+<p>访问：<br><a href="http://hostIp:4194/" target="_blank" rel="noopener">http://hostIp:4194/</a></p>
+<h3 id="prometheus配置"><a href="#prometheus配置" class="headerlink" title="prometheus配置"></a>prometheus配置</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">cAdvisor</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.21:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.21</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.21:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.21</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.31:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.31</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.31:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.31</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.11:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.11</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.11:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.11</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.63.101:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.63</span><span class="number">.101</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.178:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.178</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['192.168.64.179:4194']</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">container_group:</span> <span class="number">192.168</span><span class="number">.64</span><span class="number">.179</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/prometheus-cadvisor.png" alt="prometheus-cadvisor"></p>
+<h3 id="grafana-dashboard"><a href="#grafana-dashboard" class="headerlink" title="grafana dashboard"></a>grafana dashboard</h3><p>可以从grafana官网导入dashboard：<a href="https://grafana.com/dashboards" target="_blank" rel="noopener">https://grafana.com/dashboards</a><br><img src="/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard.png" alt="docker-dashboard"></p>
+<p>导入dashboard:<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard-import1.png" alt="docker-dashboard-import1"></p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard-import2.png" alt="docker-dashboard-import2"></p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard-import3.png" alt="docker-dashboard-import3"></p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/images/spring-cloud-docker-prometheus-grafana监控/docker-dashboard1.png" alt="docker-dashboard1"></p>
+<h2 id="hystrix-dashboard"><a href="#hystrix-dashboard" class="headerlink" title="hystrix-dashboard"></a>hystrix-dashboard</h2><h3 id="hystrix"><a href="#hystrix" class="headerlink" title="hystrix"></a>hystrix</h3><p>hystrix旨在通过控制那些访问远程系统、服务和第三方库的节点，从而对延迟和故障提供更强大的容错能力。Hystrix具备拥有回退机制和断路器功能的线程和信号隔离，请求缓存和请求打包（request collapsing，即自动批处理），以及监控和配置等功能。</p>
+<p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- /hystrix.stream需要用到spring-boot-starter-actuator --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-hystrix<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>启动类中添加：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableEurekaClient</span></span><br><span class="line"><span class="meta">@EnableHystrix</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="dashboard"><a href="#dashboard" class="headerlink" title="dashboard"></a>dashboard</h3><p>Hystrix-dashboard是一款针对Hystrix进行实时监控的工具，通过Hystrix Dashboard我们可以在直观地看到各Hystrix Command的请求响应时间, 请求成功率等数据。</p>
+<p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-hystrix-dashboard<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-eureka<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="turbine"><a href="#turbine" class="headerlink" title="turbine"></a>turbine</h3><p>但是只使用Hystrix Dashboard的话, 你只能看到单个应用内的服务信息, 这明显不够. 我们需要一个工具能让我们汇总系统内多个服务的数据并显示到Hystrix Dashboard上, 这个工具就是Turbine.</p>
+<p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-netflix-turbine<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>启动类添加：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableHystrixDashboard</span></span><br><span class="line"><span class="meta">@EnableTurbine</span></span><br><span class="line"><span class="meta">@EnableEurekaClient</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="配置-2"><a href="#配置-2" class="headerlink" title="配置"></a>配置</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8050</span></span><br><span class="line"></span><br><span class="line"><span class="attr">management:</span></span><br><span class="line">  <span class="attr">context-path:</span> <span class="string">/ops</span></span><br><span class="line">  <span class="attr">security:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">false</span></span><br><span class="line">    </span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">hystrix-dashboard</span></span><br><span class="line"></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">instance:</span></span><br><span class="line">    <span class="attr">preferIpAddress:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># eureka的ip，如果有多个ip地址时，需要在此处指定</span></span><br><span class="line"><span class="comment">#   ipAddress: 127.0.0.1</span></span><br><span class="line">    <span class="comment"># 续约到期时间（默认90秒）</span></span><br><span class="line">    <span class="attr">leaseExpirationDurationInSeconds:</span> <span class="number">30</span></span><br><span class="line">    <span class="comment">#续约更新时间间隔（默认30秒），在生产中，最好坚持使用默认值，因为在服务器内部有一些计算，他们对续约做出假设。</span></span><br><span class="line">    <span class="attr">leaseRenewalIntervalInSeconds:</span> <span class="number">10</span></span><br><span class="line">    <span class="comment"># default: $&#123;spring.cloud.client.hostname&#125;:$&#123;spring.application.name&#125;:$&#123;spring.application.instance_id:$&#123;server.port&#125;&#125;</span></span><br><span class="line"><span class="comment">#    instance-id: $&#123;spring.application.name&#125;:$&#123;eureka.instance.ipAddress&#125;:$&#123;server.port&#125;</span></span><br><span class="line">    <span class="attr">statusPageUrlPath:</span> <span class="string">$&#123;management.context-path&#125;/info</span></span><br><span class="line">    <span class="attr">healthCheckUrlPath:</span> <span class="string">$&#123;management.context-path&#125;/health</span></span><br><span class="line">    <span class="attr">metadata-map:</span></span><br><span class="line">      <span class="attr">management.context-path:</span> <span class="string">$&#123;management.context-path&#125;</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">registerWithEureka:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">serviceUrl:</span></span><br><span class="line">      <span class="attr">defaultZone:</span> <span class="string">http://localhost:8761/eureka/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">turbine:</span></span><br><span class="line">  <span class="attr">appConfig:</span> <span class="string">app-gateway,hkcash-server,tu-server</span></span><br><span class="line">  <span class="comment">#turbine需要聚合的集群名称，需要在对应的服务的，通过 http://localhost:8050/turbine.stream?cluster=default 访问 </span></span><br><span class="line">  <span class="comment">#aggregator.clusterConfig: hkcash</span></span><br><span class="line">  <span class="attr">aggregator.clusterConfig:</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">instanceUrlSuffix:</span> <span class="string">$&#123;management.context-path&#125;/hystrix.stream</span></span><br><span class="line">  <span class="comment">#获取集群名表达式，这里表示获取元数据中的cluster数据，在lms的配置文件中配置对应信息</span></span><br><span class="line">  <span class="comment">#clusterNameExpression: metadata['cluster']</span></span><br><span class="line">  <span class="attr">clusterNameExpression:</span> <span class="string">new</span> <span class="string">String("default")</span></span><br></pre></td></tr></table></figure>
+<p>效果：<br><img src="/images/spring-cloud-docker-prometheus-grafana监控/hystrix.png" alt="hystrix"></p>
+<h2 id="sleuth-zipkin"><a href="#sleuth-zipkin" class="headerlink" title="sleuth zipkin"></a>sleuth zipkin</h2><p>spring cloud sleuth是从google的dapper论文的思想实现的，提供了对spring cloud系列的链路追踪。</p>
+<p>目的：</p>
+<blockquote>
+<p>提供链路追踪。通过sleuth可以很清楚的看出一个请求都经过了哪些服务。可以很方便的理清服务间的调用关系。</p>
+</blockquote>
+<blockquote>
+<p>可视化错误。对于程序未捕捉的异常，可以在zipkin界面上看到。</p>
+</blockquote>
+<blockquote>
+<p>分析耗时。通过sleuth可以很方便的看出每个采样请求的耗时，分析出哪些服务调用比较耗时。当服务调用的耗时随着请求量的增大而增大时，也可以对服务的扩容提供一定的提醒作用。</p>
+</blockquote>
+<blockquote>
+<p>优化链路。对于频繁地调用一个服务，或者并行地调用等，可以针对业务做一些优化措施。</p>
+</blockquote>
+<h3 id="应用程序集成"><a href="#应用程序集成" class="headerlink" title="应用程序集成"></a>应用程序集成</h3><h4 id="sleuth-log"><a href="#sleuth-log" class="headerlink" title="sleuth+log"></a>sleuth+log</h4><p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-sleuth<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这种方式只需要引入jar包即可。如果配置log4j，这样会在打印出如下的日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2017-04-08 23:56:50.459 INFO [bootstrap,38d6049ff0686023,d1b8b0352d3f6fa9,false] 8764 — [nio-8080-exec-1] demo.JpaSingleDatasourceApplication : Step 2: Handling print</span><br><span class="line">2017-04-08 23:56:50.459 INFO [bootstrap,38d6049ff0686023,d1b8b0352d3f6fa9,false] 8764 — [nio-8080-exec-1] demo.JpaSingleDatasourceApplication : Step 1: Handling home</span><br></pre></td></tr></table></figure></p>
+<p>比原先的日志多出了 [bootstrap,38d6049ff0686023,d1b8b0352d3f6fa9,false] 这些内容，[appname,traceId,spanId,exportable]。</p>
+<p>appname：服务名称<br>traceId\spanId：链路追踪的两个术语，后面有介绍<br>exportable:是否是发送给zipkin</p>
+<h4 id="sleuth-zipkin-http"><a href="#sleuth-zipkin-http" class="headerlink" title="sleuth+zipkin+http"></a>sleuth+zipkin+http</h4><p>sleuth收集跟踪信息通过http请求发给zipkin。这种需要启动一个zipkin,zipkin用来存储数据和展示数据。</p>
+<p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--&lt;dependency&gt;</span></span><br><span class="line"><span class="comment">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span></span><br><span class="line"><span class="comment">    &lt;artifactId&gt;spring-cloud-starter-sleuth&lt;/artifactId&gt;</span></span><br><span class="line"><span class="comment">&lt;/dependency&gt;--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-zipkin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>配置：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">sleuth:</span></span><br><span class="line">    <span class="attr">sampler:</span></span><br><span class="line">      <span class="attr">percentage:</span> <span class="number">1.0</span></span><br><span class="line">  <span class="attr">zipkin:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">base-url:</span> <span class="string">http://localhost:9411/</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="sletuh-streaming-zipkin"><a href="#sletuh-streaming-zipkin" class="headerlink" title="sletuh+streaming+zipkin"></a>sletuh+streaming+zipkin</h4><p>这种方式通过spring cloud streaming将追踪信息发送到zipkin。spring cloud streaming目前只有kafka和rabbitmq的binder。以rabbitmq为例：</p>
+<p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-sleuth-stream<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-stream-rabbit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>配置：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">sleuth:</span></span><br><span class="line">    <span class="attr">stream:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">sampler:</span></span><br><span class="line">      <span class="attr">percentage:</span> <span class="number">1</span></span><br><span class="line">  <span class="comment">#for sleuth</span></span><br><span class="line">  <span class="attr">rabbitmq:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">192.168</span><span class="number">.99</span><span class="number">.100</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">5672</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">guest</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">guest</span></span><br><span class="line"><span class="comment">#    virtual-host: cloud_host</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="zipkin-server"><a href="#zipkin-server" class="headerlink" title="zipkin-server"></a>zipkin-server</h3><p>Zipkin 是 Twitter 的一个开源项目，允许开发者收集Twitter各个服务上的监控数据，并提供查询接口。</p>
+<h4 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h4><p>zipkin-server采用spring方式安装：</p>
+<h5 id="http方式"><a href="#http方式" class="headerlink" title="http方式"></a>http方式</h5><p>添加依赖：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&lt;dependency&gt;</span></span><br><span class="line">    <span class="string">&lt;groupId&gt;io.zipkin.java&lt;/groupId&gt;</span></span><br><span class="line">    <span class="string">&lt;artifactId&gt;zipkin-server&lt;/artifactId&gt;</span></span><br><span class="line"><span class="string">&lt;/dependency&gt;</span></span><br><span class="line"><span class="string">&lt;dependency&gt;</span></span><br><span class="line">    <span class="string">&lt;groupId&gt;io.zipkin.java&lt;/groupId&gt;</span></span><br><span class="line">    <span class="string">&lt;artifactId&gt;zipkin-autoconfigure-ui&lt;/artifactId&gt;</span></span><br><span class="line">    <span class="string">&lt;scope&gt;runtime&lt;/scope&gt;</span></span><br><span class="line"><span class="string">&lt;/dependency&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>启动类添加：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableZipkinServer</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="stream方式"><a href="#stream方式" class="headerlink" title="stream方式"></a>stream方式</h5><p>添加依赖：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&lt;dependency&gt;</span></span><br><span class="line">    <span class="string">&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span></span><br><span class="line">    <span class="string">&lt;artifactId&gt;spring-cloud-sleuth-zipkin-stream&lt;/artifactId&gt;</span></span><br><span class="line"><span class="string">&lt;/dependency&gt;</span></span><br><span class="line"><span class="string">&lt;dependency&gt;</span></span><br><span class="line">    <span class="string">&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span></span><br><span class="line">    <span class="string">&lt;artifactId&gt;spring-cloud-starter-stream-rabbit&lt;/artifactId&gt;</span></span><br><span class="line"><span class="string">&lt;/dependency&gt;</span></span><br><span class="line"><span class="string">&lt;dependency&gt;</span></span><br><span class="line">    <span class="string">&lt;groupId&gt;io.zipkin.java&lt;/groupId&gt;</span></span><br><span class="line">    <span class="string">&lt;artifactId&gt;zipkin-autoconfigure-ui&lt;/artifactId&gt;</span></span><br><span class="line">    <span class="string">&lt;scope&gt;runtime&lt;/scope&gt;</span></span><br><span class="line"><span class="string">&lt;/dependency&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>启动类添加：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableZipkinStreamServer</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br></pre></td></tr></table></figure></p>
+<p>配置：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="comment">#@EnableZipkinStreamServer时使用  </span></span><br><span class="line">  <span class="attr">rabbitmq:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">192.168</span><span class="number">.100</span><span class="number">.88</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">5672</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">guest</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">guest</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="elasticsearch安装"><a href="#elasticsearch安装" class="headerlink" title="elasticsearch安装"></a>elasticsearch安装</h5><p>如果容器内部通讯没有打通的话，需要采用以下方式部署：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">tee elasticsearch.yml &lt;&lt; EOF</span><br><span class="line">network.host: 192.168.64.179</span><br><span class="line">discovery.zen.minimum_master_nodes: 1</span><br><span class="line">EOF</span><br><span class="line"> </span><br><span class="line">docker run --privileged=<span class="literal">true</span> --net=host -d -h elasticsearch --restart=always --name elasticsearch \</span><br><span class="line">-p 9200:9200 -p 9300:9300 \</span><br><span class="line">-e <span class="string">"ES_JAVA_OPTS=-Xms512m -Xmx512m"</span> \</span><br><span class="line">-v <span class="string">"<span class="variable">$PWD</span>/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"</span> \</span><br><span class="line">elasticsearch:2.4.4</span><br><span class="line"></span><br><span class="line">如果想将存储指到容器外，可以映射：</span><br><span class="line"><span class="comment">#-v "$PWD/config":/usr/share/elasticsearch/config \</span></span><br><span class="line"><span class="comment">#-v "$PWD/esdata":/usr/share/elasticsearch/data \</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#index</span></span><br><span class="line">curl http://192.168.99.100:9200/_cat/indices?v</span><br></pre></td></tr></table></figure></p>
+<p>如果有打通容器内部通讯或者与zipkin-server部署在同一台机器上，则安装比较简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -h elasticsearch --restart=always --name elasticsearch \</span><br><span class="line">-p 9200:9200 -p 9300:9300 \</span><br><span class="line">-e <span class="string">"ES_JAVA_OPTS=-Xms512m -Xmx512m"</span> \</span><br><span class="line">elasticsearch:2.4.4</span><br></pre></td></tr></table></figure>
+<h5 id="rabbitmq"><a href="#rabbitmq" class="headerlink" title="rabbitmq"></a>rabbitmq</h5><p>日志采集是通过sleuth-zipkin-stream方式收集的，此处采用rabbitmq。可以采用docker方式安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -h rabbitmq --restart=always --name rabbitmq -p 5672:5672 -p 15672:15672 \</span><br><span class="line">rabbitmq:3.6.6</span><br><span class="line"></span><br><span class="line"> <span class="comment"># login:guest/guest   </span></span><br><span class="line"> <span class="comment"># url:http://ip:15672</span></span><br><span class="line">docker <span class="built_in">exec</span> -it rabbitmq rabbitmq-plugins <span class="built_in">enable</span> rabbitmq_management</span><br><span class="line"><span class="comment">#docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 rabbitmq:3-management</span></span><br><span class="line"><span class="comment">#docker run -d --hostname my-rabbit --name some-rabbit -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># list_queues</span></span><br><span class="line"><span class="comment">#docker exec -it rabbitmq rabbitmqctl list_queues</span></span><br></pre></td></tr></table></figure>
+<h4 id="数据存储"><a href="#数据存储" class="headerlink" title="数据存储"></a>数据存储</h4><h5 id="Mem"><a href="#Mem" class="headerlink" title="Mem"></a>Mem</h5><p>内存方式，只适合于测试环境：</p>
+<p>配置：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">zipkin:</span>  </span><br><span class="line">  <span class="attr">storage:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">mem</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h5><p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.zipkin.java<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zipkin-autoconfigure-storage-mysql<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>配置：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">zipkin-server</span></span><br><span class="line">    </span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">url:</span> <span class="string">jdbc:mysql://192.168.100.88:3308/zipkin?autoReconnect=true</span></span><br><span class="line">    <span class="attr">username:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">helloworld</span></span><br><span class="line">    <span class="attr">driver-class-name:</span> <span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line"><span class="comment">#    schema: classpath:/mysql.sql</span></span><br><span class="line"><span class="comment">#    initialize: true</span></span><br><span class="line"><span class="comment">#    continue-on-error: true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">zipkin:</span></span><br><span class="line">  <span class="attr">storage:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">mysql</span></span><br></pre></td></tr></table></figure></p>
+<p><a href="/files/spring-cloud-docker-prometheus-grafana监控/zipkin-mysql.sql">SQL文件</a></p>
+<h5 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h5><p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.zipkin.java<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zipkin-autoconfigure-storage-elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.19.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>配置：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">zipkin:</span></span><br><span class="line">  <span class="attr">storage:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">elasticsearch</span></span><br><span class="line">    <span class="attr">elasticsearch:</span></span><br><span class="line">      <span class="attr">cluster:</span> <span class="string">elasticsearch</span></span><br><span class="line">      <span class="attr">hosts:</span> <span class="number">192.168</span><span class="number">.108</span><span class="number">.183</span><span class="string">:9300</span></span><br><span class="line">      <span class="attr">index:</span> <span class="string">zipkin</span></span><br><span class="line"><span class="comment">#      index-shards: $&#123;ES_INDEX_SHARDS:5&#125;</span></span><br><span class="line"><span class="comment">#      index-replicas: $&#123;ES_INDEX_REPLICAS:1&#125;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="zipkin-dependencies"><a href="#zipkin-dependencies" class="headerlink" title="zipkin-dependencies"></a>zipkin-dependencies</h4><p>如果为非mem方式部署的zipkin-server，<a href="https://github.com/openzipkin/zipkin-dependencies" target="_blank" rel="noopener">zipkin-dependencies</a>是没有数据的，需要加入zipkin-dependencies模块才能正常显示。以elasticsearch为例：</p>
+<p>添加依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.zipkin.dependencies<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zipkin-dependencies-elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.5.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>添加代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ElasticsearchDependenciesTask</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;spark.es.nodes&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String esNodes;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;spark.driver.allowMultipleContexts&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String allowMultipleContexts;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Scheduled</span>(cron = <span class="string">"0 */5 * * * ?"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="comment">//        -e ES_HOSTS="192.168.108.183:9200"</span></span><br><span class="line">        Map&lt;String, String&gt; envs = Maps.newHashMap();</span><br><span class="line">        envs.put(<span class="string">"spark.driver.allowMultipleContexts"</span>,allowMultipleContexts);</span><br><span class="line">        envs.put(<span class="string">"ES_HOSTS"</span>,esNodes);</span><br><span class="line">        EnvUtils.setEnv(envs);</span><br><span class="line">        ElasticsearchDependenciesJob.builder().build().run();</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>配置：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dependencies-elasticsearch配置</span></span><br><span class="line"><span class="attr">spark:</span></span><br><span class="line">  <span class="attr">driver:</span></span><br><span class="line">    <span class="attr">allowMultipleContexts:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">es:</span></span><br><span class="line">    <span class="attr">nodes:</span> <span class="number">192.168</span><span class="number">.108</span><span class="number">.183</span><span class="string">:9200</span></span><br></pre></td></tr></table></figure></p>
+<p>内部是通过spark进行数据分析，再生成对应的dependencies数据。</p>
+<p>当然也可以通过docker部署：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm --name zipkin-dependencies \</span><br><span class="line">-e STORAGE_TYPE=elasticsearch \</span><br><span class="line">-e ES_HOSTS=192.168.108.183:9200 \</span><br><span class="line">-e <span class="string">"JAVA_OPTS=-Xms128m -Xmx128m"</span> \</span><br><span class="line">openzipkin/zipkin-dependencies:1.5.4</span><br></pre></td></tr></table></figure></p>
+<p>这个只会运行一次后退出，如果需要定时执行的话，需要加入到cron中。</p>
+<h4 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h4><p><img src="/images/spring-cloud-docker-prometheus-grafana监控/zipkin-server-ui.png" alt="zipkin-server-ui"></p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/zipkin-dependencies.png" alt="zipkin-dependencies"></p>
+<p>可能sleuth收集了很多你不想要的接口请求，可能通过以下配置排除掉：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">sleuth:</span></span><br><span class="line">    <span class="attr">web:</span></span><br><span class="line">      <span class="attr">skip-pattern:</span> <span class="string">/js/.*|/css/.*|/html/.*|/htm/.*|/static/.*|/ops/.*|/api-docs.*|/swagger.*|.*\.png|.*\.gif|.*\.css|.*\.js|.*\.html|/favicon.ico|/myhealth</span></span><br><span class="line">    <span class="attr">scheduled:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">false</span></span><br><span class="line">      <span class="comment">#skip-pattern: .*RedisOperationsSessionRepository</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="jaeger"><a href="#jaeger" class="headerlink" title="jaeger"></a>jaeger</h2><p>zipkin的效果不太好，可以考虑使用jaeger，由Uber开源。Jaeger兼容OpenTracing的数据模型和instrumentation库，能够为每个服务/端点使用一致的采样方式。</p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/jaeger_construnction.png" alt="jaeger_construnction"></p>
+<p>分布式系统调用过程:</p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/jaeger_process.png" alt="jaeger_process"></p>
+<h3 id="opentracing-协议"><a href="#opentracing-协议" class="headerlink" title="opentracing 协议"></a>opentracing 协议</h3><p>opentracing是一套分布式追踪协议，与平台，语言无关，统一接口，方便开发接入不同的分布式追踪系统。</p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/jaeger_opentracing.png" alt="jaeger_opentracing"></p>
+<p>简单理解opentracing:</p>
+<p>一个完整的opentracing调用链包含 Trace + span + 无限极分类:</p>
+<p>Trace：追踪对象，一个Trace代表了一个服务或者流程在系统中的执行过程，如：test.com，redis，mysql等执行过程。一个Trace由多个span组成</p>
+<p>span：记录Trace在执行过程中的信息，如：查询的sql，请求的HTTP地址，RPC调用，开始、结束、间隔时间等。<br>无限极分类：服务与服务之间使用无限极分类的方式，通过HTTP头部或者请求地址传输到最低层，从而把整个调用链串起来。</p>
+<h3 id="安装-3"><a href="#安装-3" class="headerlink" title="安装"></a>安装</h3><p>可以通过docker-compose安装，请参考<a href="/files/spring-cloud-docker-prometheus-grafana监控/jaeger-docker-compose.zip">docker-compose</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">version: &apos;2&apos;</span><br><span class="line">services:</span><br><span class="line">  els:</span><br><span class="line">    image: docker.elastic.co/elasticsearch/elasticsearch:6.0.0 </span><br><span class="line">    restart: always</span><br><span class="line">    container_name: els</span><br><span class="line">    hostname: els</span><br><span class="line">    networks:</span><br><span class="line">    - elastic-jaeger</span><br><span class="line">    environment:</span><br><span class="line">      #- bootstrap.memory_lock=true</span><br><span class="line">      - ES_JAVA_OPTS=-Xms512m -Xmx512m</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;9200:9200&quot;</span><br><span class="line">      - &quot;9300:9300&quot;</span><br><span class="line">    volumes:</span><br><span class="line">      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml</span><br><span class="line">  kibana:</span><br><span class="line">    image: docker.elastic.co/kibana/kibana:6.0.0</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5601:5601&quot;</span><br><span class="line">    environment:</span><br><span class="line">      ELASTICSEARCH_URL: http://els:9200</span><br><span class="line">    depends_on:</span><br><span class="line">    - els</span><br><span class="line">    networks:</span><br><span class="line">    - elastic-jaeger</span><br><span class="line">  jaeger-collector:</span><br><span class="line">    environment:</span><br><span class="line">      - SPAN_STORAGE_TYPE=elasticsearch</span><br><span class="line">    image: jaegertracing/jaeger-collector:latest</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;14267:14267&quot;</span><br><span class="line">      - &quot;14268:14268&quot;</span><br><span class="line">      - &quot;9411:9411&quot;</span><br><span class="line">    depends_on:</span><br><span class="line">    - els</span><br><span class="line">    container_name: jaeger-collector</span><br><span class="line">    hostname: jaeger-collector</span><br><span class="line">    restart: unless-stopped</span><br><span class="line">    networks:</span><br><span class="line">    - elastic-jaeger</span><br><span class="line">    command: [&quot;/go/bin/collector-linux&quot;, &quot;--span-storage.type=elasticsearch&quot;, &quot;--es.server-urls=http://els:9200&quot;]</span><br><span class="line">  jaeger-agent:</span><br><span class="line">    image: jaegertracing/jaeger-agent:latest</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5775:5775/udp&quot;</span><br><span class="line">      - &quot;5778:5778&quot;</span><br><span class="line">      - &quot;6831:6831/udp&quot;</span><br><span class="line">      - &quot;6832:6832/udp&quot;</span><br><span class="line">    depends_on:</span><br><span class="line">    - els</span><br><span class="line">    - jaeger-collector</span><br><span class="line">    restart: unless-stopped</span><br><span class="line">    container_name: jaeger-agent</span><br><span class="line">    hostname: jaeger-agent</span><br><span class="line">    networks:</span><br><span class="line">    - elastic-jaeger</span><br><span class="line">    command: [&quot;/go/bin/agent-linux&quot;, &quot;--collector.host-port=jaeger-collector:14267&quot;]</span><br><span class="line"></span><br><span class="line">  jaeger-query:</span><br><span class="line">    environment:</span><br><span class="line">      - SPAN_STORAGE_TYPE=elasticsearch</span><br><span class="line">    image: jaegertracing/jaeger-query:latest</span><br><span class="line">    ports:</span><br><span class="line">      - 16686:16686</span><br><span class="line">    depends_on:</span><br><span class="line">      - els</span><br><span class="line">      - jaeger-collector</span><br><span class="line">    restart: unless-stopped</span><br><span class="line">    container_name: jaeger-query</span><br><span class="line">    hostname: jaeger-query</span><br><span class="line">    networks:</span><br><span class="line">    - elastic-jaeger</span><br><span class="line">    command: [&quot;/go/bin/query-linux&quot;, &quot;--span-storage.type=elasticsearch&quot;, &quot;--es.server-urls=http://els:9200&quot;, &quot;--es.sniffer=false&quot;, &quot;--query.static-files=/go/jaeger-ui/&quot;, &quot;--log-level=debug&quot;]</span><br><span class="line">volumes:</span><br><span class="line">  esdata1:</span><br><span class="line">    driver: local</span><br><span class="line">  eslog:</span><br><span class="line">    driver: local</span><br><span class="line">networks:</span><br><span class="line">  elastic-jaeger:</span><br><span class="line">    driver: bridge</span><br></pre></td></tr></table></figure></p>
+<h4 id="elasticsearch"><a href="#elasticsearch" class="headerlink" title="elasticsearch"></a>elasticsearch</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /works/conf/elasticsearch</span><br><span class="line">tee /works/conf/elasticsearch/elasticsearch.yml &lt;&lt; EOF</span><br><span class="line">xpack.security.enabled: <span class="literal">false</span></span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">thread_pool.bulk.queue_size: 1000</span><br><span class="line">discovery.zen.minimum_master_nodes: 1</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker run -d --name elasticsearch \</span><br><span class="line">-p 9200:9200 -p 9300:9300 \</span><br><span class="line">-e <span class="string">"ES_JAVA_OPTS=-Xms512m -Xmx512m"</span> \</span><br><span class="line">-v <span class="string">"/works/conf/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"</span> \</span><br><span class="line">docker.elastic.co/elasticsearch/elasticsearch:6.0.0</span><br><span class="line"><span class="comment">#elasticsearch:5.2.1</span></span><br></pre></td></tr></table></figure>
+<h4 id="jaeger-collector"><a href="#jaeger-collector" class="headerlink" title="jaeger-collector"></a>jaeger-collector</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name jaeger-collector \</span><br><span class="line">-p 14267:14267 \</span><br><span class="line">-p 14268:14268 \</span><br><span class="line">-p 9411:9411 \</span><br><span class="line">-e <span class="string">"SPAN_STORAGE_TYPE=elasticsearch"</span> \</span><br><span class="line">jaegertracing/jaeger-collector \</span><br><span class="line">/go/bin/collector-linux --es.server-urls=http://192.168.108.1:9200</span><br></pre></td></tr></table></figure>
+<h4 id="jaeger-query"><a href="#jaeger-query" class="headerlink" title="jaeger-query"></a>jaeger-query</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name jaeger-query \</span><br><span class="line">  -p 16686:16686 \</span><br><span class="line">  -e <span class="string">"SPAN_STORAGE_TYPE=elasticsearch"</span> \</span><br><span class="line">  jaegertracing/jaeger-query \</span><br><span class="line">  /go/bin/query-linux --es.server-urls=http://192.168.108.1:9200 --query.static-files=/go/jaeger-ui/</span><br></pre></td></tr></table></figure>
+<h4 id="kibana"><a href="#kibana" class="headerlink" title="kibana"></a>kibana</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name jaeger-kibana \</span><br><span class="line">  -p 5601:5601 \</span><br><span class="line">  -e <span class="string">"ELASTICSEARCH_URL=http://192.168.108.1:9200"</span> \</span><br><span class="line">  docker.elastic.co/kibana/kibana:6.0.0</span><br></pre></td></tr></table></figure>
+<h4 id="jaeger-agent"><a href="#jaeger-agent" class="headerlink" title="jaeger-agent"></a>jaeger-agent</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name jaeger-agent \</span><br><span class="line">  -p5775:5775/udp \</span><br><span class="line">  -p6831:6831/udp \</span><br><span class="line">  -p6832:6832/udp \</span><br><span class="line">  -p5778:5778/tcp \</span><br><span class="line">  jaegertracing/jaeger-agent \</span><br><span class="line">  /go/bin/agent-linux --discovery.min-peers=1 --collector.host-port=192.168.108.1:14267</span><br></pre></td></tr></table></figure>
+<h4 id="spark-dependencies"><a href="#spark-dependencies" class="headerlink" title="spark-dependencies"></a>spark-dependencies</h4><p>参考： <a href="https://github.com/jaegertracing/spark-dependencies" target="_blank" rel="noopener">https://github.com/jaegertracing/spark-dependencies</a></p>
+<p>测试好好久，docker不能分析出对应的依赖关系，用jar就可以。找不到问题所在。只能用jar包:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/jaegertracing/spark-dependencies.git</span><br><span class="line"><span class="built_in">cd</span> spark-dependencies</span><br><span class="line">./mvnw clean install -Dmaven.test.skip=<span class="literal">true</span></span><br><span class="line"><span class="built_in">cd</span> ./jaeger-spark-dependencies/target/</span><br><span class="line">STORAGE=elasticsearch ES_NODES=http://192.168.108.1:9200 java -jar jaeger-spark-dependencies-0.0.1-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
+<p>以下是doker的安装方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --name spark-dependencies \</span><br><span class="line">-e STORAGE=elasticsearch \</span><br><span class="line">-e ES_NODES=http://192.168.108.1:9200 \</span><br><span class="line">-e <span class="string">"JAVA_OPTS=-Xms1g -Xmx1g"</span> \</span><br><span class="line">jaegertracing/spark-dependencies</span><br></pre></td></tr></table></figure>
+<p>也可以自己写Dockerfile</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> java:<span class="number">8</span>-jdk</span><br><span class="line"><span class="keyword">MAINTAINER</span> dave.zhao@aeasycredit.com</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /app</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENV</span> APPNAME=jaeger-spark-dependencies</span><br><span class="line"><span class="keyword">ENV</span> VERSION=<span class="number">0.0</span>.<span class="number">1</span>-SNAPSHOT</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp; <span class="built_in">echo</span> Asia/Shanghai &gt; /etc/timezone</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> <span class="variable">$&#123;APPNAME&#125;</span>-<span class="variable">$&#123;VERSION&#125;</span>.jar /app/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="bash"> [<span class="string">"sh"</span>, <span class="string">"-c"</span>, <span class="string">"STORAGE=<span class="variable">$&#123;STORAGE&#125;</span> ES_NODES=<span class="variable">$&#123;ES_NODES&#125;</span> java <span class="variable">$&#123;JAVA_OPTS&#125;</span> -Djava.security.egd=file:/dev/./urandom -jar /app/<span class="variable">$&#123;APPNAME&#125;</span>-<span class="variable">$&#123;VERSION&#125;</span>.jar"</span>]</span></span><br></pre></td></tr></table></figure>
+<h3 id="客户端集成"><a href="#客户端集成" class="headerlink" title="客户端集成"></a>客户端集成</h3><p>以spring-cloud为例，添加以下依赖：</p>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://github.com/opentracing-contrib/meta" target="_blank" rel="noopener">https://github.com/opentracing-contrib/meta</a><br><a href="https://github.com/opentracing-contrib/java-spring-cloud" target="_blank" rel="noopener">https://github.com/opentracing-contrib/java-spring-cloud</a><br><a href="https://github.com/opentracing-contrib/java-spring-jaeger" target="_blank" rel="noopener">https://github.com/opentracing-contrib/java-spring-jaeger</a></p>
+</blockquote>
+<p>普通spring-web项目使用：<br><a href="https://github.com/opentracing-contrib/java-spring-web" target="_blank" rel="noopener">https://github.com/opentracing-contrib/java-spring-web</a></p>
+<p>添加依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;io.opentracing.contrib&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;opentracing-spring-cloud-starter&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;0.1.13&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;io.opentracing.contrib&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;opentracing-spring-jaeger-starter&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;0.1.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>application.yml:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">opentracing:</span></span><br><span class="line">  <span class="attr">jaeger:</span></span><br><span class="line">    <span class="attr">udp-sender:</span></span><br><span class="line">      <span class="attr">host:</span> <span class="number">192.168</span><span class="number">.108</span><span class="number">.1</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">6831</span></span><br></pre></td></tr></table></figure>
+<h2 id="skywalking"><a href="#skywalking" class="headerlink" title="skywalking"></a>skywalking</h2><p>针对分布式系统的APM（应用性能监控）系统，特别针对微服务、cloud native和容器化(Docker, Kubernetes, Mesos)架构， 其核心是个分布式追踪系统。</p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/skywalking-architecture.png" alt="skywalking-architecture"></p>
+<p><img src="/images/spring-cloud-docker-prometheus-grafana监控/skywalking-screenshot.png" alt="skywalking-screenshot"></p>
+<h3 id="安装-4"><a href="#安装-4" class="headerlink" title="安装"></a>安装</h3><p>安装elasticsearch：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /works/conf/elasticsearch</span><br><span class="line">tee /works/conf/elasticsearch/elasticsearch.yml &lt;&lt; EOF</span><br><span class="line">cluster.name: CollectorDBCluster</span><br><span class="line">network.host: 0.0.0.0</span><br><span class="line">thread_pool.bulk.queue_size: 1000</span><br><span class="line">discovery.zen.minimum_master_nodes: 1</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker run -d --name elasticsearch \</span><br><span class="line">-p 9200:9200 -p 9300:9300 \</span><br><span class="line">-e <span class="string">"ES_JAVA_OPTS=-Xms512m -Xmx512m"</span> \</span><br><span class="line">-v <span class="string">"/works/conf/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"</span> \</span><br><span class="line">elasticsearch:5.3</span><br></pre></td></tr></table></figure>
+<p>optional: <a href="https://github.com/mobz/elasticsearch-head" target="_blank" rel="noopener">elasticsearch-head ui</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name elasticsearch-head -p 9100:9100 mobz/elasticsearch-head:5</span><br></pre></td></tr></table></figure>
+<p>optional: kibana ui:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name kibana \</span><br><span class="line">  -p 5601:5601 \</span><br><span class="line">  -e <span class="string">"ELASTICSEARCH_URL=http://192.168.64.178:9200"</span> \</span><br><span class="line">  kibana:5.3</span><br></pre></td></tr></table></figure>
+<p>安装Collector与Web：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget http://apache.01link.hk/incubator/skywalking/5.0.0-beta/apache-skywalking-apm-incubating-5.0.0-beta.tar.gz</span><br><span class="line">tar zxvf apache-skywalking-apm-incubating-5.0.0-beta.tar.gz</span><br><span class="line"><span class="built_in">cd</span> apache-skywalking-apm-incubating</span><br></pre></td></tr></table></figure>
+<h3 id="配置-3"><a href="#配置-3" class="headerlink" title="配置"></a>配置</h3><p>config/application.yml:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">naming:</span><br><span class="line">  jetty:</span><br><span class="line">    host: 0.0.0.0</span><br><span class="line">    port: 10800</span><br><span class="line">    contextPath: /</span><br><span class="line">...</span><br><span class="line">agent_gRPC:</span><br><span class="line">  gRPC:</span><br><span class="line">    host: 192.168.108.1</span><br><span class="line">    port: 11800</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>主要需要修改以上两个配置，不然分开部署的话访问不了。另外机器的时间也需要同步。</p>
+<h3 id="启动Collector与Web"><a href="#启动Collector与Web" class="headerlink" title="启动Collector与Web"></a>启动Collector与Web</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> apache-skywalking-apm-incubating/bin</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure>
+<h3 id="agent"><a href="#agent" class="headerlink" title="agent"></a>agent</h3><p>复制apache-skywalking-apm-incubating目录下的agent，需要保持目录结构不变。修改config/agent.config：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">agent.application_code=app-gateway</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">collector.servers=192.168.108.1:10800</span></span><br></pre></td></tr></table></figure>
+<p>在启动时加入-javaagent即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -javaagent:/agent/skywalking-agent.jar -jar xxx.jar</span><br></pre></td></tr></table></figure>
+<p>也可以在启动中覆盖agent.config中的agent.application_code或collector.servers参数，注意：一定要以skywalking.开头，详见<a href="https://github.com/apache/incubator-skywalking/blob/master/docs/cn/Setting-override-CN.md" target="_blank" rel="noopener">Setting-override</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -javaagent:/agent/skywalking-agent.jar -Dskywalking.agent.application_code=app-gateway -jar xxx.jar</span><br></pre></td></tr></table></figure>
+<p>默认情况下会收集除了agent.ignore_suffix参数中以这些后缀结尾的链接，但这个不能满足其他的排除条件，可以通过可选插件<a href="https://github.com/apache/incubator-skywalking/blob/master/apm-sniffer/optional-plugins/trace-ignore-plugin/README_CN.md" target="_blank" rel="noopener">apm-trace-ignore-plugin</a>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#maven must be &gt; 3.1.0</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/apache/incubator-skywalking.git</span><br><span class="line"><span class="built_in">cd</span> incubator-skywalking/</span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br><span class="line">mvn clean package -DskipTests</span><br><span class="line"><span class="built_in">cd</span> apm-sniffer/optional-plugins/trace-ignore-plugin</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>将apm-sniffer/optional-plugins/trace-ignore-plugin/apm-trace-ignore-plugin.config 复制到agent/config/ 目录下，加上配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trace.ignore_path=/eureka/**,Mysql/JDBI/**,Hystrix/**,/swagger-resources/**</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将apm-trace-ignore-plugin-x.jar拷贝到agent/plugins后，重启探针即可生效。</p>
+</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="http://tech.lede.com/2017/04/19/rd/server/SpringCloudSleuth/" target="_blank" rel="noopener">http://tech.lede.com/2017/04/19/rd/server/SpringCloudSleuth/</a><br><a href="https://segmentfault.com/a/1190000008629939" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008629939</a><br><a href="https://mykite.github.io/2017/04/21/zipkin%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E5%8F%8A%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="noopener">https://mykite.github.io/2017/04/21/zipkin%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E5%8F%8A%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89/</a><br><a href="https://github.com/jukylin/blog/blob/master/Uber%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%BD%E8%B8%AA%E7%B3%BB%E7%BB%9FJaeger%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%A1%88%E4%BE%8B%E3%80%90PHP%20%20%20Hprose%20%20%20Go%E3%80%91.md" target="_blank" rel="noopener">https://github.com/jukylin/blog/blob/master/Uber%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%BD%E8%B8%AA%E7%B3%BB%E7%BB%9FJaeger%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D%E5%92%8C%E6%A1%88%E4%BE%8B%E3%80%90PHP%20%20%20Hprose%20%20%20Go%E3%80%91.md</a><br><a href="https://github.com/jaegertracing/jaeger" target="_blank" rel="noopener">https://github.com/jaegertracing/jaeger</a><br><a href="https://github.com/opentracing-contrib/java-spring-cloud" target="_blank" rel="noopener">https://github.com/opentracing-contrib/java-spring-cloud</a><br><a href="https://github.com/opentracing-contrib/java-spring-jaeger" target="_blank" rel="noopener">https://github.com/opentracing-contrib/java-spring-jaeger</a><br><a href="https://github.com/opentracing-contrib/java-spring-zipkin" target="_blank" rel="noopener">https://github.com/opentracing-contrib/java-spring-zipkin</a><br><a href="https://github.com/jaegertracing/spark-dependencies" target="_blank" rel="noopener">https://github.com/jaegertracing/spark-dependencies</a><br><a href="https://my.oschina.net/u/2548090/blog/1821372" target="_blank" rel="noopener">https://my.oschina.net/u/2548090/blog/1821372</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/spring-cloud/" rel="tag"># spring cloud</a>
+          
+            <a href="/tags/prometheus/" rel="tag"># prometheus</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/Kubernetes安装Docker-registry.html" rel="next" title="Kubernetes安装Docker registry">
+                <i class="fa fa-chevron-left"></i> Kubernetes安装Docker registry
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/Jenkins代码质量扫描与自动化部署.html" rel="prev" title="Jenkins代码质量扫描与自动化部署">
+                Jenkins代码质量扫描与自动化部署 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
+              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#spring-boot监控"><span class="nav-number">1.</span> <span class="nav-text">spring boot监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#actuator"><span class="nav-number">1.1.</span> <span class="nav-text">actuator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#admin-dashboard"><span class="nav-number">1.2.</span> <span class="nav-text">admin-dashboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prometheus日志收集"><span class="nav-number">1.3.</span> <span class="nav-text">prometheus日志收集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prometheus"><span class="nav-number">2.</span> <span class="nav-text">prometheus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">2.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问"><span class="nav-number">2.3.</span> <span class="nav-text">访问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grafna"><span class="nav-number">3.</span> <span class="nav-text">grafna</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-number">3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问-1"><span class="nav-number">3.2.</span> <span class="nav-text">访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-1"><span class="nav-number">3.3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加数据源"><span class="nav-number">3.3.1.</span> <span class="nav-text">添加数据源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加Templating"><span class="nav-number">3.3.2.</span> <span class="nav-text">添加Templating</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加panel"><span class="nav-number">3.3.3.</span> <span class="nav-text">添加panel</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#mem"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">mem</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Heap"><span class="nav-number">3.3.3.2.</span> <span class="nav-text">Heap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Threads"><span class="nav-number">3.3.3.3.</span> <span class="nav-text">Threads</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#systemload-average"><span class="nav-number">3.3.3.4.</span> <span class="nav-text">systemload_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Gauge-servo-response-api"><span class="nav-number">3.3.3.5.</span> <span class="nav-text">Gauge_servo_response_api</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整体效果"><span class="nav-number">3.4.</span> <span class="nav-text">整体效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器监控"><span class="nav-number">4.</span> <span class="nav-text">容器监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cAdvisor"><span class="nav-number">4.1.</span> <span class="nav-text">cAdvisor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prometheus配置"><span class="nav-number">4.2.</span> <span class="nav-text">prometheus配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grafana-dashboard"><span class="nav-number">4.3.</span> <span class="nav-text">grafana dashboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#效果"><span class="nav-number">4.4.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hystrix-dashboard"><span class="nav-number">5.</span> <span class="nav-text">hystrix-dashboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hystrix"><span class="nav-number">5.1.</span> <span class="nav-text">hystrix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dashboard"><span class="nav-number">5.2.</span> <span class="nav-text">dashboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#turbine"><span class="nav-number">5.3.</span> <span class="nav-text">turbine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-2"><span class="nav-number">5.4.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sleuth-zipkin"><span class="nav-number">6.</span> <span class="nav-text">sleuth zipkin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序集成"><span class="nav-number">6.1.</span> <span class="nav-text">应用程序集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sleuth-log"><span class="nav-number">6.1.1.</span> <span class="nav-text">sleuth+log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleuth-zipkin-http"><span class="nav-number">6.1.2.</span> <span class="nav-text">sleuth+zipkin+http</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sletuh-streaming-zipkin"><span class="nav-number">6.1.3.</span> <span class="nav-text">sletuh+streaming+zipkin</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zipkin-server"><span class="nav-number">6.2.</span> <span class="nav-text">zipkin-server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-2"><span class="nav-number">6.2.1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#http方式"><span class="nav-number">6.2.1.1.</span> <span class="nav-text">http方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stream方式"><span class="nav-number">6.2.1.2.</span> <span class="nav-text">stream方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#elasticsearch安装"><span class="nav-number">6.2.1.3.</span> <span class="nav-text">elasticsearch安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rabbitmq"><span class="nav-number">6.2.1.4.</span> <span class="nav-text">rabbitmq</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据存储"><span class="nav-number">6.2.2.</span> <span class="nav-text">数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Mem"><span class="nav-number">6.2.2.1.</span> <span class="nav-text">Mem</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MySQL"><span class="nav-number">6.2.2.2.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Elasticsearch"><span class="nav-number">6.2.2.3.</span> <span class="nav-text">Elasticsearch</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zipkin-dependencies"><span class="nav-number">6.2.3.</span> <span class="nav-text">zipkin-dependencies</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果-1"><span class="nav-number">6.2.4.</span> <span class="nav-text">效果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jaeger"><span class="nav-number">7.</span> <span class="nav-text">jaeger</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#opentracing-协议"><span class="nav-number">7.1.</span> <span class="nav-text">opentracing 协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-3"><span class="nav-number">7.2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#elasticsearch"><span class="nav-number">7.2.1.</span> <span class="nav-text">elasticsearch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jaeger-collector"><span class="nav-number">7.2.2.</span> <span class="nav-text">jaeger-collector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jaeger-query"><span class="nav-number">7.2.3.</span> <span class="nav-text">jaeger-query</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kibana"><span class="nav-number">7.2.4.</span> <span class="nav-text">kibana</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jaeger-agent"><span class="nav-number">7.2.5.</span> <span class="nav-text">jaeger-agent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spark-dependencies"><span class="nav-number">7.2.6.</span> <span class="nav-text">spark-dependencies</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端集成"><span class="nav-number">7.3.</span> <span class="nav-text">客户端集成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#skywalking"><span class="nav-number">8.</span> <span class="nav-text">skywalking</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-4"><span class="nav-number">8.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-3"><span class="nav-number">8.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动Collector与Web"><span class="nav-number">8.3.</span> <span class="nav-text">启动Collector与Web</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#agent"><span class="nav-number">8.4.</span> <span class="nav-text">agent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">9.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

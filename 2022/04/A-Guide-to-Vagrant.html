@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux,Vagrant,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Just do it" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="This is a guide to how to use Vagrant to virtual some OS, like Linux/Windows/MacOS etc.">
+<meta name="keywords" content="Linux,Vagrant">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Guide to Vagrant">
+<meta property="og:url" content="http://blog.gcalls.cn/2022/04/A-Guide-to-Vagrant.html">
+<meta property="og:site_name" content="Just do it">
+<meta property="og:description" content="This is a guide to how to use Vagrant to virtual some OS, like Linux/Windows/MacOS etc.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2024-07-25T07:36:00.053Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A Guide to Vagrant">
+<meta name="twitter:description" content="This is a guide to how to use Vagrant to virtual some OS, like Linux/Windows/MacOS etc.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.gcalls.cn/2022/04/A-Guide-to-Vagrant.html">
+
+
+
+
+
+  <title>A Guide to Vagrant | Just do it</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af0c9cfcd648be735ccf119d51ae564";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Just do it</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.gcalls.cn/2022/04/A-Guide-to-Vagrant.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaoxunyong">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Just do it">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">A Guide to Vagrant</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-04-29T10:43:46+08:00">
+                2022-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2022/04/A-Guide-to-Vagrant.html" class="leancloud_visitors" data-flag-title="A Guide to Vagrant">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This is a guide to how to use Vagrant to virtual some OS, like Linux/Windows/MacOS etc.</p>
+<a id="more"></a>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Simple and Powerful</p>
+<p>HashiCorp Vagrant provides the same, easy workflow regardless of your role as a developer, operator, or designer. It leverages a declarative configuration file which describes all your software requirements, packages, operating system configuration, users, and more.</p>
+<p>Works where you work</p>
+<p>Vagrant works on Mac, Linux, Windows, and more. Remote development environments force users to give up their favorite editors and programs. Vagrant works on your local system with the tools you’re already familiar with. Easily code in your favorite text editor, edit images in your favorite manipulation program, and debug using your favorite tools, all from the comfort of your local laptop.</p>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><h3 id="vagrant-docker"><a href="#vagrant-docker" class="headerlink" title="vagrant+docker"></a>vagrant+docker</h3><p>Recommanding by vagrant plus docker:</p>
+<p><a href="https://www.vagrantup.com/docs/providers/docker" target="_blank" rel="noopener">https://www.vagrantup.com/docs/providers/docker</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -</span><br><span class="line">sudo apt-add-repository <span class="string">"deb [arch=amd64] https://apt.releases.hashicorp.com <span class="variable">$(lsb_release -cs)</span> main"</span></span><br><span class="line">sudo apt-get update &amp;&amp; sudo apt-get install vagrant</span><br><span class="line"></span><br><span class="line"><span class="comment">#Installing docker following this: http://blog.gcalls.cn/blog/2018/12/ubuntu-os.html#Docker</span></span><br></pre></td></tr></table></figure>
+<h3 id="vagrant-virtualbox"><a href="#vagrant-virtualbox" class="headerlink" title="vagrant+virtualbox"></a>vagrant+virtualbox</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://www.vagrantup.com/downloads</span></span><br><span class="line"><span class="comment">#The executable 'bsdtar' Vagrant is trying to run was not found in the PATH variable. This is an error. Please verify this software is installed and on the path.</span></span><br><span class="line"><span class="comment"># wget https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_linux_amd64.zip</span></span><br><span class="line"><span class="comment"># unzip vagrant_2.2.19_linux_amd64.zip</span></span><br><span class="line"><span class="comment">#Recommend:</span></span><br><span class="line">curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -</span><br><span class="line">sudo apt-add-repository <span class="string">"deb [arch=amd64] https://apt.releases.hashicorp.com <span class="variable">$(lsb_release -cs)</span> main"</span></span><br><span class="line">sudo apt-get update &amp;&amp; sudo apt-get install vagrant</span><br><span class="line"></span><br><span class="line"><span class="comment">#VirtualBox</span></span><br><span class="line">wget https://download.virtualbox.org/virtualbox/6.1.34/virtualbox-6.1_6.1.34-150636.1~Ubuntu~eoan_amd64.deb</span><br><span class="line">dpkg -i virtualbox-6.1_6.1.34-150636.1~Ubuntu~eoan_amd64.deb</span><br><span class="line"><span class="comment">##If some error occurred, executing the following command, and run again:</span></span><br><span class="line"><span class="comment"># sudo apt install -f</span></span><br><span class="line"><span class="comment"># dpkg -i virtualbox-6.1_6.1.34-150636.1~Ubuntu~eoan_amd64.deb</span></span><br><span class="line">sudo apt install -y gcc make perl</span><br><span class="line">sudo /sbin/vboxconfig</span><br><span class="line"><span class="comment">#If some error occurred, just following the messge to resolve.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#extpack</span></span><br><span class="line">VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.34.vbox-extpack</span><br></pre></td></tr></table></figure>
+<h2 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h2><h3 id="vagrant-docker-1"><a href="#vagrant-docker-1" class="headerlink" title="vagrant+docker"></a>vagrant+docker</h3><p>Dockerfile:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Version: 1.0.0</span></span><br><span class="line"></span><br><span class="line">FROM ubuntu:22.04</span><br><span class="line"></span><br><span class="line">RUN mkdir -p /container/shell </span><br><span class="line"></span><br><span class="line">ENV WORK_SHELL /container/shell</span><br><span class="line">WORKDIR <span class="variable">$WORK_SHELL</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#ADD ./sources.list /etc/apt/sources.list</span></span><br><span class="line"><span class="comment">#RUN apt update &amp;&amp; apt install -y init</span></span><br><span class="line"></span><br><span class="line">ADD docker-entrypoint.sh script.sh <span class="variable">$WORK_SHELL</span>/</span><br><span class="line"></span><br><span class="line">RUN chmod +x <span class="variable">$WORK_SHELL</span>/*.sh</span><br><span class="line"></span><br><span class="line">RUN <span class="variable">$WORK_SHELL</span>/script.sh</span><br><span class="line"></span><br><span class="line">ENTRYPOINT [<span class="string">"/container/shell/docker-entrypoint.sh"</span>]</span><br><span class="line"><span class="comment">#CMD ["bash", "-c" ,"$WORK_SHELL/init.sh"]</span></span><br></pre></td></tr></table></figure>
+<p>docker-entrypoint.sh:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># run the command given as arguments from CMD</span></span><br><span class="line"><span class="built_in">exec</span> <span class="string">"<span class="variable">$@</span>"</span></span><br></pre></td></tr></table></figure></p>
+<p>script.sh: Finding the details from belows.</p>
+<p>Building docker image:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t dave/ubuntu:22.04 .</span><br></pre></td></tr></table></figure>
+<p>Vagrangfile:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># All Vagrant configuration is done below. The "2" in Vagrant.configure</span></span><br><span class="line"><span class="comment"># configures the configuration version (we support older styles for</span></span><br><span class="line"><span class="comment"># backwards compatibility). Please don't change it unless you know what</span></span><br><span class="line"><span class="comment"># you're doing.</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> |config|</span><br><span class="line"></span><br><span class="line">  config.vm.network :public_network, ip: <span class="string">"192.168.109.50"</span>, netmask: <span class="string">"255.255.255.0"</span>, bridge: <span class="string">"eno1"</span>, docker_network__gateway: <span class="string">"192.168.109.254"</span></span><br><span class="line"></span><br><span class="line">  config.vm.provider <span class="string">"docker"</span> <span class="keyword">do</span> |d|</span><br><span class="line">    d.image = <span class="string">"registry.zerofinance.net/library/ubuntu:22.04"</span></span><br><span class="line">    <span class="comment">#d.build_dir = "."</span></span><br><span class="line">    <span class="comment">#d.create_args = ["--hostname=config", "-v", "/data/fisco:/data/fisco", "-v", "/data/vagrant/docker/fisco/shell:/data/shell"]</span></span><br><span class="line">    d.create_args = [<span class="string">"--cpus=40"</span>, <span class="string">"--memory=64g"</span>, <span class="string">"--hostname=ubuntu-analysis"</span>, <span class="string">"-v"</span>, <span class="string">"/data/containerd:/var/lib/containerd"</span>, <span class="string">"-v"</span>, <span class="string">"/works/app/container_apps:/works/app"</span>, <span class="string">"-v"</span>, <span class="string">"/data/container_datas:/data"</span>]</span><br><span class="line">    d.privileged = <span class="literal">true</span></span><br><span class="line">    d.cmd = [<span class="string">"/sbin/init"</span>]</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  config.vm.provision <span class="string">"shell"</span>, run: <span class="string">"always"</span>, inline: &lt;&lt;-SHELL</span><br><span class="line">    sudo route del default gw 172.17.0.1</span><br><span class="line">    sudo route add default gw 192.168.109.254</span><br><span class="line">  SHELL</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>Or just using docker by itself:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#https://www.cnblogs.com/bakari/p/10893589.html</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/</span></span><br><span class="line"><span class="comment">#Solved: Container can communicate with host machine:</span></span><br><span class="line">docker network create \</span><br><span class="line">    -d <span class="string">'macvlan'</span> \</span><br><span class="line">    -o parent=enp2s0 \</span><br><span class="line">    --subnet=192.168.101.0/24 \</span><br><span class="line">    --gateway=192.168.101.254 \</span><br><span class="line">    --aux-address <span class="string">'host=192.168.101.81'</span> \</span><br><span class="line">    my-network</span><br><span class="line"></span><br><span class="line"><span class="comment">#/etc/rc.local</span></span><br><span class="line">ip link add mynet-shim link enp2s0 <span class="built_in">type</span> macvlan mode bridge</span><br><span class="line"><span class="comment">#192.168.101.81: a host ip</span></span><br><span class="line">ip addr add 192.168.101.81/32 dev mynet-shim</span><br><span class="line">ip link <span class="built_in">set</span> mynet-shim up</span><br><span class="line"><span class="comment">#192.168.101.85: a container ip</span></span><br><span class="line">ip route add 192.168.101.85/32 dev mynet-shim</span><br><span class="line">ip route add 192.168.101.86/32 dev mynet-shim</span><br><span class="line">ip route add 192.168.101.87/32 dev mynet-shim</span><br><span class="line">ip route add 192.168.101.88/32 dev mynet-shim</span><br><span class="line"></span><br><span class="line">mkdir -p /data/dave/rancher /data/peter/rancher /data/eino/rancher /data/xiaotie/rancher</span><br><span class="line"></span><br><span class="line">docker run -d \</span><br><span class="line">    --name=dave-server --hostname=dave-server \</span><br><span class="line">    --network=my-network \</span><br><span class="line">    --ip=192.168.101.85 \</span><br><span class="line">    --privileged=<span class="literal">true</span> \</span><br><span class="line">    -v /etc/localtime:/etc/localtime \</span><br><span class="line">    -v /etc/hosts:/etc/hosts \</span><br><span class="line">    -v /data/dave:/data \</span><br><span class="line">    -v /works/app:/works/app \</span><br><span class="line">    -v /data/dave/rancher:/var/lib/rancher \</span><br><span class="line">    registry.zerofinance.net/library/ubuntu:22.04 \</span><br><span class="line">    /sbin/init</span><br><span class="line"></span><br><span class="line">docker run -d \</span><br><span class="line">    --name=peter-server --hostname=peter-server \</span><br><span class="line">    --network=my-network \</span><br><span class="line">    --ip=192.168.101.86 \</span><br><span class="line">    --privileged=<span class="literal">true</span> \</span><br><span class="line">    -v /etc/localtime:/etc/localtime \</span><br><span class="line">    -v /etc/hosts:/etc/hosts \</span><br><span class="line">    -v /data/peter:/data \</span><br><span class="line">    -v /works/app:/works/app \</span><br><span class="line">    -v /data/peter/rancher:/var/lib/rancher \</span><br><span class="line">    registry.zerofinance.net/library/ubuntu:22.04 \</span><br><span class="line">    /sbin/init</span><br><span class="line"></span><br><span class="line">docker run -d \</span><br><span class="line">    --name=eino-server --hostname=eino-server \</span><br><span class="line">    --network=my-network \</span><br><span class="line">    --ip=192.168.101.87 \</span><br><span class="line">    --privileged=<span class="literal">true</span> \</span><br><span class="line">    -v /etc/localtime:/etc/localtime \</span><br><span class="line">    -v /etc/hosts:/etc/hosts \</span><br><span class="line">    -v /data/eino:/data \</span><br><span class="line">    -v /works/app:/works/app \</span><br><span class="line">    -v /data/eino/rancher:/var/lib/rancher \</span><br><span class="line">    registry.zerofinance.net/library/ubuntu:22.04 \</span><br><span class="line">    /sbin/init</span><br><span class="line"></span><br><span class="line">docker run -d \</span><br><span class="line">    --name=xiaotie-server --hostname=xiaotie-server \</span><br><span class="line">    --network=my-network \</span><br><span class="line">    --ip=192.168.101.88 \</span><br><span class="line">    --privileged=<span class="literal">true</span> \</span><br><span class="line">    -v /etc/localtime:/etc/localtime \</span><br><span class="line">    -v /etc/hosts:/etc/hosts \</span><br><span class="line">    -v /data/xiaotie:/data \</span><br><span class="line">    -v /works/app:/works/app \</span><br><span class="line">    -v /data/xiaotie/rancher:/var/lib/rancher \</span><br><span class="line">    registry.zerofinance.net/library/ubuntu:22.04 \</span><br><span class="line">    /sbin/init</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># docker run -d \</span></span><br><span class="line"><span class="comment">#     --name=my-other-nginx \</span></span><br><span class="line"><span class="comment">#     --network=my-network \</span></span><br><span class="line"><span class="comment">#     --ip=192.168.101.84 \</span></span><br><span class="line"><span class="comment">#     nginx:latest</span></span><br></pre></td></tr></table></figure>
+<p>Or multiple nodes with Vagrantfile:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># All Vagrant configuration is done below. The "2" in Vagrant.configure</span></span><br><span class="line"><span class="comment"># configures the configuration version (we support older styles for</span></span><br><span class="line"><span class="comment"># backwards compatibility). Please don't change it unless you know what</span></span><br><span class="line"><span class="comment"># you're doing.</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> |config|</span><br><span class="line"></span><br><span class="line">  config.vm.define <span class="string">"node1"</span>  <span class="keyword">do</span> |node1|</span><br><span class="line">    node1.vm.network :public_network, ip: <span class="string">"192.168.101.83"</span>, netmask: <span class="string">"255.255.255.0"</span>, bridge: <span class="string">"enp2s0"</span>, docker_network__gateway: <span class="string">"192.168.101.254"</span></span><br><span class="line">    node1.vm.provider <span class="string">"docker"</span> <span class="keyword">do</span> |d|</span><br><span class="line">      d.image = <span class="string">"dave/docker:22.04"</span></span><br><span class="line">      <span class="comment">#d.build_dir = "."</span></span><br><span class="line">      d.create_args = [<span class="string">"--hostname=node1"</span>, <span class="string">"-v"</span>, <span class="string">"/data/var-lib-docker:/var/lib/docker"</span>, <span class="string">"-v"</span>,<span class="string">"/data/fabric:/data/fabric"</span>]</span><br><span class="line">      d.privileged = <span class="literal">true</span></span><br><span class="line">      d.cmd = [<span class="string">"/sbin/init"</span>]</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  config.vm.define <span class="string">"node2"</span>  <span class="keyword">do</span> |node2|</span><br><span class="line">    node2.vm.network :public_network, ip: <span class="string">"192.168.101.84"</span>, netmask: <span class="string">"255.255.255.0"</span>, bridge: <span class="string">"enp2s0"</span>, docker_network__gateway: <span class="string">"192.168.101.254"</span></span><br><span class="line">    node2.vm.provider <span class="string">"docker"</span> <span class="keyword">do</span> |d|</span><br><span class="line">      d.image = <span class="string">"dave/docker:22.04"</span></span><br><span class="line">      <span class="comment">#d.build_dir = "."</span></span><br><span class="line">      d.create_args = [<span class="string">"--hostname=node2"</span>, <span class="string">"-v"</span>, <span class="string">"/data/var-lib-docker:/var/lib/docker"</span>, <span class="string">"-v"</span>,<span class="string">"/data/fabric:/data/fabric"</span>]</span><br><span class="line">      d.privileged = <span class="literal">true</span></span><br><span class="line">      d.cmd = [<span class="string">"/sbin/init"</span>]</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>Installing docker in dokcer:</p>
+<p>docker.sh:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">apt-get -y install apt-transport-https ca-certificates software-properties-common</span><br><span class="line">curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | apt-key add -</span><br><span class="line">add-apt-repository <span class="string">"deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu <span class="variable">$(lsb_release -cs)</span> stable"</span></span><br><span class="line">apt-get -y update</span><br><span class="line">apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br><span class="line"></span><br><span class="line">mkdir -p /etc/docker/</span><br><span class="line">tee /etc/docker/daemon.json &lt;&lt;-<span class="string">'EOF'</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"dns"</span> : [</span><br><span class="line">     <span class="string">"8.8.4.4"</span>,</span><br><span class="line">     <span class="string">"8.8.8.8"</span>,</span><br><span class="line">     <span class="string">"114.114.114.114"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">"registry-mirrors"</span>: [</span><br><span class="line">    <span class="string">"https://registry.docker-cn.com"</span>,</span><br><span class="line">    <span class="string">"https://3laho3y3.mirror.aliyuncs.com"</span>,</span><br><span class="line">    <span class="string">"http://hub-mirror.c.163.com"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>Starting:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<p>Entering the container:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vagrant docker-exec -it -- /bin/bash</span><br><span class="line"><span class="comment">#Or</span></span><br><span class="line">docker <span class="built_in">exec</span> -it dockerid /bin/bash</span><br></pre></td></tr></table></figure>
+<h3 id="vagrant-virtualbox-1"><a href="#vagrant-virtualbox-1" class="headerlink" title="vagrant+virtualbox"></a>vagrant+virtualbox</h3><p>How to get the box images?</p>
+<p>Search from <a href="https://app.vagrantup.com/boxes/search" target="_blank" rel="noopener">https://app.vagrantup.com/boxes/search</a> to get a certain box, like “ubuntu 22.04”, going to the details you can get the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vagrant init generic/ubuntu2004</span><br><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<p>Just running the command above, you will see the box url. Since the internet connection is very slow in China, you can interrupt the operation when you get the final download url.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#Centos</span><br><span class="line">https://vagrantcloud.com/centos/boxes/7/versions/2004.01/providers/virtualbox.box</span><br><span class="line">#Ubuntu</span><br><span class="line">https://vagrantcloud.com/bento/boxes/ubuntu-22.04/versions/202112.19.0/providers/virtualbox.box</span><br><span class="line">#Win10</span><br><span class="line">http://vagrantcloud.com/gusztavvargadr/boxes/windows-10/versions/2102.0.2204/providers/virtualbox.box</span><br></pre></td></tr></table></figure>
+<h3 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h3><p>Adding box:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo vagrant box add ubuntu22.04 box/ubuntu-22.04.box</span><br><span class="line">sudo vagrant plugin install vagrant-disksize</span><br></pre></td></tr></table></figure>
+<p>Vagrantfile:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># All Vagrant configuration is done below. The "2" in Vagrant.configure</span></span><br><span class="line"><span class="comment"># configures the configuration version (we support older styles for</span></span><br><span class="line"><span class="comment"># backwards compatibility). Please don't change it unless you know what</span></span><br><span class="line"><span class="comment"># you're doing.</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> |config|</span><br><span class="line"></span><br><span class="line">  <span class="comment">#config.vm.box = "ubuntu22.04"</span></span><br><span class="line">  <span class="comment">#config.vm.hostname = "mydocker"</span></span><br><span class="line">  <span class="comment">#config.vm.network "private_network", ip: "192.168.10.9"</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">  <span class="comment">#config.vm.synced_folder "/data/docker/registry", "/docker/registry"</span></span><br><span class="line">  <span class="comment">#config.vm.synced_folder "/data/docker/works", "/docker/works"</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">  <span class="comment">#config.vm.provider "virtualbox" do |vb|</span></span><br><span class="line">  <span class="comment">#  #vb.gui = true</span></span><br><span class="line">  <span class="comment">#  vb.memory = "2048"</span></span><br><span class="line">  <span class="comment">#end</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#config.vm.provision "shell", run: "always", inline: &lt;&lt;-SHELL</span></span><br><span class="line">  <span class="comment">#  systemctl restart network</span></span><br><span class="line">  <span class="comment">#SHELL</span></span><br><span class="line">  <span class="comment">#config.vm.provision "shell", path: "script.sh"</span></span><br><span class="line"></span><br><span class="line">  config.vm.define :node1 <span class="keyword">do</span> |node1|</span><br><span class="line">    node1.vm.box = <span class="string">"ubuntu22.04"</span></span><br><span class="line">    node1.vm.hostname = <span class="string">"node1"</span></span><br><span class="line">    node1.vm.network <span class="string">"public_network"</span>, ip: <span class="string">"192.168.101.83"</span>, netmask: <span class="string">"255.255.255.0"</span>, gateway: <span class="string">"192.168.101.254"</span>, bridge: <span class="string">"enp2s0"</span></span><br><span class="line">    <span class="comment">#excel01_prod.vm.network "public_network", bridge: "enp0s31f6", auto_config: false</span></span><br><span class="line">    <span class="comment">#node1.vm.synced_folder "/home/dev/vagrant", "/data/vagrant"</span></span><br><span class="line">    node1.vm.provider <span class="string">"virtualbox"</span> <span class="keyword">do</span> |vb|</span><br><span class="line">      <span class="comment">#vb.gui = true</span></span><br><span class="line">      vb.cpus = 4 </span><br><span class="line">      vb.memory = <span class="string">"4096"</span></span><br><span class="line">    end</span><br><span class="line">    node1.vm.provision <span class="string">"shell"</span>, run: <span class="string">"always"</span>, inline: &lt;&lt;-SHELL</span><br><span class="line">      <span class="comment">#cp -a /vagrant/sources.list /etc/apt/sources.list</span></span><br><span class="line">      <span class="comment">#apt-get install sudo net-tools -y</span></span><br><span class="line">      <span class="comment">#sudo route del default gw 10.0.2.2</span></span><br><span class="line">      <span class="comment">#ifconfig eth1 192.168.69.200 netmask 255.255.255.0 up</span></span><br><span class="line">      <span class="comment">#route add default gw 192.168.69.254</span></span><br><span class="line">      <span class="comment">#If cannot ping from remote server, do the following command, but it won't be login by vagrant ssh:</span></span><br><span class="line">      <span class="comment">#ip link set eth0 down</span></span><br><span class="line">    SHELL</span><br><span class="line">    node1.vm.provision <span class="string">"shell"</span> <span class="keyword">do</span> |s|</span><br><span class="line">      s.path = <span class="string">"script.sh"</span></span><br><span class="line">      <span class="comment">#s.args = ["--bip=10.1.10.1/24"]</span></span><br><span class="line">    end</span><br><span class="line">    <span class="comment">#node1.vm.provision "shell", path: "script.sh"</span></span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  config.vm.define :node2 <span class="keyword">do</span> |node2|</span><br><span class="line">    node2.vm.box = <span class="string">"ubuntu22.04"</span></span><br><span class="line">    node2.vm.hostname = <span class="string">"node2"</span></span><br><span class="line">    node2.vm.network <span class="string">"public_network"</span>, ip: <span class="string">"192.168.101.84"</span>, netmask: <span class="string">"255.255.255.0"</span>, gateway: <span class="string">"192.168.101.254"</span>, bridge: <span class="string">"enp2s0"</span></span><br><span class="line">    <span class="comment">#node1.vm.synced_folder "/home/dev/vagrant", "/data/vagrant"</span></span><br><span class="line">    node2.vm.provider <span class="string">"virtualbox"</span> <span class="keyword">do</span> |vb|</span><br><span class="line">      <span class="comment">#vb.gui = true</span></span><br><span class="line">      vb.cpus = 4</span><br><span class="line">      vb.memory = <span class="string">"4096"</span></span><br><span class="line">    end</span><br><span class="line">    node2.vm.provision <span class="string">"shell"</span>, run: <span class="string">"always"</span>, inline: &lt;&lt;-SHELL</span><br><span class="line">      <span class="comment">#cp -a /vagrant/sources.list /etc/apt/sources.list</span></span><br><span class="line">      <span class="comment">#apt-get install sudo net-tools -y</span></span><br><span class="line">      <span class="comment">#sudo route del default gw 10.0.2.2</span></span><br><span class="line">      <span class="comment">#If cannot ping from remote server, do the following command, but it won't be login by vagrant ssh:</span></span><br><span class="line">      <span class="comment">#ip link set eth0 down</span></span><br><span class="line">    SHELL</span><br><span class="line">    node2.vm.provision <span class="string">"shell"</span> <span class="keyword">do</span> |s|</span><br><span class="line">      s.path = <span class="string">"script.sh"</span></span><br><span class="line">      <span class="comment">#s.args = ["--bip=10.1.20.1/24"]</span></span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>script.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#http://www.360doc.com/content/14/1125/19/7044580_428024359.shtml</span></span><br><span class="line"><span class="comment">#http://blog.csdn.net/54powerman/article/details/50684844</span></span><br><span class="line"><span class="comment">#http://c.biancheng.net/cpp/view/2739.html</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"scripting......"</span></span><br><span class="line"></span><br><span class="line">cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br><span class="line"><span class="comment"># cat &gt;&gt; /etc/apt/sources.list.d/aliyun.list &lt;&lt; EOF</span></span><br><span class="line">tee /etc/apt/sources.list &lt;&lt; EOF</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ jammy main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-security main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ jammy-security main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-updates main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ jammy-updates main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-proposed main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ jammy-proposed main restricted universe multiverse</span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ jammy-backports main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ jammy-backports main restricted universe multiverse</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">apt-get update</span><br><span class="line"><span class="comment">#apt-get install make g++ init inetutils-ping sudo jq iproute2 net-tools wget htop vim screen curl lsof lrzsz zip unzip expect openssh-server -y</span></span><br><span class="line">apt-get install init inetutils-ping sudo iptables psmisc jq iproute2 net-tools wget htop vim screen curl lsof lrzsz zip unzip expect openssh-server -y</span><br><span class="line"></span><br><span class="line"><span class="comment">#LANG="en_US.UTF-8"</span></span><br><span class="line"><span class="comment">#sed -i 's;LANG=.*;LANG="zh_CN.UTF-8";' /etc/locale.conf</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">disable</span> iptables</span><br><span class="line">systemctl stop iptables</span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line"><span class="comment">#ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span></span><br><span class="line">timedatectl <span class="built_in">set</span>-timezone Asia/Shanghai</span><br><span class="line"></span><br><span class="line"><span class="comment">#logined limit</span></span><br><span class="line">cat /etc/security/limits.conf|grep <span class="string">"^root"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">		cat &gt;&gt; /etc/security/limits.conf  &lt;&lt; EOF</span><br><span class="line">root            -    nofile             100000</span><br><span class="line">root            -    nproc              100000</span><br><span class="line">*               -    nofile             100000</span><br><span class="line">*               -    nproc              100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#systemd service limit</span></span><br><span class="line">cat /etc/systemd/system.conf|egrep <span class="string">'^DefaultLimitNOFILE'</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">		cat &gt;&gt; /etc/systemd/system.conf &lt;&lt; EOF</span><br><span class="line">DefaultLimitCORE=infinity</span><br><span class="line">DefaultLimitNOFILE=100000</span><br><span class="line">DefaultLimitNPROC=100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment">#user service limit</span></span><br><span class="line">cat /etc/systemd/user.conf|egrep <span class="string">'^DefaultLimitNOFILE'</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">		cat &gt;&gt; /etc/systemd/system.conf &lt;&lt; EOF</span><br><span class="line">DefaultLimitCORE=infinity</span><br><span class="line">DefaultLimitNOFILE=100000</span><br><span class="line">DefaultLimitNPROC=100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">cat /etc/sysctl.conf|grep <span class="string">"net.ipv4.ip_local_port_range"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">	cat &gt;&gt; /etc/sysctl.conf  &lt;&lt; EOF</span><br><span class="line">net.ipv4.tcp_syncookies = 1</span><br><span class="line">net.ipv4.tcp_fin_timeout = 30</span><br><span class="line">net.ipv4.tcp_keepalive_time = 300</span><br><span class="line">net.ipv4.tcp_tw_reuse = 1</span><br><span class="line">net.ipv4.ip_local_port_range = 1024 65535</span><br><span class="line">net.ipv4.tcp_max_syn_backlog = 8192</span><br><span class="line">net.ipv4.tcp_max_tw_buckets = 500</span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line">fs.inotify.max_user_instances=1280</span><br><span class="line">fs.inotify.max_user_watches=655360</span><br><span class="line">vm.overcommit_memory=1</span><br><span class="line">fs.protected_regular=0</span><br><span class="line">EOF</span><br><span class="line">sysctl -p</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">su - root -c <span class="string">"ulimit -a"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#tee /etc/resolv.conf &lt;&lt; EOF</span></span><br><span class="line"><span class="comment">#search myk8s.com</span></span><br><span class="line"><span class="comment">#nameserver 114.114.114.114</span></span><br><span class="line"><span class="comment">#nameserver 8.8.8.8</span></span><br><span class="line"><span class="comment">#EOF</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s;#PermitRootLogin.*;PermitRootLogin yes;g'</span> /etc/ssh/sshd_config</span><br><span class="line"><span class="comment">#systemctl enable ssh</span></span><br><span class="line"><span class="comment">#systemctl restart ssh</span></span><br></pre></td></tr></table></figure>
+<p>Starting:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<h3 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h3><p>Adding box:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vagrant box add centos7 box/CentOS-7-x86_64-Vagrant-2004_01.VirtualBox.box</span><br></pre></td></tr></table></figure>
+<p>Vagrantfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># All Vagrant configuration is done below. The "2" in Vagrant.configure</span></span><br><span class="line"><span class="comment"># configures the configuration version (we support older styles for</span></span><br><span class="line"><span class="comment"># backwards compatibility). Please don't change it unless you know what</span></span><br><span class="line"><span class="comment"># you're doing.</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> |config|</span><br><span class="line"></span><br><span class="line">  <span class="comment">#config.vm.box = "centos7"</span></span><br><span class="line">  <span class="comment">#config.vm.hostname = "mydocker"</span></span><br><span class="line">  <span class="comment">#config.vm.network "private_network", ip: "192.168.10.9"</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">  <span class="comment">#config.vm.synced_folder "/data/docker/registry", "/docker/registry"</span></span><br><span class="line">  <span class="comment">#config.vm.synced_folder "/data/docker/works", "/docker/works"</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">  <span class="comment">#config.vm.provider "virtualbox" do |vb|</span></span><br><span class="line">  <span class="comment">#  #vb.gui = true</span></span><br><span class="line">  <span class="comment">#  vb.memory = "2048"</span></span><br><span class="line">  <span class="comment">#end</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment">#config.vm.provision "shell", run: "always", inline: &lt;&lt;-SHELL</span></span><br><span class="line">  <span class="comment">#  systemctl restart network</span></span><br><span class="line">  <span class="comment">#SHELL</span></span><br><span class="line">  <span class="comment">#config.vm.provision "shell", path: "script.sh"</span></span><br><span class="line"></span><br><span class="line">  config.vm.define :node1 <span class="keyword">do</span> |node1|</span><br><span class="line">    node1.vm.box = <span class="string">"centos7"</span></span><br><span class="line">    node1.vm.hostname = <span class="string">"node1"</span></span><br><span class="line">    node1.vm.network <span class="string">"public_network"</span>, ip: <span class="string">"192.168.101.83"</span>, netmask: <span class="string">"255.255.255.0"</span>, gateway: <span class="string">"192.168.101.254"</span>, bridge: <span class="string">"enp2s0"</span></span><br><span class="line">    <span class="comment">#node1.vm.synced_folder "/home/dev/vagrant", "/data/vagrant"</span></span><br><span class="line">    node1.vm.provider <span class="string">"virtualbox"</span> <span class="keyword">do</span> |vb|</span><br><span class="line">      <span class="comment">#vb.gui = true</span></span><br><span class="line">      vb.cpus = 4 </span><br><span class="line">      vb.memory = <span class="string">"4096"</span></span><br><span class="line">    end</span><br><span class="line">    node1.vm.provision <span class="string">"shell"</span>, run: <span class="string">"always"</span>, inline: &lt;&lt;-SHELL</span><br><span class="line">      yum -y install net-tools &gt; /dev/null</span><br><span class="line">      <span class="comment">#ifconfig eth1 192.168.101.83 netmask 255.255.255.0 up</span></span><br><span class="line">      <span class="comment">#route add default gw 192.168.101.254</span></span><br><span class="line">      sudo route del default gw 10.0.2.2</span><br><span class="line">    SHELL</span><br><span class="line">    node1.vm.provision <span class="string">"shell"</span> <span class="keyword">do</span> |s|</span><br><span class="line">      s.path = <span class="string">"script.sh"</span></span><br><span class="line">      <span class="comment">#s.args = ["--bip=10.1.10.1/24"]</span></span><br><span class="line">    end</span><br><span class="line">    <span class="comment">#node1.vm.provision "shell", path: "script.sh"</span></span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  config.vm.define :node2 <span class="keyword">do</span> |node2|</span><br><span class="line">    node2.vm.box = <span class="string">"centos7"</span></span><br><span class="line">    node2.vm.hostname = <span class="string">"node2"</span></span><br><span class="line">    node2.vm.network <span class="string">"public_network"</span>, ip: <span class="string">"192.168.101.84"</span>, netmask: <span class="string">"255.255.255.0"</span>, gateway: <span class="string">"192.168.101.254"</span>, bridge: <span class="string">"enp2s0"</span></span><br><span class="line">    <span class="comment">#node1.vm.synced_folder "/home/dev/vagrant", "/data/vagrant"</span></span><br><span class="line">    node2.vm.provider <span class="string">"virtualbox"</span> <span class="keyword">do</span> |vb|</span><br><span class="line">      <span class="comment">#vb.gui = true</span></span><br><span class="line">      vb.cpus = 4</span><br><span class="line">      vb.memory = <span class="string">"4096"</span></span><br><span class="line">    end</span><br><span class="line">    node2.vm.provision <span class="string">"shell"</span>, run: <span class="string">"always"</span>, inline: &lt;&lt;-SHELL</span><br><span class="line">      yum -y install net-tools &gt; /dev/null</span><br><span class="line">      <span class="comment">#ifconfig eth1 192.168.101.84 netmask 255.255.255.0 up</span></span><br><span class="line">      <span class="comment">#route add default gw 192.168.101.254</span></span><br><span class="line">      sudo route del default gw 10.0.2.2</span><br><span class="line">    SHELL</span><br><span class="line">    node2.vm.provision <span class="string">"shell"</span> <span class="keyword">do</span> |s|</span><br><span class="line">      s.path = <span class="string">"script.sh"</span></span><br><span class="line">      <span class="comment">#s.args = ["--bip=10.1.20.1/24"]</span></span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>script.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment">#http://www.360doc.com/content/14/1125/19/7044580_428024359.shtml</span></span><br><span class="line"><span class="comment">#http://blog.csdn.net/54powerman/article/details/50684844</span></span><br><span class="line"><span class="comment">#http://c.biancheng.net/cpp/view/2739.html</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"scripting......"</span></span><br><span class="line"></span><br><span class="line">yum -y install net-tools wget</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s;SELINUX=.*;SELINUX=disabled;'</span> /etc/selinux/config</span><br><span class="line">setenforce 0</span><br><span class="line">getenforce</span><br><span class="line"></span><br><span class="line"><span class="comment">#LANG="en_US.UTF-8"</span></span><br><span class="line"><span class="comment">#sed -i 's;LANG=.*;LANG="zh_CN.UTF-8";' /etc/locale.conf</span></span><br><span class="line"></span><br><span class="line">cat /etc/NetworkManager/NetworkManager.conf|grep <span class="string">"dns=none"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"dns=none"</span> &gt;&gt; /etc/NetworkManager/NetworkManager.conf</span><br><span class="line">    systemctl restart NetworkManager.service</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">disable</span> iptables</span><br><span class="line">systemctl stop iptables</span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line"><span class="comment">#ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span></span><br><span class="line">timedatectl <span class="built_in">set</span>-timezone Asia/Shanghai</span><br><span class="line"></span><br><span class="line"><span class="comment">#logined limit</span></span><br><span class="line">cat /etc/security/limits.conf|grep 100000 &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">cat &gt;&gt; /etc/security/limits.conf  &lt;&lt; EOF</span><br><span class="line">*               -    nofile             100000</span><br><span class="line">*               -    nproc              100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s;4096;100000;g'</span> /etc/security/limits.d/20-nproc.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">#systemd service limit</span></span><br><span class="line">cat /etc/systemd/system.conf|egrep <span class="string">'^DefaultLimitCORE'</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">cat &gt;&gt; /etc/systemd/system.conf &lt;&lt; EOF</span><br><span class="line">DefaultLimitCORE=infinity</span><br><span class="line">DefaultLimitNOFILE=100000</span><br><span class="line">DefaultLimitNPROC=100000</span><br><span class="line">EOF</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">cat /etc/sysctl.conf|grep <span class="string">"net.ipv4.ip_local_port_range"</span> &gt; /dev/null</span><br><span class="line"><span class="keyword">if</span> [[ $? != 0 ]]; <span class="keyword">then</span></span><br><span class="line">cat &gt;&gt; /etc/sysctl.conf  &lt;&lt; EOF</span><br><span class="line">net.ipv4.tcp_fin_timeout = 30</span><br><span class="line">net.ipv4.tcp_keepalive_time = 300</span><br><span class="line">net.ipv4.tcp_tw_reuse = 1</span><br><span class="line">net.ipv4.tcp_tw_recycle = 1</span><br><span class="line">net.ipv4.ip_local_port_range = 1024 65535</span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line"><span class="comment">#k8s</span></span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">EOF</span><br><span class="line">sysctl -p</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">su - root -c <span class="string">"ulimit -a"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"192.168.10.6   k8s-master</span></span><br><span class="line"><span class="string">192.168.10.7   k8s-node1</span></span><br><span class="line"><span class="string">192.168.10.8   k8s-node2"</span> &gt;&gt; /etc/hosts</span><br><span class="line"></span><br><span class="line"><span class="comment">#tee /etc/resolv.conf &lt;&lt; EOF</span></span><br><span class="line"><span class="comment">#search myk8s.com</span></span><br><span class="line"><span class="comment">#nameserver 114.114.114.114</span></span><br><span class="line"><span class="comment">#nameserver 8.8.8.8</span></span><br><span class="line"><span class="comment">#EOF</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#yum -y install gcc kernel-devel</span></span><br><span class="line">mv -f /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</span><br><span class="line"><span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo</span></span><br><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line">wget -O /etc/yum.repos.d/epel-7.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br><span class="line"></span><br><span class="line">yum -y install epel-release</span><br><span class="line"></span><br><span class="line">sudo mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup</span><br><span class="line">sudo mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup</span><br><span class="line"></span><br><span class="line">cat &gt; /etc/yum.repos.d/epel.repo  &lt;&lt; EOF</span><br><span class="line">[epel]</span><br><span class="line">name=Extra Packages <span class="keyword">for</span> Enterprise Linux 7 - \<span class="variable">$basearch</span></span><br><span class="line">baseurl=https://mirrors.tuna.tsinghua.edu.cn/epel/7/\<span class="variable">$basearch</span></span><br><span class="line"><span class="comment">#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=\$basearch</span></span><br><span class="line">failovermethod=priority</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</span><br><span class="line">[epel-debuginfo]</span><br><span class="line">name=Extra Packages <span class="keyword">for</span> Enterprise Linux 7 - \<span class="variable">$basearch</span> - Debug</span><br><span class="line">baseurl=https://mirrors.tuna.tsinghua.edu.cn/epel/7/\<span class="variable">$basearch</span>/debug</span><br><span class="line"><span class="comment">#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=\$basearch</span></span><br><span class="line">failovermethod=priority</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</span><br><span class="line">gpgcheck=1</span><br><span class="line">[epel-source]</span><br><span class="line">name=Extra Packages <span class="keyword">for</span> Enterprise Linux 7 - \<span class="variable">$basearch</span> - Source</span><br><span class="line">baseurl=https://mirrors.tuna.tsinghua.edu.cn/epel/7/SRPMS</span><br><span class="line"><span class="comment">#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=\$basearch</span></span><br><span class="line">failovermethod=priority</span><br><span class="line">enabled=0</span><br><span class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</span><br><span class="line">gpgcheck=1</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br><span class="line"></span><br><span class="line"><span class="comment">#yum -y install createrepo rpm-sign rng-tools yum-utils </span></span><br><span class="line">yum -y install htop <span class="built_in">bind</span>-utils bridge-utils ntpdate setuptool iptables system-config-securitylevel-tui system-config-network-tui \</span><br><span class="line"> ntsysv net-tools lrzsz telnet lsof vim dos2unix unix2dos zip unzip \</span><br><span class="line"> lsof openssl openssh-server openssh-clients</span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> sshd</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'s;#PasswordAuthentication yes;PasswordAuthentication yes;g'</span> /etc/ssh/sshd_config</span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
+<p>Starting:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<h3 id="Windows10"><a href="#Windows10" class="headerlink" title="Windows10"></a>Windows10</h3><p>Adding box:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vagrant box add win10 box/win10.box</span><br></pre></td></tr></table></figure>
+<p>Vagrantfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># All Vagrant configuration is done below. The "2" in Vagrant.configure</span></span><br><span class="line"><span class="comment"># configures the configuration version (we support older styles for</span></span><br><span class="line"><span class="comment"># backwards compatibility). Please don't change it unless you know what</span></span><br><span class="line"><span class="comment"># you're doing.</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> |config|</span><br><span class="line">  config.vm.box = <span class="string">"win10"</span></span><br><span class="line">  config.vm.hostname = <span class="string">"node3"</span></span><br><span class="line">  config.vm.network <span class="string">"public_network"</span>, ip: <span class="string">"192.168.101.85"</span>, netmask: <span class="string">"255.255.255.0"</span>, gateway: <span class="string">"192.168.101.254"</span>, bridge: <span class="string">"enp2s0"</span></span><br><span class="line">  config.vm.provider <span class="string">"virtualbox"</span> <span class="keyword">do</span> |vb|</span><br><span class="line">    <span class="comment">#vb.gui = true</span></span><br><span class="line">    vb.cpus = 2</span><br><span class="line">    vb.memory = <span class="string">"2048"</span></span><br><span class="line">  end</span><br><span class="line">  config.vm.provision <span class="string">"shell"</span>, run: <span class="string">"always"</span>, inline: &lt;&lt;-SHELL</span><br><span class="line">    netsh advfirewall <span class="built_in">set</span> allprofiles state off</span><br><span class="line">    ROUTE ADD 0.0.0.0  MASK 0.0.0.0  192.168.101.254  METRIC 25</span><br><span class="line">  SHELL</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>Starting:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<h3 id="MacOS"><a href="#MacOS" class="headerlink" title="MacOS"></a>MacOS</h3><p>It doesn’t work, reslove it later.</p>
+<p>Adding box:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vagrant box add macos box/macos-10.15.box</span><br></pre></td></tr></table></figure>
+<p>Vagrantfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># All Vagrant configuration is done below. The "2" in Vagrant.configure</span></span><br><span class="line"><span class="comment"># configures the configuration version (we support older styles for</span></span><br><span class="line"><span class="comment"># backwards compatibility). Please don't change it unless you know what</span></span><br><span class="line"><span class="comment"># you're doing.</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> |config|</span><br><span class="line">  config.vm.box = <span class="string">"macos"</span></span><br><span class="line">  config.vm.hostname = <span class="string">"node4"</span></span><br><span class="line">  config.vm.network <span class="string">"public_network"</span>, ip: <span class="string">"192.168.101.86"</span>, netmask: <span class="string">"255.255.255.0"</span>, gateway: <span class="string">"192.168.101.254"</span>, bridge: <span class="string">"enp2s0"</span></span><br><span class="line">  config.vm.provider <span class="string">"virtualbox"</span> <span class="keyword">do</span> |vb|</span><br><span class="line">    <span class="comment">#vb.gui = true</span></span><br><span class="line">    vb.cpus = 2</span><br><span class="line">    vb.memory = <span class="string">"2048"</span></span><br><span class="line">  end</span><br><span class="line">  config.vm.provision <span class="string">"shell"</span>, run: <span class="string">"always"</span>, inline: &lt;&lt;-SHELL</span><br><span class="line">    <span class="comment">#netsh advfirewall set allprofiles state off</span></span><br><span class="line">    <span class="comment">#ROUTE ADD 0.0.0.0  MASK 0.0.0.0  192.168.101.254  METRIC 25</span></span><br><span class="line">  SHELL</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>Starting:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<h2 id="Command-Usage"><a href="#Command-Usage" class="headerlink" title="Command Usage"></a>Command Usage</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cd vagrant</span></span><br><span class="line"><span class="comment">#Remove box</span></span><br><span class="line">sudo vagrant box remove centos7</span><br><span class="line"><span class="comment">#Add box</span></span><br><span class="line">sudo vagrant box add centos7 centos7-0.0.99.box</span><br><span class="line"><span class="comment">#List box</span></span><br><span class="line">sudo vagrant box list</span><br><span class="line"></span><br><span class="line"><span class="comment">#sudo vagrant init centos7</span></span><br><span class="line">sudo vagrant up</span><br><span class="line"><span class="comment">#sudo vagrant up node1</span></span><br><span class="line">sudo vagrant halt</span><br><span class="line">sudo vagrant reload</span><br><span class="line"><span class="comment">#sudo vagrant destroy</span></span><br><span class="line">sudo vagrant ssh</span><br><span class="line"><span class="comment">#sudo vagrant ssh node1</span></span><br><span class="line">vagrant status</span><br><span class="line"></span><br><span class="line"><span class="comment">#Export and use "add box" to import </span></span><br><span class="line">sudo vagrant package node1 --output node1.box</span><br><span class="line"></span><br><span class="line"><span class="comment">#Snapshot</span></span><br><span class="line">sudo vagrant plugin install vagrant-vbox-snapshot</span><br><span class="line">sudo vagrant snapshot list node1</span><br><span class="line"><span class="comment">#snapshot save</span></span><br><span class="line">sudo vagrant snapshot save node1 node1_snapshot</span><br><span class="line"><span class="comment">#snapshot restore</span></span><br><span class="line">sudo vagrant snapshot restore node1 node1_snapshot</span><br></pre></td></tr></table></figure>
+<p>Modifying the directory of VirtualBox:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Using root to handle:</span></span><br><span class="line"><span class="comment">#https://www.jianshu.com/p/12cf1ecb224b</span></span><br><span class="line"><span class="comment">#https://www.cnblogs.com/csliwei/p/5860005.html</span></span><br><span class="line">mv ~/.vagrant.d/ /data/vagrant/</span><br><span class="line"><span class="comment">#vim /etc/profile.d/java.sh</span></span><br><span class="line"><span class="built_in">export</span> VAGRANT_HOME=<span class="string">'/data/vagrant/.vagrant.d'</span></span><br><span class="line"><span class="built_in">export</span> VAGRANT_DISABLE_VBOXSYMLINKCREATE=1</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="comment">#VBoxManage setproperty machinefolder  /data/vagrant/</span></span><br><span class="line">sudo mkdir -p <span class="string">"/data/vagrant/"</span></span><br><span class="line">mv <span class="string">"/root/VirtualBox VMs"</span> <span class="string">"/data/vagrant/VirtualBox VMs"</span></span><br><span class="line">sudo ln -s <span class="string">"/data/vagrant/VirtualBox VMs"</span> <span class="string">"/root/VirtualBox VMs"</span></span><br><span class="line"><span class="comment">#To relogin to take effect</span></span><br></pre></td></tr></table></figure>
+<p>Resize Disk:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">vagrant plugin install vagrant-disksize</span><br><span class="line"><span class="comment">#Edit the Vagrantfile:</span></span><br><span class="line">Vagrant.configure(<span class="string">'2'</span>) <span class="keyword">do</span> |config|</span><br><span class="line">  ...</span><br><span class="line">  config.vm.box = <span class="string">'ubuntu/xenial64'</span></span><br><span class="line">  config.disksize.size = <span class="string">'150GB'</span></span><br><span class="line">  ...</span><br><span class="line">end</span><br><span class="line">vagrant halt &amp;&amp; vagrant up</span><br></pre></td></tr></table></figure>
+<p>Note: this will not work with vagrant reload</p>
+<h2 id="Nvidia-Docker"><a href="#Nvidia-Docker" class="headerlink" title="Nvidia Docker"></a>Nvidia Docker</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/NVIDIA/nvidia-docker/issues/1034</span><br><span class="line">https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html</span><br><span class="line"><span class="comment">#nvidia-container-toolkit</span></span><br><span class="line">curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \</span><br><span class="line">  &amp;&amp; curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \</span><br><span class="line">    sed <span class="string">'s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g'</span> | \</span><br><span class="line">    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line"></span><br><span class="line">sudo apt-get install -y nvidia-container-toolkit</span><br><span class="line"></span><br><span class="line">docker run --rm --name dave-nvidia --gpus all nvidia/cuda:12.3.2-devel-ubuntu22.04 nvidia-smi</span><br></pre></td></tr></table></figure>
+<p>vim Vagrantfile:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># All Vagrant configuration is done below. The "2" in Vagrant.configure</span></span><br><span class="line"><span class="comment"># configures the configuration version (we support older styles for</span></span><br><span class="line"><span class="comment"># backwards compatibility). Please don't change it unless you know what</span></span><br><span class="line"><span class="comment"># you're doing.</span></span><br><span class="line"><span class="string">Vagrant.configure("2")</span> <span class="string">do</span> <span class="string">|config|</span></span><br><span class="line"></span><br><span class="line">  <span class="string">config.vm.network</span> <span class="string">:public_network,</span> <span class="attr">ip:</span> <span class="string">"192.168.109.50"</span><span class="string">,</span> <span class="attr">netmask:</span> <span class="string">"255.255.255.0"</span><span class="string">,</span> <span class="attr">bridge:</span> <span class="string">"eno1"</span><span class="string">,</span> <span class="attr">docker_network__gateway:</span> <span class="string">"192.168.109.254"</span></span><br><span class="line"></span><br><span class="line">  <span class="string">config.vm.provider</span> <span class="string">"docker"</span> <span class="string">do</span> <span class="string">|d|</span></span><br><span class="line">    <span class="comment">#d.image = "registry.zerofinance.net/library/ubuntu:22.04"</span></span><br><span class="line">    <span class="string">d.image</span> <span class="string">=</span> <span class="string">"registry.zerofinance.net/library/cuda:12.3.2-devel-ubuntu22.04"</span></span><br><span class="line">    <span class="comment">#d.build_dir = "."</span></span><br><span class="line">    <span class="comment">#d.create_args = ["--hostname=config", "-v", "/data/fisco:/data/fisco", "-v", "/data/vagrant/docker/fisco/shell:/data/shell"]</span></span><br><span class="line">    <span class="string">d.create_args</span> <span class="string">=</span> <span class="string">["--cpus=40",</span> <span class="string">"--memory=64g"</span><span class="string">,</span> <span class="string">"--hostname=ubuntu-analysis"</span><span class="string">,</span> <span class="string">"--gpus=all"</span><span class="string">,"-v",</span> <span class="string">"/data/containerd:/var/lib/containerd"</span><span class="string">,</span> <span class="string">"-v"</span><span class="string">,</span> <span class="string">"/works/app/container_apps:/works/app"</span><span class="string">,</span> <span class="string">"-v"</span><span class="string">,</span> <span class="string">"/data/container_datas:/data"</span><span class="string">]</span></span><br><span class="line">    <span class="string">d.privileged</span> <span class="string">=</span> <span class="literal">true</span></span><br><span class="line">    <span class="string">d.cmd</span> <span class="string">=</span> <span class="string">["/sbin/init"]</span></span><br><span class="line">  <span class="string">end</span></span><br><span class="line"></span><br><span class="line">  <span class="string">config.vm.provision</span> <span class="string">"shell"</span><span class="string">,</span> <span class="attr">run:</span> <span class="string">"always"</span><span class="string">,</span> <span class="attr">inline:</span> <span class="string">&lt;&lt;-SHELL</span></span><br><span class="line">    <span class="string">sudo</span> <span class="string">route</span> <span class="string">del</span> <span class="string">default</span> <span class="string">gw</span> <span class="number">172.17</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">    <span class="string">sudo</span> <span class="string">route</span> <span class="string">add</span> <span class="string">default</span> <span class="string">gw</span> <span class="number">192.168</span><span class="number">.109</span><span class="number">.254</span></span><br><span class="line">  <span class="string">SHELL</span></span><br><span class="line"></span><br><span class="line"><span class="string">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="Refrence"><a href="#Refrence" class="headerlink" title="Refrence"></a>Refrence</h2><ul>
+<li><a href="https://www.ityoudao.cn/posts/vagrant-network/" target="_blank" rel="noopener">https://www.ityoudao.cn/posts/vagrant-network/</a></li>
+<li><a href="http://sunyongfeng.com/201703/programmer/tools/vagrant" target="_blank" rel="noopener">http://sunyongfeng.com/201703/programmer/tools/vagrant</a></li>
+<li><a href="https://cn.opensuse.org/Virtualbox_Network_Bridging" target="_blank" rel="noopener">https://cn.opensuse.org/Virtualbox_Network_Bridging</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+            <a href="/tags/Vagrant/" rel="tag"># Vagrant</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/Loki-Log-System.html" rel="next" title="Loki Log System">
+                <i class="fa fa-chevron-left"></i> Loki Log System
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/05/Containerd.html" rel="prev" title="Containerd">
+                Containerd <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTc1MS8xODI5Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">zhaoxunyong</p>
+              <p class="site-description motion-element" itemprop="description">平时工作中所遇到的一些问题的总结</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://subblogzhaoxunyongm70.lofter.com/" title="lofter" target="_blank">lofter</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Installation"><span class="nav-number">2.</span> <span class="nav-text">Installation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vagrant-docker"><span class="nav-number">2.1.</span> <span class="nav-text">vagrant+docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vagrant-virtualbox"><span class="nav-number">2.2.</span> <span class="nav-text">vagrant+virtualbox</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Configuration"><span class="nav-number">3.</span> <span class="nav-text">Configuration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vagrant-docker-1"><span class="nav-number">3.1.</span> <span class="nav-text">vagrant+docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vagrant-virtualbox-1"><span class="nav-number">3.2.</span> <span class="nav-text">vagrant+virtualbox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ubuntu"><span class="nav-number">3.3.</span> <span class="nav-text">Ubuntu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CentOS"><span class="nav-number">3.4.</span> <span class="nav-text">CentOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows10"><span class="nav-number">3.5.</span> <span class="nav-text">Windows10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MacOS"><span class="nav-number">3.6.</span> <span class="nav-text">MacOS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Command-Usage"><span class="nav-number">4.</span> <span class="nav-text">Command Usage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nvidia-Docker"><span class="nav-number">5.</span> <span class="nav-text">Nvidia Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refrence"><span class="nav-number">6.</span> <span class="nav-text">Refrence</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaoxunyong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("jozwrL8uJ20tiwfpIlilQEvx-gzGzoHsz", "DrpiYQlTyseBEjF9Ujr0SVKk");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
