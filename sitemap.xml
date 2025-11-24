@@ -58,7 +58,7 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2022/06/Seata.html</loc>
+    <loc>http://blog.gcalls.cn/2022/06/Fabric-Getting-Started.html</loc>
     
     <lastmod>2024-08-02T05:39:00.967Z</lastmod>
     
@@ -72,14 +72,7 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2022/06/Fabric-Getting-Started.html</loc>
-    
-    <lastmod>2024-08-02T05:39:00.967Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/2023/09/CD.html</loc>
+    <loc>http://blog.gcalls.cn/2022/06/Seata.html</loc>
     
     <lastmod>2024-08-02T05:39:00.967Z</lastmod>
     
@@ -87,6 +80,13 @@
   
   <url>
     <loc>http://blog.gcalls.cn/2023/10/Prometheus.html</loc>
+    
+    <lastmod>2024-08-02T05:39:00.967Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/2023/09/CD.html</loc>
     
     <lastmod>2024-08-02T05:39:00.967Z</lastmod>
     
@@ -114,14 +114,14 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
+    <loc>http://blog.gcalls.cn/2017/10/Kubernetes%E5%AE%89%E8%A3%85Docker-registry.html</loc>
     
     <lastmod>2024-08-02T05:39:00.963Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/10/Kubernetes%E5%AE%89%E8%A3%85Docker-registry.html</loc>
+    <loc>http://blog.gcalls.cn/2017/09/Minikube%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.html</loc>
     
     <lastmod>2024-08-02T05:39:00.963Z</lastmod>
     
@@ -142,13 +142,6 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/11/spring-cloud-docker-prometheus-grafana%E7%9B%91%E6%8E%A7.html</loc>
-    
-    <lastmod>2024-08-02T05:39:00.963Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.gcalls.cn/2019/04/%E9%BB%91%E8%8B%B9%E6%9E%9C%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B.html</loc>
     
     <lastmod>2024-08-02T05:39:00.963Z</lastmod>
@@ -156,14 +149,7 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2019/05/Git%E5%A6%82%E4%BD%95%E6%B0%B8%E4%B9%85%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E4%B8%8E%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.html</loc>
-    
-    <lastmod>2024-08-02T05:39:00.963Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/2019/05/React%E5%9F%BA%E7%A1%80.html</loc>
+    <loc>http://blog.gcalls.cn/2017/11/spring-cloud-docker-prometheus-grafana%E7%9B%91%E6%8E%A7.html</loc>
     
     <lastmod>2024-08-02T05:39:00.963Z</lastmod>
     
@@ -177,14 +163,7 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2020/01/EnglishPod%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F.html</loc>
-    
-    <lastmod>2024-08-02T05:39:00.963Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.gcalls.cn/2019/11/English%E4%BA%8C%E8%AF%AD%E4%B9%A0%E5%BE%97%E6%96%B9%E6%B3%95.html</loc>
+    <loc>http://blog.gcalls.cn/2019/05/Git%E5%A6%82%E4%BD%95%E6%B0%B8%E4%B9%85%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E4%B8%8E%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95.html</loc>
     
     <lastmod>2024-08-02T05:39:00.963Z</lastmod>
     
@@ -198,7 +177,21 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2020/12/Kubernetes-Development-Environment.html</loc>
+    <loc>http://blog.gcalls.cn/2019/11/English%E4%BA%8C%E8%AF%AD%E4%B9%A0%E5%BE%97%E6%96%B9%E6%B3%95.html</loc>
+    
+    <lastmod>2024-08-02T05:39:00.963Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/2019/05/React%E5%9F%BA%E7%A1%80.html</loc>
+    
+    <lastmod>2024-08-02T05:39:00.963Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/2020/01/EnglishPod%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F.html</loc>
     
     <lastmod>2024-08-02T05:39:00.963Z</lastmod>
     
@@ -213,6 +206,13 @@
   
   <url>
     <loc>http://blog.gcalls.cn/2021/09/istio%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93.html</loc>
+    
+    <lastmod>2024-08-02T05:39:00.963Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/2020/12/Kubernetes-Development-Environment.html</loc>
     
     <lastmod>2024-08-02T05:39:00.963Z</lastmod>
     
@@ -254,13 +254,6 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/01/Kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.html</loc>
-    
-    <lastmod>2024-08-02T05:39:00.959Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.gcalls.cn/2017/01/Kubeadm%20rpm%E5%AE%89%E8%A3%85%E5%8C%85%E5%88%B6%E4%BD%9C.html</loc>
     
     <lastmod>2024-08-02T05:39:00.959Z</lastmod>
@@ -268,7 +261,7 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/01/kubernetes%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html</loc>
+    <loc>http://blog.gcalls.cn/2017/01/Kubernetes%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.html</loc>
     
     <lastmod>2024-08-02T05:39:00.959Z</lastmod>
     
@@ -282,14 +275,14 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/01/Linux%E7%BD%91%E7%BB%9C.html</loc>
+    <loc>http://blog.gcalls.cn/2017/01/kubernetes%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.html</loc>
     
     <lastmod>2024-08-02T05:39:00.959Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/01/%E7%94%A8fpm%E5%88%B6%E4%BD%9CRPM%E5%8C%85.html</loc>
+    <loc>http://blog.gcalls.cn/2017/01/Linux%E7%BD%91%E7%BB%9C.html</loc>
     
     <lastmod>2024-08-02T05:39:00.959Z</lastmod>
     
@@ -303,13 +296,6 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/02/Centos-ULIMIT%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6.html</loc>
-    
-    <lastmod>2024-08-02T05:39:00.959Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://blog.gcalls.cn/2017/01/%E4%BD%BF%E7%94%A8Flannel%E6%90%AD%E5%BB%BAdocker%E7%BD%91%E7%BB%9C.html</loc>
     
     <lastmod>2024-08-02T05:39:00.959Z</lastmod>
@@ -317,7 +303,7 @@
   </url>
   
   <url>
-    <loc>http://blog.gcalls.cn/2017/09/Kubeadm%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.html</loc>
+    <loc>http://blog.gcalls.cn/2017/01/%E7%94%A8fpm%E5%88%B6%E4%BD%9CRPM%E5%8C%85.html</loc>
     
     <lastmod>2024-08-02T05:39:00.959Z</lastmod>
     
@@ -325,6 +311,20 @@
   
   <url>
     <loc>http://blog.gcalls.cn/2017/01/ssl%E8%AF%81%E4%B9%A6%E5%88%B6%E4%BD%9C.html</loc>
+    
+    <lastmod>2024-08-02T05:39:00.959Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/2017/02/Centos-ULIMIT%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6.html</loc>
+    
+    <lastmod>2024-08-02T05:39:00.959Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.gcalls.cn/2017/09/Kubeadm%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA.html</loc>
     
     <lastmod>2024-08-02T05:39:00.959Z</lastmod>
     
